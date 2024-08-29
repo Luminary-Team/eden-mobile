@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="edenBlue">#292DB4</color>
+    <color name="edenDarkBlue">#22216C</color>
+    <color name="edenBlueButton">#2825C8</color>
+    <color name="edenLightBlue">#0021F5</color>
+    <color name="edenCloudBlue">#8EA6E6</color>
+    <color name="edenProductBlue">#F6F6FF</color>
+</resources>

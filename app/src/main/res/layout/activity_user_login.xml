@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserLogin">
+
+    <ImageView
+        android:id="@+id/imageView_eden_robot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/eden_robot"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <RelativeLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        >
+
+        <ImageView
+            android:id="@+id/imagem_eden_component"
+            android:layout_width="135dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/eden_logotipo_3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/imagem_eden_component"
+            android:text="Eden"
+            android:textColor="@color/edenBlue"
+            android:textSize="40dp" />
+
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/textInput_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="70dp"
+        android:padding="10dp"
+        android:textSize="15sp"
+        android:layout_below="@id/header_layout"
+        android:background="@drawable/rounded_corner_shape"
+        android:drawableStart="@drawable/email_icon"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/edenBlue"
+        android:hint="E-mail"
+        android:textColorHint="@color/edenBlue"/>
+
+    <EditText
+        android:id="@+id/textInput_senha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textSize="15sp"
+        android:layout_below="@id/textInput_email"
+        android:background="@drawable/rounded_corner_shape"
+        android:drawableStart="@drawable/senha_icon"
+        android:drawablePadding="10dp"
+        android:drawableTint="@color/edenBlue"
+        android:hint="Senha"
+        android:textColorHint="@color/edenBlue"/>
+
+    <TextView
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textInput_senha"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_blue"
+        android:textAlignment="center"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/textView_cadastrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#0000"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/btn_login"
+        android:text="Cadastre-se aqui"
+        android:textAlignment="center"
+        />
+
+</RelativeLayout>
