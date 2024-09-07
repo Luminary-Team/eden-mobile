@@ -32,11 +32,11 @@ public class RegisterProduct extends AppCompatActivity {
 
         FirebaseProdutoUtil db = new FirebaseProdutoUtil();
         Button btnAvancar = findViewById(R.id.btnCadastroAvancar);
-        nome = findViewById(R.id.editText_nome_produto);
-        preco = findViewById(R.id.editText_valor_produto);
-        descricao = findViewById(R.id.editText_descricao_produto);
-        tipoEntrega = findViewById(R.id.editText_meio_entrega);
-        productImage = findViewById(R.id.product_image);
+//        nome = findViewById(R.id.editText_nome_produto);
+//        preco = findViewById(R.id.editText_valor_produto);
+//        descricao = findViewById(R.id.editText_descricao_produto);
+//        tipoEntrega = findViewById(R.id.editText_meio_entrega);
+//        productImage = findViewById(R.id.product_image);
 
         // Salvando os dados no firebase
         btnAvancar.setOnClickListener(v -> {
@@ -54,26 +54,26 @@ public class RegisterProduct extends AppCompatActivity {
             }
         });
 
-        productImage.setOnClickListener(v -> {
-            // Selecionando imagem
-            imagePickLauncher = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            selectedImageUri = result.getData().getData();
-                            productImage.setImageURI(selectedImageUri);
-                        }
-                    });
-
-            // Pegando imagem
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            imagePickLauncher.launch(intent);
-
-            // Colocando imagem no ImageView
-            AndroidUtil.setProductImage(this, selectedImageUri, productImage);
-        });
+//        productImage.setOnClickListener(v -> {
+//            // Selecionando imagem
+//            imagePickLauncher = registerForActivityResult(
+//                    new ActivityResultContracts.StartActivityForResult(),
+//                    result -> {
+//                        if (result.getResultCode() == Activity.RESULT_OK) {
+//                            selectedImageUri = result.getData().getData();
+//                            productImage.setImageURI(selectedImageUri);
+//                        }
+//                    });
+//
+//            // Pegando imagem
+//            Intent intent = new Intent();
+//            intent.setType("image/*");
+//            intent.setAction(Intent.ACTION_GET_CONTENT);
+//            imagePickLauncher.launch(intent);
+//
+//            // Colocando imagem no ImageView
+//            AndroidUtil.setProductImage(this, selectedImageUri, productImage);
+//        });
 
     }
 }

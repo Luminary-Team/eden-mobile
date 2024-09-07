@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Eden"
+        android:screenOrientation="portrait"
         tools:targetApi="31">
 
         <!--
@@ -30,34 +31,39 @@
 
         <activity
             android:name=".PontoColeta"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".BuyProduct"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".UserProfile"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".UserCadastro"
+            android:name=".UserRegister"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".UserLogin"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".RegisterProduct"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".Sidebar"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
-        <activity
             android:name=".CartActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".SplashScreen"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -12,12 +12,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class FirebaseUserUtil {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public static String currentUserId(){ return FirebaseAuth.getInstance().getUid(); }
     public void login(String email, String senha, Context context) {
         db.collection("usuarios")
                 .whereEqualTo("email", email)
@@ -51,5 +54,12 @@ public class FirebaseUserUtil {
                         login(email, senha, context);
                     }
                 });
+    }
+
+    public static boolean isLoggedIn(){
+        if(currentUserId() != null){
+            return true;
+        }
+        return false;
     }
 }

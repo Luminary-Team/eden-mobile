@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:orientation="vertical"
-    android:background="@color/edenBlue"
-    android:gravity="bottom"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:padding="20dp">
 
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:src="@drawable/eden_logotipo_2"
-        android:background="@color/edenBlue"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="2dp"
+        android:background="#F1F"
+        android:scaleType="centerInside"
+        app:shapeAppearance="@style/arredondar"
+        app:strokeColor="@color/edenBlue"
+        app:strokeWidth="2dp"
+        app:srcCompat="@drawable/eden_faxada" />
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/profile_pic"
+        android:layout_marginStart="10dp"
+        android:text="@Eden"
+        android:textSize="20sp"
+        android:textStyle="bold"
         />
 
     <TextView
+        android:id="@+id/profile_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/profile_name"
+        android:layout_toRightOf="@id/profile_pic"
+        android:layout_marginStart="10dp"
         android:text="Eden"
-        android:textSize="30sp"
-        android:textColor="#FFF"
-        android:textStyle="bold"
-        android:background="@color/edenBlue"
+        android:textSize="12sp"
         />
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -45,7 +45,6 @@ public class ProdutosAdapter extends RecyclerView.Adapter<ProdutosAdapter.ViewHo
             intent.putExtra("tipoEntrega", listaProdutos.get(position).getTipoEntrega());
 
             v.getContext().startActivity(intent);
-
         });
     }
 

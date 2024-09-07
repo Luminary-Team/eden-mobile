@@ -20,7 +20,7 @@
             android:layout_alignParentEnd="true"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/carrinho_icon"
+            app:srcCompat="@drawable/cart_icon"
             app:tint="@color/edenBlue" />
 
         <EditText

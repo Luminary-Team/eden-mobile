@@ -27,7 +27,7 @@
       android:layout_centerInParent="true"
       android:scaleType="centerCrop"
       app:tint="@color/edenBlue"
-      app:srcCompat="@drawable/carrinho_icon" />
+      app:srcCompat="@drawable/cart_icon" />
 
   <TextView
       android:id="@+id/textView"

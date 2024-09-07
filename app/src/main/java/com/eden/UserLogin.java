@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,7 @@ public class UserLogin extends AppCompatActivity {
         });
 
         btnCadastro.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserCadastro.class);
+            Intent intent = new Intent(this, UserRegister.class);
             startActivity(intent);
             finish();
         });

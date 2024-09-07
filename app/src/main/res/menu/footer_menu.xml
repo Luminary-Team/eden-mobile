@@ -3,7 +3,7 @@
 
     <item android:title="Home"
         android:enabled="true"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/home_outlined_icon"
         android:id="@+id/menu_home"/>
 
     <item android:title="Adicionar"
@@ -11,7 +11,7 @@
         android:id="@+id/menu_add"/>
 
     <item android:title="Fórum"
-        android:icon="@drawable/forum_icon"
+        android:icon="@drawable/forum_outlined_icon"
         android:id="@+id/menu_forum"/>
 
 </menu>

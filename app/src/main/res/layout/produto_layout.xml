@@ -51,7 +51,7 @@
             android:progressTint="@color/edenBlue"
             android:isIndicator="true"
             android:numStars="5"
-            android:rating="3" />
+            android:rating="5" />
 
 <!--        <CheckBox-->
 <!--            android:id="@+id/coracao_produto"-->
