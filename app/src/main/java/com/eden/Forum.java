@@ -11,11 +11,15 @@ import androidx.annotation.Nullable;
 
 class Forum extends Fragment {
 
+     public static Forum newInstance() {
+         return new Forum();
+     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_forum, container, false);
+        View view = inflater.inflate(R.layout.fragment_forum, container, false);
+        return view;
     }
 }

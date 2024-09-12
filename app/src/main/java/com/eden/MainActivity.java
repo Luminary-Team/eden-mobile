@@ -3,6 +3,7 @@ package com.eden;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -93,10 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             if(item.getItemId() == R.id.menu_home){
-                recyclerView.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
             }
             if(item.getItemId() == R.id.menu_forum){
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_main, new Forum());
 
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new Forum()).commit();
             }
             return false;
         });
