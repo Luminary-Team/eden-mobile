@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@null"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic"
@@ -24,7 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/profile_pic"
         android:layout_marginStart="10dp"
-        android:text="@Eden"
+        android:background="@null"
+        android:text="@string/userNameText"
         android:textSize="20sp"
         android:textStyle="bold"
         />
@@ -36,6 +37,7 @@
         android:layout_below="@id/profile_name"
         android:layout_toRightOf="@id/profile_pic"
         android:layout_marginStart="10dp"
+        android:background="@null"
         android:text="Eden"
         android:textSize="12sp"
         />

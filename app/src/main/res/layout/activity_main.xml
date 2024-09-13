@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout">
+    android:id="@+id/drawer_layout"
+    tools:context=".MainActivity">
 
     <RelativeLayout
         android:id="@+id/header_main"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        tools:context=".MainActivity">
+        android:layout_height="400dp">
 
         <ImageView
             android:id="@+id/btnSidebar"
@@ -47,13 +47,12 @@
             />
 
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_above="@+id/footer_navigation"
-            android:layout_marginBottom="129dp">
-
-        </FrameLayout>
+<!--        <FrameLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="200dp"-->
+<!--            android:layout_above="@+id/footer_navigation"-->
+<!--            android:layout_marginBottom="129dp">-->
+<!--        </FrameLayout>-->
 
         <FrameLayout
             android:id="@+id/fragment_main"
@@ -65,7 +64,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp">
-
         </FrameLayout>
 
         <!--    <com.google.android.material.divider.MaterialDivider-->
@@ -97,7 +95,7 @@
         android:fitsSystemWindows="true"
         app:itemIconTint="@color/edenLightBlue"
         app:itemTextColor="@color/black"
-        app:headerLayout="@layout/sidebar_header"
+        app:headerLayout="@layout/header_layout"
         app:menu="@menu/sidebar_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

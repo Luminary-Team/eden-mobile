@@ -3,29 +3,15 @@ package com.eden;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eden.adapter.ProdutosAdapter;
-import com.eden.model.Produto;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.FirebaseProdutoUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -33,26 +19,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseProdutoUtil db = new FirebaseProdutoUtil();
-
-        List<Produto> produtos = new ArrayList<>();
-
         // Pegando os elementos do layout
         ImageView btnSidebar = findViewById(R.id.btnSidebar);
         ImageView btnCarrinho = findViewById(R.id.btnCarrinho);
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         BottomNavigationView footer = findViewById(R.id.footer_navigation);
         NavigationView navView = findViewById(R.id.nav_view);
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-
-        // Settando o adapter da RecyclerView
-        ProdutosAdapter adapter = new ProdutosAdapter(produtos);
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
-        // TEMP
-        db.listarProdutos(produtos, adapter);
 
         // Botão do carrinho
         btnCarrinho.setOnClickListener(v -> {
@@ -97,10 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
             }
             if(item.getItemId() == R.id.menu_forum){
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_main, new Forum());
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new Forum()).commit();
+//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_main, new Forum());
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentForum()).commit();
             }
             return false;
         });

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home"  />
     <fragment
         android:id="@+id/forum"
-        android:name="com.eden.Forum"
+        android:name="com.eden.FragmentForum"
         android:label="fragment_forum"
         tools:layout="@layout/fragment_forum" />
 

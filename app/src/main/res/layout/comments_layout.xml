@@ -5,7 +5,7 @@
     android:layout_height="150dp"
     android:backgroundTint="#777"
     android:layout_margin="30dp"
-    style="@style/ShapeAppearance.Material3.Corner.ExtraSmall"
+    app:cardCornerRadius="10dp"
     >
 
     <ImageView

@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="180dp"
     android:layout_height="240dp"
-    android:background="@drawable/produto_shape"
     android:layout_margin="10dp"
-    android:padding="15dp"
+    app:cardBackgroundColor="@color/edenProductBlue"
+    app:cardCornerRadius="20dp"
     >
-
-    <ImageView
-        android:id="@+id/imagem_produto"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_alignParentTop="true"
-        android:backgroundTint="@color/edenProductBlue"
-        android:scaleType="centerCrop"
-        android:src="@drawable/eden_logotipo_2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:backgroundTint="@color/edenProductBlue"
-        android:layout_below="@id/imagem_produto">
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/imagem_produto"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:layout_alignParentTop="true"
+            android:backgroundTint="@color/edenProductBlue"
+            android:src="@drawable/eden_logotipo_2" />
 
         <TextView
             android:id="@+id/titulo_produto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/imagem_produto"
             android:backgroundTint="@color/edenProductBlue"
             android:text="Título"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/descricao_produto"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@id/titulo_produto"-->
-<!--            android:text="Descricao"-->
-<!--            android:textSize="12sp" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/descricao_produto"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_below="@id/titulo_produto"-->
+        <!--            android:text="Descricao"-->
+        <!--            android:textSize="12sp" />-->
 
         <RatingBar
             android:id="@+id/rating_produto"
@@ -53,16 +52,16 @@
             android:numStars="5"
             android:rating="5" />
 
-<!--        <CheckBox-->
-<!--            android:id="@+id/coracao_produto"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_alignParentBottom="true"-->
-<!--            android:layout_toLeftOf="@id/add_carrinho_produto"-->
-<!--            android:button="@drawable/heart_icon"-->
-<!--            android:buttonTintMode="add"-->
-<!--            android:buttonTint="@color/edenBlue"-->
-<!--            />-->
+        <!--        <CheckBox-->
+        <!--            android:id="@+id/coracao_produto"-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="30dp"-->
+        <!--            android:layout_alignParentBottom="true"-->
+        <!--            android:layout_toLeftOf="@id/add_carrinho_produto"-->
+        <!--            android:button="@drawable/heart_icon"-->
+        <!--            android:buttonTintMode="add"-->
+        <!--            android:buttonTint="@color/edenBlue"-->
+        <!--            />-->
 
         <TextView
             android:id="@+id/valor_produto"
@@ -87,6 +86,7 @@
             android:textSize="12sp"
             />
 
+
     </RelativeLayout>
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>
