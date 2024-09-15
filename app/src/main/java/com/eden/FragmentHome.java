@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.eden.adapter.ProdutosAdapter;
-import com.eden.model.Produto;
+import com.eden.adapter.ProductAdapter;
+import com.eden.model.Product;
 import com.eden.utils.FirebaseProdutoUtil;
 
 import java.util.ArrayList;
@@ -27,18 +27,18 @@ public class FragmentHome extends Fragment {
 
         FirebaseProdutoUtil db = new FirebaseProdutoUtil();
 
-        List<Produto> produtos = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_produtos);
 
         // Settando o adapter da RecyclerView
-        ProdutosAdapter adapter = new ProdutosAdapter(produtos);
+        ProductAdapter adapter = new ProductAdapter(products);
         recyclerView.setAdapter(adapter);
 
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 2));
 
         // TEMP
-        db.listarProdutos(produtos, adapter);
+        db.listarProdutos(products, adapter);
 
         return view;
     }

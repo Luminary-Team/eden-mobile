@@ -1,10 +1,8 @@
 package com.eden;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,13 +11,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.eden.model.Produto;
-import com.eden.utils.AndroidUtil;
+import com.eden.model.Product;
 import com.eden.utils.FirebaseProdutoUtil;
 
 public class RegisterProduct extends AppCompatActivity {
 
-    EditText nome, preco, descricao, tipoEntrega;
+    EditText name, preco, descricao, tipoEntrega;
     ImageView productImage;
 
     ActivityResultLauncher<Intent> imagePickLauncher;
@@ -32,7 +29,7 @@ public class RegisterProduct extends AppCompatActivity {
 
         FirebaseProdutoUtil db = new FirebaseProdutoUtil();
         Button btnAvancar = findViewById(R.id.btnCadastroAvancar);
-//        nome = findViewById(R.id.editText_nome_produto);
+//        name = findViewById(R.id.editText_name_produto);
 //        preco = findViewById(R.id.editText_valor_produto);
 //        descricao = findViewById(R.id.editText_descricao_produto);
 //        tipoEntrega = findViewById(R.id.editText_meio_entrega);
@@ -40,16 +37,16 @@ public class RegisterProduct extends AppCompatActivity {
 
         // Salvando os dados no firebase
         btnAvancar.setOnClickListener(v -> {
-            if (nome.getText().toString().equals("") || preco.getText().toString().equals("") || descricao.getText().toString().equals("") || tipoEntrega.getText().toString().equals("")) {
+            if (name.getText().toString().equals("") || preco.getText().toString().equals("") || descricao.getText().toString().equals("") || tipoEntrega.getText().toString().equals("")) {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
             } else if (Double.parseDouble(preco.getText().toString()) <= 0) {
                 Toast.makeText(this, "O valor deve ser maior que 0", Toast.LENGTH_SHORT).show();
             } else {
                 // Salvando produto
-                db.salvarProduto(
-                        new Produto(0, nome.getText().toString(),
-                                descricao.getText().toString(), Double.parseDouble(preco.getText().toString()),
-                                false), this);
+                db.salvarProduto(this,
+                        new Product(123, 0, 0, name.getText().toString(),
+                                Float.parseFloat(preco.getText().toString()), descricao.getText().toString(),
+                                "", Float.parseFloat(tipoEntrega.getText().toString()), 0));
                 finish();
             }
         });

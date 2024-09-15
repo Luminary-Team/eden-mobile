@@ -5,8 +5,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.eden.model.Produto;
-import com.eden.adapter.ProdutosAdapter;
+import com.eden.model.Product;
+import com.eden.adapter.ProductAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,11 +20,11 @@ import java.util.List;
 public class FirebaseProdutoUtil {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public void salvarProduto(Produto produto, Context context) {
+    public void salvarProduto(Context context, Product product) {
         // Add a new document with a generated ID
         db.collection("produtos")
                 .document()
-                .set(produto)
+                .set(product)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -39,7 +39,7 @@ public class FirebaseProdutoUtil {
                 });
     }
 
-    public void  listarProdutos(List<Produto> listaProdutos, ProdutosAdapter adapter) {
+    public void  listarProdutos(List<Product> listaProducts, ProductAdapter adapter) {
         db.collection("produtos")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -47,10 +47,10 @@ public class FirebaseProdutoUtil {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                listaProdutos.add(document.toObject(Produto.class));
+                                listaProducts.add(document.toObject(Product.class));
                             }
                         }
-                        adapter.notifyItemChanged(listaProdutos.size());
+                        adapter.notifyItemChanged(listaProducts.size());
                     }
                 });
     }

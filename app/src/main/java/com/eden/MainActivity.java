@@ -6,7 +6,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.eden.utils.AndroidUtil;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         BottomNavigationView footer = findViewById(R.id.footer_navigation);
         NavigationView navView = findViewById(R.id.nav_view);
+        View headerView = navView.getHeaderView(0);
 
         // Botão do carrinho
         btnCarrinho.setOnClickListener(v -> {
@@ -77,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         footer.setSelectedItemId(R.id.menu_home);
+
+        // Clicar no header e ir para a tela de perfil
+        headerView.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UserProfile.class);
+            startActivity(intent);
+        });
 
     }
 }

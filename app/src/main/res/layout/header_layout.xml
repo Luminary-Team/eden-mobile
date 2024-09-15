@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@null"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/header_profile">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic"
