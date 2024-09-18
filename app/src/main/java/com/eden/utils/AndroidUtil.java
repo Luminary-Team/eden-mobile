@@ -1,10 +1,14 @@
 package com.eden.utils;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,6 +31,20 @@ public class AndroidUtil {
     }
     public static void setProductImage(Context context, Uri imageUri, ImageView imageView) {
         Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform()).into(imageView);
+    }
+
+    private static final String[] REQUIRED_PERMISSIONS = {
+            android.Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+    };
+
+    private boolean allPermissionsGranted(Context context) {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void getUsers(Context context) {

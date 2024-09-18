@@ -9,6 +9,7 @@
     android:layout_margin="20dp">
 
     <TextView
+        android:id="@+id/textView_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Perfil"
@@ -18,7 +19,8 @@
         android:id="@+id/header_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/textView_profile">
 
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -44,6 +46,14 @@
             android:textSize="20sp"
             android:textStyle="bold"
             />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_name"
+            android:src="@drawable/pencil_full_icon"
+            app:tint="@color/edenBlue" />
+
 
         <TextView
             android:id="@+id/profile_username"
@@ -81,8 +91,8 @@
         app:menu="@menu/profile_menu"
         />
 
-    <FrameLayout
-        android:id="@+id/frameLayout_profile"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/nav_profile"
