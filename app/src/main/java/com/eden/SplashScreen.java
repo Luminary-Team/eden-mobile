@@ -13,9 +13,12 @@ import com.eden.utils.FirebaseUserUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class SplashScreen extends AppCompatActivity {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class SplashScreen extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                FirebaseUser currentUser = mAuth.getCurrentUser();
                 if(FirebaseUserUtil.isLoggedIn()) {
                     entrarApp(MainActivity.class);
                 } else {

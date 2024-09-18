@@ -21,6 +21,7 @@ public class FirebaseUserUtil {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public static String currentUserId(){ return FirebaseAuth.getInstance().getUid(); }
+
     public void login(String email, String senha, Context context) {
         db.collection("usuarios")
                 .whereEqualTo("email", email)

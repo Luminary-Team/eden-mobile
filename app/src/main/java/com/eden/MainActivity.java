@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             if (menuItem.getItemId() == R.id.nav_favoritos)
                 Toast.makeText(this, "Favoritos", Toast.LENGTH_SHORT).show();
             if (menuItem.getItemId() == R.id.nav_pontos)
-                Toast.makeText(this, "Pontos de Coleta", Toast.LENGTH_SHORT).show();
+                AndroidUtil.openActivity(this, MapsActivityTeste.class);
             if (menuItem.getItemId() == R.id.nav_artigos)
                 Toast.makeText(this, "Artigos", Toast.LENGTH_SHORT).show();
             if (menuItem.getItemId() == R.id.nav_favoritos)
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Configurações do Navigation Footer
         footer.setOnItemSelectedListener(item -> {
+
             if(item.getItemId() == R.id.menu_add){
                 Intent intent = new Intent(MainActivity.this, RegisterProduct.class);
                 startActivity(intent);

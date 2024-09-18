@@ -1,66 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".UserProfile"
     android:orientation="vertical"
-    android:gravity="center"
     android:layout_margin="20dp">
-
-    <ImageView
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:background="@drawable/profile_fulfilled_icon"
-        android:backgroundTint="@color/edenBlue"
-        android:scaleType="centerCrop"
-        android:layout_marginBottom="40dp"
-        android:id="@+id/profile_image_view"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:hint="Username"
-        android:inputType="text"
-        android:layout_margin="10dp"
-        android:id="@+id/profile_username"
-        />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:hint="Phone"
-        android:inputType="text"
-        android:layout_margin="10dp"
-        android:enabled="false"
-        android:id="@+id/profile_phone"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center_vertical"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Update profile"
-            android:id="@+id/profle_update_btn"/>
-        <ProgressBar
-            android:layout_width="32dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/profile_progress_bar"/>
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:id="@+id/logout_btn"/>
+        android:text="Perfil"
+        />
+
+    <RelativeLayout
+        android:id="@+id/header_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
 
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="2dp"
+            android:background="#F1F"
+            android:scaleType="centerInside"
+            app:shapeAppearance="@style/arredondar"
+            app:strokeColor="@color/edenBlue"
+            app:strokeWidth="2dp"
+            app:srcCompat="@drawable/eden_faxada" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_pic"
+            android:layout_marginStart="10dp"
+            android:background="@null"
+            android:text="@string/userNameText"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/profile_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_name"
+            android:layout_toRightOf="@id/profile_pic"
+            android:layout_marginStart="10dp"
+            android:background="@null"
+            android:text="Eden"
+            android:textSize="12sp"
+            />
+
+        <RatingBar
+            android:id="@+id/profile_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_username"
+            android:layout_toRightOf="@id/profile_pic"
+            android:layout_marginStart="10dp"
+            android:progressTint="#E7E400"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:numStars="5"
+            tools:rating="10"
+            />
+
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_profile"
+        app:menu="@menu/profile_menu"
+        />
+
+    <FrameLayout
+        android:id="@+id/frameLayout_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_profile"
+        tools:listitem="@layout/produto_layout"
+        />
+
+</RelativeLayout>
