@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Home"
+        android:enabled="true"
+        android:icon="@drawable/home_icon"
+        android:id="@+id/menu_home"/>
+
+    <item android:title="Adicionar"
+        android:icon="@drawable/add_icon"
+        android:id="@+id/menu_add"/>
+
+    <item android:title="Fórum"
+        android:icon="@drawable/forum_icon"
+        android:id="@+id/menu_forum"/>
+
+</menu>

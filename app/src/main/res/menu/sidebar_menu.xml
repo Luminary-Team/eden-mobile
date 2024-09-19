@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/nav_favoritos"
+            android:title="Favorito"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/favorite_icon" />
+        <item
+            android:id="@+id/nav_pontos"
+            android:title="Pontos de Coleta"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/location_icon" />
+        <item
+            android:id="@+id/nav_artigos"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/article_icon"
+            android:title="Artigos Informativos" />
+<!--        <item-->
+<!--            android:id="@+id/nav_config"-->
+<!--            android:title="Configurações"-->
+<!--            android:icon="@drawable/profile_icon" />-->
+
+</menu>

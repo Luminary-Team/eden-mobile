@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.eden" />
+                  <option name="mobileSdkAppId" value="1:1088448941153:android:61207e892e582faddc2e20" />
+                  <option name="projectId" value="eden-cde62" />
+                  <option name="projectNumber" value="1088448941153" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

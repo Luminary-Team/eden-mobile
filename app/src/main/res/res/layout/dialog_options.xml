@@ -1,0 +1,58 @@
+<!-- res/layout/dialog_options.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/optionPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Perfil"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/optionFavoritos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Favoritos"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/optionPontosDeColeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pontos de Coleta"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/optionArtigosInformativos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Artigos Informativos"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/optionConfiguracoes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Configurações"
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"/>
+
+</LinearLayout>

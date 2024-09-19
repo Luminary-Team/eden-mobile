@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_favoritos"
+            android:title="Favorito"
+            android:icon="@drawable/profile_icon" />
+        <item
+            android:id="@+id/nav_pontos"
+            android:title="Pontos de Coleta"
+            android:icon="@drawable/profile_icon" />
+        <item
+            android:id="@+id/nav_artigos"
+            android:title="Artigos Informativos"
+            android:icon="@drawable/profile_icon" />
+        <item
+            android:id="@+id/nav_config"
+            android:title="Configurações"
+            android:icon="@drawable/profile_icon" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item android:title="Perfil">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_login"
+                    android:title="Login"
+                    android:icon="@drawable/profile_icon" />
+                <item
+                    android:id="@+id/nav_perfil"
+                    android:title="Profile"
+                    android:icon="@drawable/profile_icon" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:title="Logout"
+                    android:icon="@drawable/profile_icon" />
+            </menu>
+
+        </item>
+    </group>
+</menu>

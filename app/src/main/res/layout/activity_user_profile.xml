@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UserProfile"
+    android:orientation="vertical"
+    android:layout_margin="20dp">
+
+    <TextView
+        android:id="@+id/textView_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perfil"
+        />
+
+    <RelativeLayout
+        android:id="@+id/header_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_below="@id/textView_profile">
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="2dp"
+            android:background="#F1F"
+            android:scaleType="centerInside"
+            app:shapeAppearance="@style/arredondar"
+            app:strokeColor="@color/edenBlue"
+            app:strokeWidth="2dp"
+            app:srcCompat="@drawable/eden_faxada" />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_pic"
+            android:layout_marginStart="10dp"
+            android:background="@null"
+            android:text="@string/userNameText"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_name"
+            android:src="@drawable/pencil_full_icon"
+            app:tint="@color/edenBlue" />
+
+
+        <TextView
+            android:id="@+id/profile_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_name"
+            android:layout_toRightOf="@id/profile_pic"
+            android:layout_marginStart="10dp"
+            android:background="@null"
+            android:text="Eden"
+            android:textSize="12sp"
+            />
+
+        <RatingBar
+            android:id="@+id/profile_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_username"
+            android:layout_toRightOf="@id/profile_pic"
+            android:layout_marginStart="10dp"
+            android:progressTint="#E7E400"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:numStars="5"
+            tools:rating="10"
+            />
+
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_profile"
+        app:menu="@menu/profile_menu"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/nav_profile"
+        tools:listitem="@layout/produto_layout"
+        />
+
+</RelativeLayout>

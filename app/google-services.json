@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1088448941153",
+    "project_id": "eden-cde62",
+    "storage_bucket": "eden-cde62.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1088448941153:android:61207e892e582faddc2e20",
+        "android_client_info": {
+          "package_name": "com.eden"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLKPepGzn7rtCJ2iMURG8LA9NHImEjRE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
