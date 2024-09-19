@@ -7,16 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".UserProfileEdit">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:background="@drawable/rounded_thick_border_image_shape"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         android:src="@drawable/choose_photo_icon"
-        app:tint="#1E05B8"
         />
 
 
