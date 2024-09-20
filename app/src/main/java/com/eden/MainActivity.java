@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navView = findViewById(R.id.nav_view);
         View headerView = navView.getHeaderView(0);
 
+        // Colocando a foto de perfil
+        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic", btnSidebar);
+
+        // Fragmento inicial
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
+
         // Botão do carrinho
         btnCarrinho.setOnClickListener(v -> {
             Intent intent = new Intent(this, CartActivity.class);

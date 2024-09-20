@@ -16,6 +16,7 @@
         android:background="@drawable/rounded_thick_border_image_shape"
         android:scaleType="centerCrop"
         android:src="@drawable/choose_photo_icon"
+        app:shapeAppearanceOverlay="@style/arredondar"
         />
 
 

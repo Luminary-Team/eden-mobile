@@ -38,31 +38,31 @@ android {
 
 dependencies {
 
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.firebase:firebase-firestore:25.1.0")
-    implementation("androidx.navigation:navigation-fragment:2.7.7")
-    implementation("androidx.navigation:navigation-ui:2.7.7")
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation("com.google.firebase:firebase-auth:23.0.0")
-    implementation("androidx.activity:activity:1.9.2")
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
+    implementation(libs.firebase.firestore)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.play.services.maps)
+    implementation(libs.firebase.auth)
+    implementation(libs.activity)
     implementation(libs.firebase.storage)
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0") // Glide
+    implementation(libs.material)
+    implementation(libs.glide) // Glide
 
     // Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
 
-    implementation("androidx.viewpager2:viewpager2:1.1.0")
-    implementation("com.tbuonomo:dotsindicator:4.2")
+    implementation(libs.viewpager2)
+    implementation(libs.dotsindicator)
 
     // Maps
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 }

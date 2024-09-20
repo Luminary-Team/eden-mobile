@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/btnSidebar"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -20,9 +20,12 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/circle_rounded_profile"
+            android:padding="2dp"
             android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:shapeAppearance="@style/arredondar"
+            app:strokeColor="@color/edenBlue"
+            app:strokeWidth="2dp"
+            app:srcCompat="@drawable/eden_faxada" />
 
         <ImageView
             android:id="@+id/btnCarrinho"
