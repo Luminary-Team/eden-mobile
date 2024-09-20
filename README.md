@@ -13,6 +13,7 @@
 <h2>👨‍💻 Linguagens Utilizadas</h2>
 <ul>
     <li><strong>Java - Android</strong></li>
+    <li><strong>XML</strong></li>
 </ul>
 
 <h2>📄 Telas Criadas</h2>
