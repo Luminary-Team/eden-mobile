@@ -47,7 +47,7 @@
         android:drawableStart="@drawable/email_icon"
         android:drawablePadding="10dp"
         android:drawableTint="@color/edenBlue"
-        android:hint="E-mail"
+        android:hint="Username"
         android:padding="10dp"
         android:textColorHint="@color/edenBlue"
         android:textSize="15sp" />
@@ -85,6 +85,7 @@
         android:textSize="15sp" />
 
     <Button
+        android:id="@+id/btn_save_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText_cpf"

@@ -13,6 +13,7 @@ import com.eden.adapter.ProductAdapter;
 import com.eden.utils.AndroidUtil;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class UserProfile extends AppCompatActivity {
         ShapeableImageView profilePic = findViewById(R.id.profile_pic);
 
         // Adicionando foto de perfil
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic", profilePic);
+        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), profilePic);
 
         headerProfile.setOnClickListener(v -> {
             Intent intent = new Intent(this, UserProfileEdit.class);

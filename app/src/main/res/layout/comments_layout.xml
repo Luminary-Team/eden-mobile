@@ -12,6 +12,7 @@
         android:id="@+id/profile_pic"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_margin="10dp"
         android:padding="2dp"
         android:scaleType="centerCrop"
         app:shapeAppearance="@style/arredondar"
