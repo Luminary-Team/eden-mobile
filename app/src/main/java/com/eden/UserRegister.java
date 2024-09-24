@@ -3,6 +3,7 @@ package com.eden;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,33 +45,5 @@ public class UserRegister extends AppCompatActivity {
             db.register(email.getText().toString(), password.getText().toString(), this);
         });
 
-//        AndroidUtil.getUsers(this);
-
-        chamaApi();
-
-    }
-
-    private void chamaApi() {
-        UserApi userApi = UserApi.retrofit.create(UserApi.class);
-
-        Call<List<User>> call = userApi.getUsers();
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                String ans = response.message(); //for debugging
-                if (ans.compareTo("yes") == 0) {
-                    Toast.makeText(getApplicationContext(), "YES!", Toast.LENGTH_SHORT).show();
-                } else if (ans.compareTo("no") == 0) {
-                    Toast.makeText(getApplicationContext(), "NO!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "ELSE?!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable throwable) {
-                Toast.makeText(UserRegister.this, "Deu eles", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

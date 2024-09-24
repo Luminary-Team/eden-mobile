@@ -5,25 +5,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.eden.utils.AndroidUtil;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class UserProfileEdit extends AppCompatActivity {
 
     ImageView profilePic;
+    Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +27,9 @@ public class UserProfileEdit extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile_edit);
 
         profilePic = findViewById(R.id.profile_pic);
+        btnSave = findViewById(R.id.btn_save_profile);
 
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic", profilePic);
+        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic" + FirebaseAuth.getInstance().getUid(), profilePic);
 
         // Adicionando foto de perfil
         profilePic.setOnClickListener(v -> {
@@ -43,6 +39,7 @@ public class UserProfileEdit extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -50,7 +47,10 @@ public class UserProfileEdit extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             profilePic.setImageURI(selectedImageUri);
 
-            AndroidUtil.uploadImageToFirebase(selectedImageUri, "ProfilePic");
+            btnSave.setOnClickListener(v -> {
+                AndroidUtil.uploadImageToFirebase(selectedImageUri, "ProfilePic_" + FirebaseAuth.getInstance().getUid());
+                Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
+            });
         }
     }
 

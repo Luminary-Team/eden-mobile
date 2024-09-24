@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.eden.utils.AndroidUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -28,9 +30,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView footer = findViewById(R.id.footer_navigation);
         NavigationView navView = findViewById(R.id.nav_view);
         View headerView = navView.getHeaderView(0);
+        ShapeableImageView profilePic = headerView.findViewById(R.id.profile_pic);
 
         // Colocando a foto de perfil
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic", btnSidebar);
+        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), btnSidebar);
+        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), profilePic);
 
         // Fragmento inicial
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
