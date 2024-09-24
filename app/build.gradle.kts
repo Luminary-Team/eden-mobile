@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -34,11 +35,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
 
-    implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.firestore)
@@ -48,6 +51,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.activity)
     implementation(libs.firebase.storage)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
