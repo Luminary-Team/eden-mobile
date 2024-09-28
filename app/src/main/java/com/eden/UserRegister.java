@@ -37,13 +37,36 @@ public class UserRegister extends AppCompatActivity {
         EditText password = findViewById(R.id.textInput_senha);
         TextView btnRegister = findViewById(R.id.btn_cadastro);
 
+        //
         btnRegister.setOnClickListener(v -> {
-            if (email.getText().toString().equals("") || password.getText().toString().equals("")
-                    || phoneNumber.getText().toString().equals("") || name.getText().toString().equals("")) {
+            if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()
+                    || phoneNumber.getText().toString().isEmpty() || name.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
             }
+            saveUser(email.getText().toString(), password.getText().toString());
             db.register(email.getText().toString(), password.getText().toString(), this);
         });
 
     }
+
+    // Saves user on the
+    public void saveUser(String email, String password) {
+        Retrofit retrofit = UserApi.retrofit;
+
+        UserApi api = retrofit.create(UserApi.class);
+        Call<User> userCall = api.userRegister(email, password);
+
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+
+            }
+        });
+    }
+
 }

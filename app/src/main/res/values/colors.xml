@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lightGrey">#E9E9E9</color>
+
     <color name="edenBlue">#292DB4</color>
     <color name="edenBlueHint">#4C292DB4</color>
     <color name="edenDarkBlue">#22216C</color>

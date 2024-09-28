@@ -58,13 +58,11 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(menuItem -> {
 
             if (menuItem.getItemId() == R.id.nav_favoritos)
-                Toast.makeText(this, "Favoritos", Toast.LENGTH_SHORT).show();
+                AndroidUtil.openActivity(this, FavoritesActivity.class);
             if (menuItem.getItemId() == R.id.nav_pontos)
                 AndroidUtil.openActivity(this, MapsActivityTeste.class);
             if (menuItem.getItemId() == R.id.nav_artigos)
-                Toast.makeText(this, "Artigos", Toast.LENGTH_SHORT).show();
-            if (menuItem.getItemId() == R.id.nav_favoritos)
-                AndroidUtil.openActivity(this, UserProfile.class);
+                AndroidUtil.openActivity(this, ArticlesActivity.class);
 
             // Fechar o drawer após a seleção
             drawerLayout.closeDrawers();
