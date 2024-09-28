@@ -1,8 +1,10 @@
 package com.eden;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,8 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.eden.model.Product;
 import com.eden.utils.FirebaseProdutoUtil;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 
 public class RegisterProduct extends AppCompatActivity {
 
@@ -35,9 +40,22 @@ public class RegisterProduct extends AppCompatActivity {
 //        tipoEntrega = findViewById(R.id.editText_meio_entrega);
 //        productImage = findViewById(R.id.product_image);
 
+        // Selecionando imagem
+        imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent data = result.getData();
+                        if(data!=null && data.getData()!=null){
+                            selectedImageUri = data.getData();
+                            Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(productImage);
+                        }
+                    }
+                }
+        );
+
         // Salvando os dados no firebase
         btnAvancar.setOnClickListener(v -> {
-            if (name.getText().toString().equals("") || preco.getText().toString().equals("") || descricao.getText().toString().equals("") || tipoEntrega.getText().toString().equals("")) {
+            if (name.getText().toString().isEmpty() || preco.getText().toString().isEmpty() || descricao.getText().toString().isEmpty() || tipoEntrega.getText().toString().isEmpty()) {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
             } else if (Double.parseDouble(preco.getText().toString()) <= 0) {
                 Toast.makeText(this, "O valor deve ser maior que 0", Toast.LENGTH_SHORT).show();
@@ -51,26 +69,17 @@ public class RegisterProduct extends AppCompatActivity {
             }
         });
 
-//        productImage.setOnClickListener(v -> {
-//            // Selecionando imagem
-//            imagePickLauncher = registerForActivityResult(
-//                    new ActivityResultContracts.StartActivityForResult(),
-//                    result -> {
-//                        if (result.getResultCode() == Activity.RESULT_OK) {
-//                            selectedImageUri = result.getData().getData();
-//                            productImage.setImageURI(selectedImageUri);
-//                        }
-//                    });
-//
-//            // Pegando imagem
-//            Intent intent = new Intent();
-//            intent.setType("image/*");
-//            intent.setAction(Intent.ACTION_GET_CONTENT);
-//            imagePickLauncher.launch(intent);
-//
-//            // Colocando imagem no ImageView
-//            AndroidUtil.setProductImage(this, selectedImageUri, productImage);
-//        });
+        productImage.setOnClickListener(v -> {
+            // Selecionando imagem
+            ImagePicker.with(this)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .createIntent(intent -> {
+                        imagePickLauncher.launch(intent);
+                        return null;
+                    });
+        });
 
     }
 }

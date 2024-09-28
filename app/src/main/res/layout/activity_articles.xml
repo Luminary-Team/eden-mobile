@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ArticlesActivity">
+
+<!--    TODO: Arrumar o título da página-->
+    <TextView
+        android:id="@+id/textView_articles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Artigos"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_below="@id/textView_articles"
+        android:background="@drawable/search_bar_shape"
+        android:drawableStart="@drawable/search_icon"
+        android:drawablePadding="4dp"
+        android:drawableTint="@color/edenBlue"
+        android:ems="10"
+        android:hint="Buscar"
+        android:maxLines="1"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/edenBlue"
+        android:textColorHint="@color/edenBlue" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchBar"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        tools:listitem="@layout/article_layout" />
+
+</RelativeLayout>

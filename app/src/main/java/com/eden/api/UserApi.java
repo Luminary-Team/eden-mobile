@@ -16,6 +16,9 @@ public interface UserApi {
     @GET("/users")
     Call<List<User>> getUsers();
 
+    @GET("/user/token")
+    Call<User> getToken(String email, String password);
+
     @POST("/register")
     Call<User> userRegister(String email, String password);
 

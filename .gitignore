@@ -14,3 +14,4 @@ caches/
 .externalNativeBuild
 .cxx
 local.properties
+secrets.properties

@@ -65,4 +65,7 @@ dependencies {
     // Maps
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+
+    // ImagePicker by Dhaval2404
+    implementation(libs.imagepicker)
 }
