@@ -4,7 +4,10 @@ dotsindicator = "4.2"
 firebaseAuth = "23.0.0"
 firebaseFirestore = "25.1.0"
 glide = "4.16.0"
+googleServices = "4.4.2"
+gradle = "7.1.3"
 imagepicker = "2.1"
+imagepickerSupport = "1.7.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -17,6 +20,7 @@ navigationFragment = "2.8.1"
 playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 retrofit = "2.11.0"
+secretsGradlePlugin = "2.0.1"
 viewpager2 = "1.1.0"
 
 [libraries]
@@ -25,7 +29,10 @@ dotsindicator = { module = "com.tbuonomo:dotsindicator", version.ref = "dotsindi
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 imagepicker = { module = "com.github.dhaval2404:imagepicker", version.ref = "imagepicker" }
+imagepicker-support = { module = "com.github.dhaval2404:imagepicker-support", version.ref = "imagepickerSupport" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -39,6 +46,7 @@ navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "n
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 
 [plugins]

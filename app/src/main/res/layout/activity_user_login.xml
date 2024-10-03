@@ -44,7 +44,7 @@
     </RelativeLayout>
 
     <EditText
-        android:id="@+id/textInput_email"
+        android:id="@+id/textInput_email_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/header_layout"
@@ -61,27 +61,39 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/textInput_senha"
+        android:id="@+id/textInput_senha_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_email"
+        android:layout_below="@id/textInput_email_login"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/rounded_corner_shape"
         android:drawableStart="@drawable/senha_icon"
         android:drawablePadding="10dp"
         android:drawableTint="@color/edenBlue"
+        android:padding="10dp"
         android:hint="Senha"
         android:inputType="text|textPassword"
-        android:padding="10dp"
         android:textColorHint="@color/edenBlue"
         android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/passwordToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textInput_senha_login"
+        android:layout_alignEnd="@id/textInput_senha_login"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/eye_off_icon"
+        android:layout_marginTop="10dp"
+        app:tint="@color/edenBlue" />
+
 
     <TextView
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_senha"
+        android:layout_below="@id/textInput_senha_login"
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/button_blue"

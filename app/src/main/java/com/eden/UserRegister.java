@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eden.api.UserApi;
 import com.eden.model.User;
+import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,6 +46,7 @@ public class UserRegister extends AppCompatActivity {
         EditText cpfEditText = findViewById(R.id.textInput_cpf);
         EditText emailEditText = findViewById(R.id.textInput_email);
         EditText passwordEditText = findViewById(R.id.textInput_senha);
+        ImageView passwordToggle = findViewById(R.id.passwordToggle);
         TextView btnRegister = findViewById(R.id.btn_cadastro);
 
         // Register the user
@@ -69,6 +74,31 @@ public class UserRegister extends AppCompatActivity {
         });
 
 
+        // Mostrar e ocultar senha
+
+        final boolean[] isPasswordVisible = {false};
+
+        passwordToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPasswordVisible[0]) {
+                    // Se a senha está visível, ocultar
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    passwordToggle.setImageResource(R.drawable.eye_off_icon);  // Ícone de olho fechado
+                } else {
+                    // Se a senha está oculta, mostrar
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    passwordToggle.setImageResource(R.drawable.eye_on_icon);  // Ícone de olho aberto
+                }
+                isPasswordVisible[0] = !isPasswordVisible[0];  // Inverter estado
+
+                // Mover o cursor para o final do texto após alterar a visibilidade
+                passwordEditText.setSelection(passwordEditText.getText().length());
+            }
+        });
+
+
+
     }
 
     // Saves user on database
@@ -83,8 +113,9 @@ public class UserRegister extends AppCompatActivity {
 
         Log.d("CHECKPOINT", phoneNumber);
 
-        Call<ResponseBody> userCall = api.userRegister(new User(cpf, name, name,
-                phoneNumber, 0, email, password));
+        User user = new User(cpf, name, name,
+                password, 0, email, phoneNumber);
+        Call<ResponseBody> userCall = api.userRegister(user);
 
         userCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -96,6 +127,9 @@ public class UserRegister extends AppCompatActivity {
 
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
+
+                        // Ir para home
+                        AndroidUtil.openActivity(UserRegister.this, MainActivity.class);
 
                         Log.d("CHECKPOINT", "JSON Object: " + jsonObject.toString());
                         Log.d("CHECKPOINT", response.message());
@@ -110,10 +144,11 @@ public class UserRegister extends AppCompatActivity {
                             String cpfError = jsonObject.getString("cpf");
                             EditText cpfEditText = findViewById(R.id.textInput_cpf);
                             cpfEditText.setError(cpfError);
+                            Log.e("CHECKPOINT", user.getCellphone());
                         }
 
                         if (jsonObject.has("cellphone")) {
-                            String phoneError = jsonObject.getString("phoneNumber");
+                            String phoneError = jsonObject.getString("cellphone");
                             EditText phoneEditText = findViewById(R.id.textInput_numero);
                             phoneEditText.setError(phoneError);
                         }
