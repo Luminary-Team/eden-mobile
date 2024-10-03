@@ -29,10 +29,7 @@ public class FirebaseUserUtil {
     public static String currentUserId(){ return FirebaseAuth.getInstance().getUid(); }
 
     public static boolean isLoggedIn(){
-        if(currentUserId() != null){
-            return true;
-        }
-        return false;
+        return currentUserId() != null;
     }
 
     public void login(String email, String senha, Context context) {
@@ -63,7 +60,7 @@ public class FirebaseUserUtil {
                         if (task.isSuccessful()) {
                             // Registro bem-sucedido
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(context, "Usuário cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Usuário cadastrado no firebase com sucesso!", Toast.LENGTH_SHORT).show();
                         } else {
                             // Caso de falha
                             Toast.makeText(context, "Falha ao cadastrar: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();

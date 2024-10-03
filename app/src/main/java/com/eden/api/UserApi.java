@@ -1,29 +1,20 @@
 package com.eden.api;
 
+import com.eden.api.schemas.ResponseToken;
 import com.eden.model.User;
 
-import java.util.List;
-
-import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
+import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 
 public interface UserApi {
-    @GET("/users")
-    Call<List<User>> getUsers();
 
-    @GET("/user/token")
-    Call<User> getToken(String email, String password);
+    @POST("/user/token")
+    Call<?> getToken(@Body ResponseToken requestToken);
 
-    @POST("/register")
-    Call<User> userRegister(String email, String password);
+    @POST("/user/register")
+    Call<ResponseBody> userRegister(@Body User user);
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://localhost:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
 }

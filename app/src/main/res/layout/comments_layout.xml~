@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:backgroundTint="#777"
+    android:layout_margin="30dp"
+    app:cardCornerRadius="10dp"
+    >
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@style/arredondar"
+        app:strokeColor="@color/edenBlue"
+        app:strokeWidth="2dp"
+        app:srcCompat="@drawable/eden_faxada" />
+
+</androidx.cardview.widget.CardView>

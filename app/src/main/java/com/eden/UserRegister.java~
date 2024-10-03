@@ -112,7 +112,7 @@ public class UserRegister extends AppCompatActivity {
                             cpfEditText.setError(cpfError);
                         }
 
-                        if (jsonObject.has("cellphone")) {
+                        if (jsonObject.has("phoneNumber")) {
                             String phoneError = jsonObject.getString("phoneNumber");
                             EditText phoneEditText = findViewById(R.id.textInput_numero);
                             phoneEditText.setError(phoneError);

@@ -47,7 +47,7 @@ public class AndroidUtil {
         StorageReference imageRef = storageRef.child("images/" + imageName + ".jpg");
 
         // Subindo a imagem pro firebase
-        UploadTask uploadTask = imageRef.putFile(uri);
+        8UploadTask uploadTask = imageRef.putFile(uri);
         uploadTask.addOnSuccessListener(v -> {
             Log.d("CHECKPOINT", "Image uploaded successfully!");
             imageRef.getDownloadUrl().addOnSuccessListener(taskSnapshot -> {
