@@ -31,7 +31,7 @@ public class UserProfile extends AppCompatActivity {
         ShapeableImageView profilePic = findViewById(R.id.profile_pic);
 
         // Adicionando foto de perfil
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), profilePic);
+        AndroidUtil.downloadImageFromFirebase(this, profilePic);
 
         headerProfile.setOnClickListener(v -> {
             Intent intent = new Intent(this, UserProfileEdit.class);

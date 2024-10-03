@@ -21,7 +21,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:padding="2dp"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:shapeAppearance="@style/arredondar"
             app:strokeColor="@color/edenBlue"
             app:strokeWidth="2dp"
@@ -99,6 +99,16 @@
         app:itemIconTint="@color/edenLightBlue"
         app:itemTextColor="@color/black"
         app:headerLayout="@layout/header_layout"
-        app:menu="@menu/sidebar_menu" />
+        app:menu="@menu/sidebar_menu">
+
+        <ImageView
+            android:id="@+id/robot_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:src="@drawable/eden_robot_reversed"/>
+
+    </com.google.android.material.navigation.NavigationView>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

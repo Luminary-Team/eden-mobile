@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.api.UserApi;
 import com.eden.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,9 +43,9 @@ public class AndroidUtil {
         Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 
-    public static void uploadImageToFirebase(Uri uri, String imageName) {
+    public static void uploadImageToFirebase(Uri uri) {
         // Criando pasta referência "images" no firebase
-        StorageReference imageRef = storageRef.child("images/" + imageName + ".jpg");
+        StorageReference imageRef = storageRef.child("images/ProfilePic_" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
 
         // Subindo a imagem pro firebase
         UploadTask uploadTask = imageRef.putFile(uri);
@@ -58,20 +59,21 @@ public class AndroidUtil {
         });
     }
 
-    public static void downloadImageFromFirebase(Context context, String imageName, ImageView imageView) {
+    public static void downloadImageFromFirebase(Context context, ImageView imageView) {
         // Crie uma referência para a imagem
-        StorageReference imageRef = storageRef.child("images/" + imageName + ".jpg");
+        StorageReference imageRef = storageRef.child("images/ProfilePic_" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
 
         // Baixe a imagem do Firebase Storage
-        imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            Log.d("CHECKPOINT", "Download URL: " + uri.toString());
-            // Use a URL de download para exibir a imagem
-            Glide.with(context)
-                    .load(uri)
-                    .into(imageView);
-        }).addOnFailureListener(e -> {
-            Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
-        });
+        imageRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    Log.d("CHECKPOINT", "Download URL: " + uri.toString());
+                    // Use a URL de download para exibir a imagem
+                    Glide.with(context)
+                            .load(uri)
+                            .into(imageView);
+                }).addOnFailureListener(e -> {
+                    Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
+                });
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

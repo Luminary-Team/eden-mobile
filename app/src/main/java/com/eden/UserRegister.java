@@ -17,8 +17,6 @@ import com.eden.api.UserApi;
 import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;

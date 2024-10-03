@@ -6,41 +6,51 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.eden.utils.AndroidUtil;
+import com.eden.utils.FirebaseUserUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Getting layout elements
+    ImageView btnCarrinho = findViewById(R.id.btnCarrinho);
+    DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+    BottomNavigationView footer = findViewById(R.id.footer_navigation);
+    NavigationView navView = findViewById(R.id.nav_view);
+    View headerView = navView.getHeaderView(0);
+    ShapeableImageView profilePic = headerView.findViewById(R.id.profile_pic);
+    ImageView btnSidebar = findViewById(R.id.btnSidebar);
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Setting the perfil photo
+        AndroidUtil.downloadImageFromFirebase(this, btnSidebar);
+        AndroidUtil.downloadImageFromFirebase(this, profilePic);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Pegando os elementos do layout
-        ImageView btnSidebar = findViewById(R.id.btnSidebar);
-        ImageView btnCarrinho = findViewById(R.id.btnCarrinho);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        BottomNavigationView footer = findViewById(R.id.footer_navigation);
-        NavigationView navView = findViewById(R.id.nav_view);
-        View headerView = navView.getHeaderView(0);
-        ShapeableImageView profilePic = headerView.findViewById(R.id.profile_pic);
-
-        // Colocando a foto de perfil
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), btnSidebar);
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), profilePic);
 
         // Fragmento inicial
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
 
         // Botão do carrinho
         btnCarrinho.setOnClickListener(v -> {
+            Log.d("CHECKPOINT", "Uid: " + FirebaseAuth.getInstance().getUid());
+            Log.d("CHECKPOINT", "Current user Uid: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
             Intent intent = new Intent(this, CartActivity.class);
             startActivity(intent);
         });

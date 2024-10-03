@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".UserProfileEdit">
 
+    <ImageView
+        android:id="@+id/back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/back_icon"
+        android:layout_margin="20dp"
+        />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic"
         android:layout_width="200dp"
@@ -79,6 +87,18 @@
         android:textColor="@color/white"
         android:text="Salvar"
         android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/textView_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_save_profile"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/edenBlue"
+        android:textStyle="bold"
+        android:text="Logout"
         />
 
 </RelativeLayout>

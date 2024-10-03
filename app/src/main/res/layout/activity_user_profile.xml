@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_name"
+            android:layout_margin="8dp"
             android:src="@drawable/pencil_full_icon"
             app:tint="@color/edenBlue" />
 
