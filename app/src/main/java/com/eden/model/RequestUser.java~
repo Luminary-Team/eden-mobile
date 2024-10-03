@@ -1,6 +1,6 @@
-package com.eden.model;
+package com.eden.api;
 
-public class User {
+public class RequestUser {
     public String cpf;
     public String name;
     public String userName;
@@ -9,7 +9,7 @@ public class User {
     public String email;
     public String cellphone;
 
-    public User(String cpf, String name, String userName, String password, float rating, String email, String cellphone) {
+    public RequestUser(String cpf, String name, String userName, String password, float rating, String email, String cellphone) {
         this.cpf = cpf;
         this.name = name;
         this.userName = userName;

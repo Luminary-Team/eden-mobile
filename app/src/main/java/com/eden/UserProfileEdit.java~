@@ -27,6 +27,8 @@ public class UserProfileEdit extends AppCompatActivity {
     ImageView profilePic;
     Button btnSave;
 
+    User userEdited = new User();
+
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri selectedImageUri;
 
@@ -35,8 +37,6 @@ public class UserProfileEdit extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile_edit);
-
-        // TODO: Criar um User() com os valores recebidos
 
         // Selecionando imagem
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

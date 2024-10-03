@@ -24,7 +24,6 @@ public class UserLogin extends AppCompatActivity {
         EditText email = findViewById(R.id.textInput_email);
         EditText senha = findViewById(R.id.textInput_senha);
         TextView btnLogin = findViewById(R.id.btn_login);
-        TextView btnCadastro = findViewById(R.id.textView_cadastrar);
 
         btnLogin.setOnClickListener(v -> {
             if (email.getText().toString().equals("") || senha.getText().toString().equals("")) {
@@ -34,7 +33,8 @@ public class UserLogin extends AppCompatActivity {
             db.login(email.getText().toString(), senha.getText().toString(), this);
         });
 
-        btnCadastro.setOnClickListener(v -> {
+        // In case the user doesn't have an account, redirect to UserRegister
+        (findViewById(R.id.textView_cadastro)).setOnClickListener(v -> {
             Intent intent = new Intent(this, UserRegister.class);
             startActivity(intent);
             finish();
