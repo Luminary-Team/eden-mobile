@@ -1,6 +1,7 @@
 package com.eden.utils;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,16 +63,20 @@ public class AndroidUtil {
 
     public static void downloadImageFromFirebase(Context context, ImageView imageView) {
         // Crie uma referência para a imagem
-        StorageReference imageRef = storageRef.child("images/ProfilePic_" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        StorageReference imageRef = storageRef.child("images/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
 
         // Baixe a imagem do Firebase Storage
         imageRef.getDownloadUrl()
                 .addOnSuccessListener(uri -> {
-                    Log.d("CHECKPOINT", "Download URL: " + uri.toString());
-                    // Use a URL de download para exibir a imagem
-                    Glide.with(context)
-                            .load(uri)
-                            .into(imageView);
+                    if (context instanceof Activity && !((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        Log.d("CHECKPOINT", "Download URL: " + uri.toString());
+                        // Use a URL de download para exibir a imagem
+                        Glide.with(context)
+                                .load(uri)
+                                .into(imageView);
+                    } else {
+                        Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
+                    }
                 }).addOnFailureListener(e -> {
                     Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
                 });

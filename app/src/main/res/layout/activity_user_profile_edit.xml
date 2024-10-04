@@ -23,10 +23,9 @@
         android:layout_marginTop="100dp"
         android:backgroundTint="@color/lightGrey"
         android:foreground="@drawable/rounded_thick_border_image_shape"
-        android:scaleType="centerInside"
-        android:src="@drawable/choose_photo_icon"
+        android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/arredondar"
-        />
+        tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
         android:id="@+id/editText_full_name"

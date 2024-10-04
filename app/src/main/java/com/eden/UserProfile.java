@@ -1,5 +1,7 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.openActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 
 public class UserProfile extends AppCompatActivity {
 
+    ShapeableImageView profilePic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,14 +32,13 @@ public class UserProfile extends AppCompatActivity {
         TextView btnProfilePublicacoes = findViewById(R.id.btn_profile_publicacoes);
         RecyclerView recyclerView = findViewById(R.id.recyclerView_profile);
         RelativeLayout headerProfile = findViewById(R.id.header_profile);
-        ShapeableImageView profilePic = findViewById(R.id.profile_pic);
 
-        // Adicionando foto de perfil
+        // Setting perfil photo
+        profilePic = findViewById(R.id.profile_pic);
         AndroidUtil.downloadImageFromFirebase(this, profilePic);
 
         headerProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserProfileEdit.class);
-            startActivity(intent);
+            openActivity(this, UserProfileEdit.class);
         });
 
 //        navView.setNavigationItemSelectedListener(item -> {
