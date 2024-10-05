@@ -25,8 +25,6 @@ public class FragmentHome extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        FirebaseProdutoUtil db = new FirebaseProdutoUtil();
-
         List<Product> products = new ArrayList<>();
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_produtos);
@@ -38,7 +36,7 @@ public class FragmentHome extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 2));
 
         // TEMP
-        db.listarProdutos(products, adapter);
+//        db.listarProdutos(products, adapter);
 
         return view;
     }

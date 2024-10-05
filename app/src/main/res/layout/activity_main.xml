@@ -25,9 +25,9 @@
             app:shapeAppearance="@style/arredondar"
             app:strokeColor="@color/edenBlue"
             app:strokeWidth="2dp"
-            app:srcCompat="@drawable/eden_faxada" />
+            tools:srcCompat="@tools:sample/avatars" />
 
-        <ImageView
+       <ImageView
             android:id="@+id/btnCarrinho"
             android:layout_width="50dp"
             android:layout_height="50dp"

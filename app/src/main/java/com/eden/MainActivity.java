@@ -23,15 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView btnCarrinho;
     private DrawerLayout drawerLayout;
-    private BottomNavigationView footer;
-    private NavigationView navView;
-    private View headerView;
     private ShapeableImageView profilePic;
     private ImageView btnSidebar;
-
-    private FirebaseAuth.AuthStateListener authListener;
 
     @Override
     protected void onStart() {
@@ -39,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        authListener = firebaseAuth -> {
+        // Setting the perfil photo
+        FirebaseAuth.AuthStateListener authListener = firebaseAuth -> {
             if (auth.getCurrentUser() != null) {
                 // Setting the perfil photo
                 AndroidUtil.downloadImageFromFirebase(this, btnSidebar);
@@ -58,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnCarrinho = findViewById(R.id.btnCarrinho);
+        ImageView btnCarrinho = findViewById(R.id.btnCarrinho);
+        BottomNavigationView footer = findViewById(R.id.footer_navigation);
+        NavigationView navView = findViewById(R.id.nav_view);
+        View headerView = navView.getHeaderView(0);
         drawerLayout = findViewById(R.id.drawer_layout);
-        footer = findViewById(R.id.footer_navigation);
-        navView = findViewById(R.id.nav_view);
-        headerView = navView.getHeaderView(0);
         profilePic = headerView.findViewById(R.id.profile_pic);
         btnSidebar = findViewById(R.id.btnSidebar);
 
@@ -119,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             openActivity(this, UserProfile.class);
             // Closes drawers after selection
             drawerLayout.closeDrawers();
-            finish();
         });
 
     }

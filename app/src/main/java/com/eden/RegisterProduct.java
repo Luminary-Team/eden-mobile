@@ -61,10 +61,10 @@ public class RegisterProduct extends AppCompatActivity {
                 Toast.makeText(this, "O valor deve ser maior que 0", Toast.LENGTH_SHORT).show();
             } else {
                 // Salvando produto
-                db.salvarProduto(this,
-                        new Product(123, 0, 0, name.getText().toString(),
-                                Float.parseFloat(preco.getText().toString()), descricao.getText().toString(),
-                                "", Float.parseFloat(tipoEntrega.getText().toString()), 0));
+//                db.salvarProduto(this,
+//                        new Product(123, 0, 0, name.getText().toString(),
+//                                Float.parseFloat(preco.getText().toString()), descricao.getText().toString(),
+//                                "", Float.parseFloat(tipoEntrega.getText().toString()), 0));
                 finish();
             }
         });

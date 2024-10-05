@@ -110,6 +110,7 @@ public class UserRegister extends AppCompatActivity {
 
         Log.d("CHECKPOINT", phoneNumber);
 
+        // Creating User
         User user = new User(cpf, name, name,
                 password, 0, email, phoneNumber);
         Call<ResponseBody> userCall = api.userRegister(user);
@@ -136,12 +137,19 @@ public class UserRegister extends AppCompatActivity {
                         String errorResponse = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorResponse);
 
+                        if (jsonObject.has("message")) {
+                            String messageError = jsonObject.getString("message");
+                            if (messageError.trim().toLowerCase().contains("cpf")) {
+                                EditText cpfEditText = findViewById(R.id.textInput_cpf);
+                                cpfEditText.setError(messageError);
+                            }
+                        }
+
                         // Verifica os campos que contêm erros e define mensagens de erro nos EditTexts
                         if (jsonObject.has("cpf")) {
                             String cpfError = jsonObject.getString("cpf");
                             EditText cpfEditText = findViewById(R.id.textInput_cpf);
                             cpfEditText.setError(cpfError);
-                            Log.e("CHECKPOINT", user.getCellphone());
                         }
 
                         if (jsonObject.has("cellphone")) {

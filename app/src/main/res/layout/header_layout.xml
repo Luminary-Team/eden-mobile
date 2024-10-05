@@ -13,12 +13,11 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="2dp"
-        android:background="#F1F"
         android:scaleType="centerCrop"
         app:shapeAppearance="@style/arredondar"
         app:strokeColor="@color/edenBlue"
         app:strokeWidth="2dp"
-        app:srcCompat="@drawable/eden_faxada" />
+        tools:srcCompat="@tools:sample/avatars"/>
 
     <TextView
         android:id="@+id/profile_name"
