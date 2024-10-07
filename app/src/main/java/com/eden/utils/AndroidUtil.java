@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,9 +25,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +40,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AndroidUtil {
+    public static Boolean returnToken = false;
+    public static String tokenNumber;
 
     // Abrir intent
     public static void openActivity(Context context, Class<?> className) {
@@ -85,29 +93,36 @@ public class AndroidUtil {
                 });
     }
 
-    public static UserSchema getUser() {
-        Retrofit client = RetrofitClient.getClient();
-        UserSchema user = new UserSchema();
-        UserService service = client.create(UserService.class);
-        Call<UserSchema> call = service.findByParam(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-        call.enqueue(new Callback<UserSchema>() {
+    public static void getUser() {
+//        Retrofit client = RetrofitClient.getClientWithToken();
+        UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Call<ResponseBody> call = service.getParam(email);
+
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
-                if (response.isSuccessful()) {
-                    UserSchema user = response.body();
-                    Log.d("CHECKPOINT", "User: " + user.toString());
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String jsonUser = response.errorBody().string();
+                        Bundle userBundle = new Bundle();
+                        userBundle.putString("jsonUser", jsonUser);
+                        Log.d("JsonUser", jsonUser);
+                        Log.d("UserBundle", userBundle.getString("jsonUser"));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<UserSchema> call, Throwable throwable) {
-
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Log.d("CHECKPOINT", throwable.getMessage());
             }
         });
-        return user;
     }
 
-    public static Token getToken() {
+    public static void getToken() {
         Retrofit client = RetrofitClient.getClient();
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         UserService service = client.create(UserService.class);
@@ -117,8 +132,10 @@ public class AndroidUtil {
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
+                returnToken = true;
                 if (response.isSuccessful()) {
                     token.setToken(response.body().getToken());
+                    tokenNumber = token.getToken();
                     Log.d("CHECKPOINT", "Token: " + token.getToken());
                 } else {
                     Log.d("CHECKPOINT", "Erro ao obter o token");
@@ -126,10 +143,10 @@ public class AndroidUtil {
             }
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
+                returnToken = true;
 
             }
         });
-        return token;
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

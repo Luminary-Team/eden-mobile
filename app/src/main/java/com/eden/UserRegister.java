@@ -4,6 +4,7 @@ import static com.eden.utils.AndroidUtil.getToken;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -48,6 +49,10 @@ public class UserRegister extends AppCompatActivity {
         EditText passwordEditText = findViewById(R.id.textInput_senha);
         ImageView passwordToggle = findViewById(R.id.passwordToggle);
         TextView btnRegister = findViewById(R.id.btn_cadastro);
+        TextView btnLogin = findViewById(R.id.textView_login);
+
+        // Setting underline text
+        btnLogin.setPaintFlags(btnLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // Register the user
         btnRegister.setOnClickListener(v -> {
@@ -67,7 +72,7 @@ public class UserRegister extends AppCompatActivity {
         });
 
         // In case the user has an account, redirect to login
-        (findViewById(R.id.textView_login)).setOnClickListener(v -> {
+        btnLogin.setOnClickListener(v -> {
             AndroidUtil.openActivity(this, UserLogin.class);
             finish();
         });

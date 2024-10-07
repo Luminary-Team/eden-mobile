@@ -29,6 +29,8 @@ import com.eden.utils.FirebaseUserUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,7 +57,7 @@ public class UserProfileEdit extends AppCompatActivity {
             String updatedPhone = ((TextView) findViewById(R.id.editText_phone)).getText().toString();
 
             // Setting new values to user
-            User updatedUser = new User();
+            UserSchema updatedUser = new UserSchema();
             updatedUser.setName(updatedName);
             updatedUser.setUserName(updatedUserName);
             updatedUser.setCellphone(updatedPhone);
@@ -121,29 +123,38 @@ public class UserProfileEdit extends AppCompatActivity {
 
     }
 
-    public void editUser(User newUser) {
+    public void editUser(UserSchema newUser) {
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
 
-        UserSchema user = getUser();
+        getUser();
 
-        Call<UserSchema> call = userService.updateUser(newUser, user.getId());
+        Bundle userBundle = new Bundle();
+        Serializable serializableUser = userBundle.getSerializable("currentUser");
 
-        call.enqueue(new Callback<UserSchema>() {
-            @Override
-            public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(UserProfileEdit.this, "Perfil atualizado com sucesso", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(UserProfileEdit.this, "Erro ao atualizar perfil", Toast.LENGTH_SHORT).show();
+        if (serializableUser instanceof UserSchema) {
+            UserSchema user = (UserSchema) serializableUser;
+
+            Call<UserSchema> call = userService.updateUser(newUser, String.valueOf(user.getId()));
+
+            call.enqueue(new Callback<UserSchema>() {
+                @Override
+                public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(UserProfileEdit.this, "Usuário atualizado!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<UserSchema> call, Throwable throwable) {
-                Log.d("CHECKPOINT", throwable.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<UserSchema> call, Throwable throwable) {
+
+                }
+            });
+
+        }
+
     }
+
+
 
 
 //

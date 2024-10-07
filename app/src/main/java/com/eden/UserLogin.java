@@ -3,6 +3,7 @@ package com.eden;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -35,11 +36,15 @@ public class UserLogin extends AppCompatActivity {
         TextView errorMessage = findViewById(R.id.error_message);
         TextView btnLogin = findViewById(R.id.btn_login);
         ImageView passwordToggle = findViewById(R.id.passwordToggle);
+        TextView btnCadastro = findViewById(R.id.textView_cadastro);
+
+        // Setting underline text
+        btnCadastro.setPaintFlags(btnCadastro.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         btnLogin.setOnClickListener(v -> db.login(email, password, errorMessage, this));
 
         // In case the user doesn't have an account, redirect to UserRegister
-        (findViewById(R.id.textView_cadastro)).setOnClickListener(v -> {
+        btnCadastro.setOnClickListener(v -> {
             AndroidUtil.openActivity(this, UserRegister.class);
             finish();
         });

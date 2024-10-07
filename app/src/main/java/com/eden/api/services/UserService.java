@@ -17,16 +17,16 @@ import retrofit2.http.Query;
 
 public interface UserService {
 
-    @GET("/user/findByParam")
-    Call<UserSchema> findByParam(@Query("email") String email);
-
     @POST("/user/token")
     Call<Token> getToken(@Body TokenRequest requestToken);
 
     @POST("/user/register")
     Call<ResponseBody> userRegister(@Body User user);
 
+    @GET("/user/getParam")
+    Call<ResponseBody> getParam(@Query("email") String email);
+
     @PATCH("/user/update/{id}")
-    Call<UserSchema> updateUser(@Body User user, @Path("id") String id);
+    Call<UserSchema> updateUser(@Body UserSchema user, @Path("id") String id);
 
 }

@@ -5,9 +5,11 @@ import static com.eden.utils.AndroidUtil.getToken;
 import android.util.Log;
 
 import com.eden.model.Token;
+import com.eden.utils.AndroidUtil;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -28,12 +30,21 @@ public class RetrofitClient {
         return retrofit;
     }
 
-    public static Retrofit getClientWithToken() {
+    public static Retrofit  getClientWithToken() {
 
-        Token token = getToken();
+        getToken();
+
+        while (!AndroidUtil.returnToken) {
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(new TokenInterceptor(token.getToken()))
+                .addInterceptor(new TokenInterceptor(AndroidUtil.tokenNumber))
                 .build();
 
         if (retrofit == null) {

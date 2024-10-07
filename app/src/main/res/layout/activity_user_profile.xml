@@ -87,47 +87,40 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/menu_profile"
+    <!-- TabLayout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/header_profile"
-        android:gravity="center">
+        android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/btn_profile_produtos"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="Produtos"
-            />
+            android:text="Produtos"/>
 
-        <TextView
-            android:id="@+id/btn_profile_publicacoes"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/btn_profile_produtos"
-            android:layout_marginStart="100dp"
-            android:textSize="18sp"
-            android:text="Produtos"
-            />
+            android:text="Posts"/>
 
-    </RelativeLayout>
+    </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_profile"
+    <!-- ViewPager2 para os fragmentos -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/menu_profile"
-        tools:listitem="@layout/produto_layout"
-        />
+        android:layout_below="@id/tabLayout_profile"
+        android:layout_marginTop="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="-20dp"
         android:layout_marginEnd="-20dp"
-        android:layout_below="@id/menu_profile"
+        android:layout_below="@id/viewPager_profile"
         android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>
