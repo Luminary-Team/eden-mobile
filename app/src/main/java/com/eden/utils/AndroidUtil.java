@@ -14,15 +14,18 @@ import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.eden.api.UserApi;
-import com.eden.model.User;
+import com.eden.api.RetrofitClient;
+import com.eden.api.dto.TokenRequest;
+import com.eden.api.dto.UserSchema;
+import com.eden.api.services.UserService;
+import com.eden.model.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +83,53 @@ public class AndroidUtil {
                 }).addOnFailureListener(e -> {
                     Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
                 });
+    }
+
+    public static UserSchema getUser() {
+        Retrofit client = RetrofitClient.getClient();
+        UserSchema user = new UserSchema();
+        UserService service = client.create(UserService.class);
+        Call<UserSchema> call = service.findByParam(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        call.enqueue(new Callback<UserSchema>() {
+            @Override
+            public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
+                if (response.isSuccessful()) {
+                    UserSchema user = response.body();
+                    Log.d("CHECKPOINT", "User: " + user.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserSchema> call, Throwable throwable) {
+
+            }
+        });
+        return user;
+    }
+
+    public static Token getToken() {
+        Retrofit client = RetrofitClient.getClient();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        UserService service = client.create(UserService.class);
+        Call<Token> call = service.getToken(new TokenRequest(email));
+        Token token = new Token();
+
+        call.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if (response.isSuccessful()) {
+                    token.setToken(response.body().getToken());
+                    Log.d("CHECKPOINT", "Token: " + token.getToken());
+                } else {
+                    Log.d("CHECKPOINT", "Erro ao obter o token");
+                }
+            }
+            @Override
+            public void onFailure(Call<Token> call, Throwable throwable) {
+
+            }
+        });
+        return token;
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

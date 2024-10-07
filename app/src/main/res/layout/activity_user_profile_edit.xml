@@ -70,6 +70,7 @@
         android:drawableStart="@drawable/telephone_icon"
         android:drawablePadding="10dp"
         android:drawableTint="@color/edenBlue"
+        android:maxLength="11"
         android:hint="Telefone"
         android:padding="10dp"
         android:textColorHint="@color/edenBlue"

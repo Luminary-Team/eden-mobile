@@ -1,11 +1,11 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.getToken;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eden.api.UserApi;
+import com.eden.api.RetrofitClient;
+import com.eden.api.services.UserService;
+import com.eden.api.dto.UserSchema;
 import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
@@ -101,12 +103,9 @@ public class UserRegister extends AppCompatActivity {
     // Saves user on database
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://desenvolvimento-ii.onrender.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = RetrofitClient.getClient();
 
-        UserApi api = retrofit.create(UserApi.class);
+        UserService api = retrofit.create(UserService.class);
 
         Log.d("CHECKPOINT", phoneNumber);
 
@@ -172,6 +171,7 @@ public class UserRegister extends AppCompatActivity {
 
                         // Exibe os erros no log
                         Log.d("CHECKPOINT", "Erros recebidos: " + jsonObject.toString());
+
                     }
                 } catch (JSONException e) {
                     Log.e("ERROR", Objects.requireNonNull(e.getMessage()));
@@ -186,10 +186,6 @@ public class UserRegister extends AppCompatActivity {
                 Log.d("CHECKPOINT", throwable.getMessage());
             }
         });
-    }
-
-    public void getToken(String email, String password) {
-
     }
 
 }
