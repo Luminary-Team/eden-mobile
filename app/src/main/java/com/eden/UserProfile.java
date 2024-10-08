@@ -1,5 +1,6 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,6 +64,18 @@ public class UserProfile extends AppCompatActivity {
                 tabLayout.getTabAt(position).select();
             }
         });
+
+
+
+        // Setting Values
+        TextView name = findViewById(R.id.profile_name);
+        TextView username = findViewById(R.id.profile_username);
+        RatingBar rating = findViewById(R.id.profile_rating);
+
+        name.setText(currentUser.getName());
+        username.setText(currentUser.getUserName());
+        rating.setRating(currentUser.getRating());
+
 
 
         // Setting header

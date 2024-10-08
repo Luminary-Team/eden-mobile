@@ -1,5 +1,6 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eden.api.dto.UserSchema;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AndroidUtil.getToken();
 
         ImageView btnCarrinho = findViewById(R.id.btnCarrinho);
         BottomNavigationView footer = findViewById(R.id.footer_navigation);
@@ -109,6 +114,16 @@ public class MainActivity extends AppCompatActivity {
         // Cart button
         btnCarrinho.setOnClickListener(v -> openActivity(this, CartActivity.class));
 
+        // Setting Header Values
+        AndroidUtil.getUser().thenApply(user -> {
+            Toast.makeText(this, "Penis", Toast.LENGTH_SHORT).show();
+            TextView headerName = headerView.findViewById(R.id.profile_name);
+            TextView headerUserName = headerView.findViewById(R.id.profile_username);
+
+            headerName.setText(user.getName());
+            headerUserName.setText(user.getUserName());
+            return null;
+        });
         // Header configuration
         headerView.setOnClickListener(v -> {
             openActivity(this, UserProfile.class);

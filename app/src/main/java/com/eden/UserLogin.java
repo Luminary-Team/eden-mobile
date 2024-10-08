@@ -35,7 +35,7 @@ public class UserLogin extends AppCompatActivity {
         EditText password = findViewById(R.id.textInput_senha_login);
         TextView errorMessage = findViewById(R.id.error_message);
         TextView btnLogin = findViewById(R.id.btn_login);
-        ImageView passwordToggle = findViewById(R.id.passwordToggle);
+        ImageView passwordToggle = findViewById(R.id.login_password_toggle);
         TextView btnCadastro = findViewById(R.id.textView_cadastro);
 
         // Setting underline text

@@ -20,6 +20,7 @@ import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.model.Token;
+import com.eden.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,8 +41,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AndroidUtil {
-    public static Boolean returnToken = false;
-    public static String tokenNumber;
+    public static String token;
+    public static UserSchema currentUser;
 
     // Abrir intent
     public static void openActivity(Context context, Class<?> className) {
@@ -93,60 +94,60 @@ public class AndroidUtil {
                 });
     }
 
-    public static void getUser() {
-//        Retrofit client = RetrofitClient.getClientWithToken();
-        UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        Call<ResponseBody> call = service.getParam(email);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        String jsonUser = response.errorBody().string();
-                        Bundle userBundle = new Bundle();
-                        userBundle.putString("jsonUser", jsonUser);
-                        Log.d("JsonUser", jsonUser);
-                        Log.d("UserBundle", userBundle.getString("jsonUser"));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
-                Log.d("CHECKPOINT", throwable.getMessage());
-            }
-        });
-    }
-
     public static void getToken() {
         Retrofit client = RetrofitClient.getClient();
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         UserService service = client.create(UserService.class);
         Call<Token> call = service.getToken(new TokenRequest(email));
-        Token token = new Token();
-
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
-                returnToken = true;
                 if (response.isSuccessful()) {
-                    token.setToken(response.body().getToken());
-                    tokenNumber = token.getToken();
-                    Log.d("CHECKPOINT", "Token: " + token.getToken());
+                    token = response.body().getToken();
+                    getUser();
+                    Log.d("TOKEN", "Token: " + token);
                 } else {
-                    Log.d("CHECKPOINT", "Erro ao obter o token");
+                    Log.d("TOKEN", "Erro ao obter o token");
                 }
             }
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
-                returnToken = true;
-
+                Log.d("TOKEN", throwable.getMessage());
             }
         });
+    }
+
+    public static CompletableFuture<UserSchema> getUser() {
+        UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Call<UserSchema> call = service.getParam(email);
+        CompletableFuture<UserSchema> future = new CompletableFuture<>();
+
+        call.enqueue(new Callback<UserSchema>() {
+            @Override
+            public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    currentUser = response.body();
+                    UserSchema user = response.body();
+                    future.complete(user);
+                    Log.d("USER", "User: " + currentUser.toString());
+                } else {
+                    try {
+                        Log.d("ErrorBody", response.errorBody().string());
+                        future.completeExceptionally(new Throwable("Failed to get user"));
+                    } catch (IOException e) {
+                        future.completeExceptionally(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserSchema> call, Throwable throwable) {
+                Log.d("CHECKPOINT", throwable.getMessage());
+                future.completeExceptionally(throwable);
+            }
+        });
+        return future;
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

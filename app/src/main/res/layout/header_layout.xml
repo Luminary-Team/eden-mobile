@@ -26,7 +26,7 @@
         android:layout_toEndOf="@id/profile_pic"
         android:layout_marginStart="10dp"
         android:background="@null"
-        android:text="@string/userNameText"
+        android:text="Eden"
         android:textSize="20sp"
         android:textStyle="bold"
         />
@@ -39,7 +39,7 @@
         android:layout_toRightOf="@id/profile_pic"
         android:layout_marginStart="10dp"
         android:background="@null"
-        android:text="Eden"
+        android:text="@string/userNameText"
         android:textSize="12sp"
         />
 

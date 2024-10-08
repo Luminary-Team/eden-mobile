@@ -130,7 +130,7 @@
         android:textSize="15sp" />
 
     <ImageView
-        android:id="@+id/passwordToggle"
+        android:id="@+id/register_password_toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/textInput_senha"

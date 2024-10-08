@@ -1,5 +1,6 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.getUser;
 
 import android.app.Activity;
@@ -49,12 +50,21 @@ public class UserProfileEdit extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile_edit);
 
+        // Setting Values
+        TextView editName = findViewById(R.id.editText_full_name);
+        TextView editUserName = findViewById(R.id.editText_username);
+        TextView editPhone = findViewById(R.id.editText_phone);
+
+        editName.setText(currentUser.getName());
+        editUserName.setText(currentUser.getUserName());
+        editPhone.setText(currentUser.getCellphone());
+
         btnSave = findViewById(R.id.btn_save_profile);
         btnSave.setOnClickListener(v -> {
 
-            String updatedName = ((TextView) findViewById(R.id.editText_full_name)).getText().toString();
-            String updatedUserName = ((TextView) findViewById(R.id.editText_username)).getText().toString();
-            String updatedPhone = ((TextView) findViewById(R.id.editText_phone)).getText().toString();
+            String updatedName = editName.getText().toString();
+            String updatedUserName = editUserName.getText().toString();
+            String updatedPhone = editPhone.getText().toString();
 
             // Setting new values to user
             UserSchema updatedUser = new UserSchema();
@@ -63,53 +73,42 @@ public class UserProfileEdit extends AppCompatActivity {
             updatedUser.setCellphone(updatedPhone);
 
             // Calling api (CALL ME MAYBE)
-            editUser(updatedUser);
+            saveUser(updatedUser);
         });
 
-        // Selecionando imagem
-//        imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-//                result -> {
-//                    Intent data = result.getData();
-//                    if(result.getResultCode() == Activity.RESULT_OK &&
-//                            data!=null && data.getData()!=null) {
-//
-//                        Uri selectedImageUri = data.getData();
-//                        profilePic.setImageURI(selectedImageUri);
-//
-//                        Uri finalSelectedImageUri = selectedImageUri;
-//
-//                        // Save user information button
-//                        btnSave.setOnClickListener(v -> {
-//
-//
-//
-//                            AndroidUtil.uploadImageToFirebase(finalSelectedImageUri);
-//                            Log.d("LOG", "onActivityResult: deu bom");
-//                            Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
-//                        });
-//
-//                        selectedImageUri = data.getData();
-//                        Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);
-//                    }
-//                }
-//        );
+        // Setting Image
+        imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // TODO : Salvar na galeria
+
+                    Intent data = result.getData();
+                    if(result.getResultCode() == Activity.RESULT_OK &&
+                            data!=null && data.getData()!=null) {
+
+                        Uri selectedImageUri = data.getData();
+                        profilePic.setImageURI(selectedImageUri);
+
+                        Uri finalSelectedImageUri = selectedImageUri;
+
+                        // Save user information button
+                        btnSave.setOnClickListener(v -> {
+
+                            AndroidUtil.uploadImageToFirebase(finalSelectedImageUri);
+                            Log.d("LOG", "onActivityResult: deu bom");
+                            Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
+
+                        });
+
+                        selectedImageUri = data.getData();
+                        Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);
+                    }
+                }
+        );
 
         profilePic = findViewById(R.id.profile_pic);
         btnSave = findViewById(R.id.btn_save_profile);
 
         AndroidUtil.downloadImageFromFirebase(this, profilePic);
-
-        // Adicionando foto de perfil
-        profilePic.setOnClickListener(v -> {
-            ImagePicker.with(this)
-                    .crop()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .createIntent(intent -> {
-                        imagePickLauncher.launch(intent);
-                        return null;
-                    });
-        });
 
         // Logout
         (findViewById(R.id.textView_logout)).setOnClickListener(v -> {
@@ -123,34 +122,40 @@ public class UserProfileEdit extends AppCompatActivity {
 
     }
 
-    public void editUser(UserSchema newUser) {
+    public void saveUser(UserSchema newUser) {
+
+        // Updating perfil photo
+        profilePic.setOnClickListener(v -> {
+            ImagePicker.with(this)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .createIntent(intent -> {
+                        imagePickLauncher.launch(intent);
+                        return null;
+                    });
+        });
+
+        // Updating user
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
 
-        getUser();
+        Call<UserSchema> call = userService.updateUser(newUser, String.valueOf(currentUser.getId()));
 
-        Bundle userBundle = new Bundle();
-        Serializable serializableUser = userBundle.getSerializable("currentUser");
-
-        if (serializableUser instanceof UserSchema) {
-            UserSchema user = (UserSchema) serializableUser;
-
-            Call<UserSchema> call = userService.updateUser(newUser, String.valueOf(user.getId()));
-
-            call.enqueue(new Callback<UserSchema>() {
-                @Override
-                public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(UserProfileEdit.this, "Usuário atualizado!", Toast.LENGTH_SHORT).show();
-                    }
+        call.enqueue(new Callback<UserSchema>() {
+            @Override
+            public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(UserProfileEdit.this, "Usuário atualizado!", Toast.LENGTH_SHORT).show();
+                    Log.d("USER", "Deu bom");
                 }
+            }
 
-                @Override
-                public void onFailure(Call<UserSchema> call, Throwable throwable) {
+            @Override
+            public void onFailure(Call<UserSchema> call, Throwable throwable) {
 
-                }
-            });
+            }
 
-        }
+        });
 
     }
 

@@ -24,7 +24,7 @@ public interface UserService {
     Call<ResponseBody> userRegister(@Body User user);
 
     @GET("/user/getParam")
-    Call<ResponseBody> getParam(@Query("email") String email);
+    Call<UserSchema> getParam(@Query("email") String email);
 
     @PATCH("/user/update/{id}")
     Call<UserSchema> updateUser(@Body UserSchema user, @Path("id") String id);

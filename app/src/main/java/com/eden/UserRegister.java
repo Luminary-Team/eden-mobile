@@ -47,7 +47,7 @@ public class UserRegister extends AppCompatActivity {
         EditText cpfEditText = findViewById(R.id.textInput_cpf);
         EditText emailEditText = findViewById(R.id.textInput_email);
         EditText passwordEditText = findViewById(R.id.textInput_senha);
-        ImageView passwordToggle = findViewById(R.id.passwordToggle);
+        ImageView passwordToggle = findViewById(R.id.register_password_toggle);
         TextView btnRegister = findViewById(R.id.btn_cadastro);
         TextView btnLogin = findViewById(R.id.textView_login);
 
@@ -108,9 +108,7 @@ public class UserRegister extends AppCompatActivity {
     // Saves user on database
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
 
-        Retrofit retrofit = RetrofitClient.getClient();
-
-        UserService api = retrofit.create(UserService.class);
+        UserService api = RetrofitClient.getClient().create(UserService.class);
 
         Log.d("CHECKPOINT", phoneNumber);
 
