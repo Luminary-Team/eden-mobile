@@ -96,7 +96,7 @@ public class AndroidUtil {
 
     public static void getToken() {
         Retrofit client = RetrofitClient.getClient();
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         UserService service = client.create(UserService.class);
         Call<Token> call = service.getToken(new TokenRequest(email));
         call.enqueue(new Callback<Token>() {

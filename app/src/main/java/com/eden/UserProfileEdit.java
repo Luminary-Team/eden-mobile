@@ -55,9 +55,11 @@ public class UserProfileEdit extends AppCompatActivity {
         TextView editUserName = findViewById(R.id.editText_username);
         TextView editPhone = findViewById(R.id.editText_phone);
 
-        editName.setText(currentUser.getName());
-        editUserName.setText(currentUser.getUserName());
-        editPhone.setText(currentUser.getCellphone());
+        if (currentUser != null) {
+            editName.setText(currentUser.getName());
+            editUserName.setText(currentUser.getUserName());
+            editPhone.setText(currentUser.getCellphone());
+        }
 
         btnSave = findViewById(R.id.btn_save_profile);
         btnSave.setOnClickListener(v -> {

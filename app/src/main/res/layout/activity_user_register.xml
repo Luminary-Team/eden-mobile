@@ -1,170 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".UserRegister">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <RelativeLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                >
+
+                <ImageView
+                    android:id="@+id/imagem_eden_component"
+                    android:layout_width="135dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/eden_logotipo_3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_toRightOf="@id/imagem_eden_component"
+                    android:text="Eden"
+                    android:textColor="@color/edenBlue"
+                    android:textSize="40dp" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInput_nome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/header_layout"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:drawableStart="@drawable/profile_outlined_icon"
+                android:drawablePadding="15dp"
+                android:drawableTint="@color/edenBlue"
+                android:hint="Nome Completo"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColorHint="@color/edenBlue"
+                android:textSize="15sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInput_numero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_nome"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
+                android:maxLength="11"
+                android:background="@drawable/rounded_corner_shape"
+                android:drawableStart="@drawable/telephone_icon"
+                android:drawablePadding="15dp"
+                android:drawableTint="@color/edenBlue"
+                android:hint="Número de telefone"
+                android:inputType="phone"
+                android:padding="10dp"
+                android:textColorHint="@color/edenBlue"
+                android:textSize="15sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInput_cpf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_numero"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
+                android:maxLength="11"
+                android:background="@drawable/rounded_corner_shape"
+                android:drawableStart="@drawable/cpf_icon"
+                android:drawablePadding="9dp"
+                android:hint="CPF"
+                android:inputType="phone"
+                android:padding="10dp"
+                android:textColorHint="@color/edenBlue"
+                android:textSize="15sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInput_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_cpf"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:drawableStart="@drawable/email_icon"
+                android:drawablePadding="15dp"
+                android:drawableTint="@color/edenBlue"
+                android:hint="E-mail"
+                android:inputType="text|textEmailAddress"
+                android:padding="10dp"
+                android:textColorHint="@color/edenBlue"
+                android:textSize="15sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInput_senha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_email"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:drawableStart="@drawable/senha_icon"
+                android:drawablePadding="15dp"
+                android:drawableTint="@color/edenBlue"
+                android:padding="10dp"
+                android:hint="Senha"
+                android:inputType="textPassword"
+                android:textColorHint="@color/edenBlue"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/register_password_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/textInput_senha"
+                android:layout_alignEnd="@id/textInput_senha"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/eye_off_icon"
+                android:layout_marginTop="10dp"
+                app:tint="@color/edenBlue" />
+
+            <TextView
+                android:id="@+id/btn_cadastro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_senha"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="40dp"
+                android:text="Cadastrar"
+                android:textColor="@color/white"
+                android:background="@drawable/button_blue"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                app:cornerRadius="5dp"
+                />
+
+            <TextView
+                android:id="@+id/textView_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#0000"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/btn_cadastro"
+                android:text="Já tem uma conta? Faça Login"
+                android:textAlignment="center"
+                />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
     <ImageView
         android:id="@+id/imageView_eden_robot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/eden_robot"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        android:layout_gravity="end|bottom"
         />
 
-    <RelativeLayout
-        android:id="@+id/header_layout"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        >
-
-        <ImageView
-            android:id="@+id/imagem_eden_component"
-            android:layout_width="135dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/eden_logotipo_3" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/imagem_eden_component"
-            android:text="Eden"
-            android:textColor="@color/edenBlue"
-            android:textSize="40dp" />
-
-    </RelativeLayout>
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInput_nome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header_layout"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/rounded_corner_shape"
-        android:drawableStart="@drawable/profile_outlined_icon"
-        android:drawablePadding="15dp"
-        android:drawableTint="@color/edenBlue"
-        android:hint="Nome Completo"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textColorHint="@color/edenBlue"
-        android:textSize="15sp" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInput_numero"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_nome"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:maxLength="11"
-        android:background="@drawable/rounded_corner_shape"
-        android:drawableStart="@drawable/telephone_icon"
-        android:drawablePadding="15dp"
-        android:drawableTint="@color/edenBlue"
-        android:hint="Número de telefone"
-        android:inputType="phone"
-        android:padding="10dp"
-        android:textColorHint="@color/edenBlue"
-        android:textSize="15sp" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInput_cpf"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_numero"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:maxLength="11"
-        android:background="@drawable/rounded_corner_shape"
-        android:drawableStart="@drawable/cpf_icon"
-        android:drawablePadding="9dp"
-        android:hint="CPF"
-        android:inputType="phone"
-        android:padding="10dp"
-        android:textColorHint="@color/edenBlue"
-        android:textSize="15sp" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInput_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_cpf"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_corner_shape"
-        android:drawableStart="@drawable/email_icon"
-        android:drawablePadding="15dp"
-        android:drawableTint="@color/edenBlue"
-        android:hint="E-mail"
-        android:inputType="text|textEmailAddress"
-        android:padding="10dp"
-        android:textColorHint="@color/edenBlue"
-        android:textSize="15sp" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textInput_senha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_email"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_corner_shape"
-        android:drawableStart="@drawable/senha_icon"
-        android:drawablePadding="15dp"
-        android:drawableTint="@color/edenBlue"
-        android:padding="10dp"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        android:textColorHint="@color/edenBlue"
-        android:textSize="15sp" />
-
-    <ImageView
-        android:id="@+id/register_password_toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/textInput_senha"
-        android:layout_alignEnd="@id/textInput_senha"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/eye_off_icon"
-        android:layout_marginTop="10dp"
-        app:tint="@color/edenBlue" />
-
-    <TextView
-        android:id="@+id/btn_cadastro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textInput_senha"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="40dp"
-        android:text="Cadastrar"
-        android:textColor="@color/white"
-        android:background="@drawable/button_blue"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        app:cornerRadius="5dp"
-        />
-
-    <TextView
-        android:id="@+id/textView_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#0000"
-        android:layout_marginHorizontal="40dp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@id/btn_cadastro"
-        android:text="Já tem uma conta? Faça Login"
-        android:textAlignment="center"
-        />
-
-</RelativeLayout>
+</FrameLayout>

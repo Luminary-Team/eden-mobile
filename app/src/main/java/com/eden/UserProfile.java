@@ -72,9 +72,11 @@ public class UserProfile extends AppCompatActivity {
         TextView username = findViewById(R.id.profile_username);
         RatingBar rating = findViewById(R.id.profile_rating);
 
-        name.setText(currentUser.getName());
-        username.setText(currentUser.getUserName());
-        rating.setRating(currentUser.getRating());
+        if (currentUser != null) {
+            name.setText(currentUser.getName());
+            username.setText(currentUser.getUserName());
+            rating.setRating(currentUser.getRating());
+        }
 
 
 
