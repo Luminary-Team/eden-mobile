@@ -30,7 +30,7 @@ public class RegisterProduct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastrar_produto);
+        setContentView(R.layout.activity_register_product);
 
         FirebaseProdutoUtil db = new FirebaseProdutoUtil();
         Button btnAvancar = findViewById(R.id.btnCadastroAvancar);
@@ -69,6 +69,7 @@ public class RegisterProduct extends AppCompatActivity {
             }
         });
 
+        productImage = findViewById(R.id.register_product_image);
         productImage.setOnClickListener(v -> {
             // Selecionando imagem
             ImagePicker.with(this)

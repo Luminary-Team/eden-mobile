@@ -1,49 +1,73 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.openActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.eden.utils.AndroidUtil;
+import com.eden.utils.FirebaseUserUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ImageView btnCarrinho;
+    private DrawerLayout drawerLayout;
+    private BottomNavigationView footer;
+    private NavigationView navView;
+    private View headerView;
+    private ShapeableImageView profilePic;
+    private ImageView btnSidebar;
+
+    private FirebaseAuth.AuthStateListener authListener;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        authListener = firebaseAuth -> {
+            if (auth.getCurrentUser() != null) {
+                // Setting the perfil photo
+                AndroidUtil.downloadImageFromFirebase(this, btnSidebar);
+                AndroidUtil.downloadImageFromFirebase(this, profilePic);
+            } else {
+                Log.d("login", "Current User não encontrado: " + auth.getCurrentUser());
+            }
+        };
+
+        auth.addAuthStateListener(authListener);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Pegando os elementos do layout
-        ImageView btnSidebar = findViewById(R.id.btnSidebar);
-        ImageView btnCarrinho = findViewById(R.id.btnCarrinho);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        BottomNavigationView footer = findViewById(R.id.footer_navigation);
-        NavigationView navView = findViewById(R.id.nav_view);
-        View headerView = navView.getHeaderView(0);
-        ShapeableImageView profilePic = headerView.findViewById(R.id.profile_pic);
-
-        // Colocando a foto de perfil
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), btnSidebar);
-        AndroidUtil.downloadImageFromFirebase(this, "ProfilePic_" + FirebaseAuth.getInstance().getUid(), profilePic);
+        btnCarrinho = findViewById(R.id.btnCarrinho);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        footer = findViewById(R.id.footer_navigation);
+        navView = findViewById(R.id.nav_view);
+        headerView = navView.getHeaderView(0);
+        profilePic = headerView.findViewById(R.id.profile_pic);
+        btnSidebar = findViewById(R.id.btnSidebar);
 
         // Fragmento inicial
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
-
-        // Botão do carrinho
-        btnCarrinho.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CartActivity.class);
-            startActivity(intent);
-        });
 
         // Botão do sidebar
         btnSidebar.setOnClickListener(v -> {
@@ -54,35 +78,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Configurações da Sidebar
+        // Sidebar configuration
         navView.setNavigationItemSelectedListener(menuItem -> {
 
             if (menuItem.getItemId() == R.id.nav_favoritos)
-                AndroidUtil.openActivity(this, FavoritesActivity.class);
+                openActivity(this, FavoritesActivity.class);
             if (menuItem.getItemId() == R.id.nav_pontos)
-                AndroidUtil.openActivity(this, MapsActivityTeste.class);
+                openActivity(this, MapsActivityTeste.class);
             if (menuItem.getItemId() == R.id.nav_artigos)
-                AndroidUtil.openActivity(this, ArticlesActivity.class);
+                openActivity(this, ArticlesActivity.class);
 
-            // Fechar o drawer após a seleção
+            // Closes drawers after selection
             drawerLayout.closeDrawers();
 
             return true;
         });
 
-        // Configurações do Navigation Footer
+        // Navigation footer configuration
         footer.setOnItemSelectedListener(item -> {
 
             if(item.getItemId() == R.id.menu_add){
-                Intent intent = new Intent(MainActivity.this, RegisterProduct.class);
-                startActivity(intent);
+                openActivity(this, RegisterProduct.class);
             }
             if(item.getItemId() == R.id.menu_home){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
             }
             if(item.getItemId() == R.id.menu_forum){
-//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                transaction.replace(R.id.fragment_main, new Forum());
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentForum()).commit();
             }
             return false;
@@ -90,10 +111,15 @@ public class MainActivity extends AppCompatActivity {
 
         footer.setSelectedItemId(R.id.menu_home);
 
-        // Clicar no header e ir para a tela de perfil
+        // Cart button
+        btnCarrinho.setOnClickListener(v -> openActivity(this, CartActivity.class));
+
+        // Header configuration
         headerView.setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserProfile.class);
-            startActivity(intent);
+            openActivity(this, UserProfile.class);
+            // Closes drawers after selection
+            drawerLayout.closeDrawers();
+            finish();
         });
 
     }

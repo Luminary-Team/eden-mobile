@@ -1,6 +1,6 @@
 package com.eden.api;
 
-import com.eden.api.schemas.ResponseToken;
+import com.eden.api.dto.ResponseToken;
 import com.eden.model.User;
 
 import okhttp3.ResponseBody;

@@ -17,8 +17,6 @@ import com.eden.api.UserApi;
 import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,8 +66,7 @@ public class UserRegister extends AppCompatActivity {
 
         // In case the user has an account, redirect to login
         (findViewById(R.id.textView_login)).setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserLogin.class);
-            startActivity(intent);
+            AndroidUtil.openActivity(this, UserLogin.class);
             finish();
         });
 
