@@ -8,14 +8,20 @@
     android:orientation="vertical"
     android:layout_margin="20dp">
 
+    <ImageView
+        android:id="@+id/back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/back_icon"
+        />
+
     <TextView
         android:id="@+id/textView_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_below="@id/back_btn"
         android:text="Perfil"
-        android:textSize="30sp"
-        />
+        android:textSize="30sp" />
 
     <RelativeLayout
         android:id="@+id/header_profile"

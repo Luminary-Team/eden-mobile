@@ -91,6 +91,8 @@ public class UserProfile extends AppCompatActivity {
             openActivity(this, UserProfileEdit.class);
         });
 
+        (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
+
 //        navView.setNavigationItemSelectedListener(item -> {
 //            if (item.getItemId() == R.id.menu_product) {
 //                recyclerView.setAdapter(new ProductAdapter(new ArrayList<>()));

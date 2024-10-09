@@ -19,22 +19,12 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/product_image" />
-
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar">
+            tools:layout_editor_absoluteY="288dp">
 
             <TextView
                 android:id="@+id/product_title"
@@ -75,13 +65,14 @@
                     android:id="@+id/product_suggested_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
                     android:layout_below="@id/product_price"
+                    android:layout_alignParentStart="true"
                     android:layout_marginTop="10dp"
-                    android:visibility="invisible"
                     android:text="R$"
                     android:textColor="#FC9F35"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="invisible" />
+
                 <TextView
                     android:id="@+id/product_delivery"
                     android:layout_width="wrap_content"
@@ -102,9 +93,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/relativeLayout_price_and_delivery"
                 android:layout_marginTop="10dp"
-                android:progressTint="@color/edenBlue"
                 android:background="@drawable/shape_product_rating"
                 android:numStars="5"
+                android:progressTint="@color/edenBlue"
                 tools:rating="10" />
 
             <Button
@@ -113,10 +104,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/product_rating"
                 android:layout_marginTop="20dp"
-                android:textColor="@color/white"
                 android:background="@drawable/shape_button_buy_now"
                 android:text="Comprar agora"
-                android:textSize="20sp"/>
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/button_add_cart"
@@ -126,7 +117,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_button_add_cart"
                 android:text="Adicionar ao carrinho"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/product_comements_section"
@@ -134,16 +125,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/button_add_cart"
                 android:layout_marginTop="20dp"
-                android:text="Comentários"
-                />
+                android:text="Comentários" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_comments"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/product_comements_section"
-                tools:listitem="@layout/comments_layout"
-                />
+                tools:listitem="@layout/comments_layout" />
 
         </RelativeLayout>
 

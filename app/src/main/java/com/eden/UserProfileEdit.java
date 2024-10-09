@@ -40,9 +40,10 @@ public class UserProfileEdit extends AppCompatActivity {
 
     ImageView profilePic;
     Button btnSave;
+    boolean isProfilePicSelected = false;
 
     ActivityResultLauncher<Intent> imagePickLauncher;
-    Uri selectedImageUri;
+    Uri finalSelectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,9 @@ public class UserProfileEdit extends AppCompatActivity {
         TextView editName = findViewById(R.id.editText_full_name);
         TextView editUserName = findViewById(R.id.editText_username);
         TextView editPhone = findViewById(R.id.editText_phone);
+
+        profilePic = findViewById(R.id.profile_pic);
+        btnSave = findViewById(R.id.btn_save_profile);
 
         if (currentUser != null) {
             editName.setText(currentUser.getName());
@@ -74,11 +78,32 @@ public class UserProfileEdit extends AppCompatActivity {
             updatedUser.setUserName(updatedUserName);
             updatedUser.setCellphone(updatedPhone);
 
+            // Verifies if profile picture was selected
+            if (isProfilePicSelected) {
+                AndroidUtil.uploadImageToFirebase(finalSelectedImageUri);
+                Log.d("LOG", "onActivityResult: deu bom");
+                Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
+                isProfilePicSelected = false;
+            }
+
+
             // Calling api (CALL ME MAYBE)
             saveUser(updatedUser);
         });
 
-        // Setting Image
+        // Choosing perfil photo
+        profilePic.setOnClickListener(v -> {
+            ImagePicker.with(this)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .createIntent(intent -> {
+                        imagePickLauncher.launch(intent);
+                        return null;
+                    });
+        });
+
+        // Changing profile picture and uploading to firebase
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     // TODO : Salvar na galeria
@@ -90,25 +115,16 @@ public class UserProfileEdit extends AppCompatActivity {
                         Uri selectedImageUri = data.getData();
                         profilePic.setImageURI(selectedImageUri);
 
-                        Uri finalSelectedImageUri = selectedImageUri;
+                        finalSelectedImageUri = selectedImageUri;
 
-                        // Save user information button
-                        btnSave.setOnClickListener(v -> {
-
-                            AndroidUtil.uploadImageToFirebase(finalSelectedImageUri);
-                            Log.d("LOG", "onActivityResult: deu bom");
-                            Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
-
-                        });
+                        // Defines user has selected an image
+                        isProfilePicSelected = true;
 
                         selectedImageUri = data.getData();
                         Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);
                     }
                 }
         );
-
-        profilePic = findViewById(R.id.profile_pic);
-        btnSave = findViewById(R.id.btn_save_profile);
 
         AndroidUtil.downloadImageFromFirebase(this, profilePic);
 
@@ -125,18 +141,6 @@ public class UserProfileEdit extends AppCompatActivity {
     }
 
     public void saveUser(UserSchema newUser) {
-
-        // Updating perfil photo
-        profilePic.setOnClickListener(v -> {
-            ImagePicker.with(this)
-                    .crop()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .createIntent(intent -> {
-                        imagePickLauncher.launch(intent);
-                        return null;
-                    });
-        });
 
         // Updating user
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
