@@ -1,11 +1,12 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.getToken;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.eden.api.UserApi;
+import com.eden.api.RetrofitClient;
+import com.eden.api.services.UserService;
+import com.eden.api.dto.UserSchema;
 import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,8 +47,12 @@ public class UserRegister extends AppCompatActivity {
         EditText cpfEditText = findViewById(R.id.textInput_cpf);
         EditText emailEditText = findViewById(R.id.textInput_email);
         EditText passwordEditText = findViewById(R.id.textInput_senha);
-        ImageView passwordToggle = findViewById(R.id.passwordToggle);
+        ImageView passwordToggle = findViewById(R.id.register_password_toggle);
         TextView btnRegister = findViewById(R.id.btn_cadastro);
+        TextView btnLogin = findViewById(R.id.textView_login);
+
+        // Setting underline text
+        btnLogin.setPaintFlags(btnLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // Register the user
         btnRegister.setOnClickListener(v -> {
@@ -67,9 +72,8 @@ public class UserRegister extends AppCompatActivity {
         });
 
         // In case the user has an account, redirect to login
-        (findViewById(R.id.textView_login)).setOnClickListener(v -> {
-            Intent intent = new Intent(this, UserLogin.class);
-            startActivity(intent);
+        btnLogin.setOnClickListener(v -> {
+            AndroidUtil.openActivity(this, UserLogin.class);
             finish();
         });
 
@@ -104,15 +108,11 @@ public class UserRegister extends AppCompatActivity {
     // Saves user on database
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://desenvolvimento-ii.onrender.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        UserApi api = retrofit.create(UserApi.class);
+        UserService api = RetrofitClient.getClient().create(UserService.class);
 
         Log.d("CHECKPOINT", phoneNumber);
 
+        // Creating User
         User user = new User(cpf, name, name,
                 password, 0, email, phoneNumber);
         Call<ResponseBody> userCall = api.userRegister(user);
@@ -139,12 +139,19 @@ public class UserRegister extends AppCompatActivity {
                         String errorResponse = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorResponse);
 
+                        if (jsonObject.has("message")) {
+                            String messageError = jsonObject.getString("message");
+                            if (messageError.trim().toLowerCase().contains("cpf")) {
+                                EditText cpfEditText = findViewById(R.id.textInput_cpf);
+                                cpfEditText.setError(messageError);
+                            }
+                        }
+
                         // Verifica os campos que contêm erros e define mensagens de erro nos EditTexts
                         if (jsonObject.has("cpf")) {
                             String cpfError = jsonObject.getString("cpf");
                             EditText cpfEditText = findViewById(R.id.textInput_cpf);
                             cpfEditText.setError(cpfError);
-                            Log.e("CHECKPOINT", user.getCellphone());
                         }
 
                         if (jsonObject.has("cellphone")) {
@@ -167,6 +174,7 @@ public class UserRegister extends AppCompatActivity {
 
                         // Exibe os erros no log
                         Log.d("CHECKPOINT", "Erros recebidos: " + jsonObject.toString());
+
                     }
                 } catch (JSONException e) {
                     Log.e("ERROR", Objects.requireNonNull(e.getMessage()));
@@ -181,10 +189,6 @@ public class UserRegister extends AppCompatActivity {
                 Log.d("CHECKPOINT", throwable.getMessage());
             }
         });
-    }
-
-    public void getToken(String email, String password) {
-
     }
 
 }

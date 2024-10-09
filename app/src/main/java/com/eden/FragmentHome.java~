@@ -36,7 +36,7 @@ public class FragmentHome extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 2));
 
         // TEMP
-//        db.listarProdutos(products, adapter);
+        db.listarProdutos(products, adapter);
 
         return view;
     }

@@ -33,18 +33,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolderProduto holder, int position) {
-        holder.name.setText(listaProducts.get(position).getName());
-//        holder.descricao.setText(listaProdutos.get(position).getDescricao());
-        holder.value.setText("R$ " + (listaProducts.get(position).getValue()));
-
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), BuyProduct.class);
-            intent.putExtra("name", listaProducts.get(position).getName());
-            intent.putExtra("value", listaProducts.get(position).getValue());
-            intent.putExtra("description", listaProducts.get(position).getDescription());
-
-            v.getContext().startActivity(intent);
-        });
+//        holder.name.setText(listaProducts.get(position).getName());
+////        holder.descricao.setText(listaProdutos.get(position).getDescricao());
+//        holder.value.setText("R$ " + (listaProducts.get(position).getValue()));
+//
+//        holder.itemView.setOnClickListener(v -> {
+//            Intent intent = new Intent(v.getContext(), BuyProduct.class);
+//            intent.putExtra("name", listaProducts.get(position).getName());
+//            intent.putExtra("value", listaProducts.get(position).getValue());
+//            intent.putExtra("description", listaProducts.get(position).getDescription());
+//
+//            v.getContext().startActivity(intent);
+//        });
     }
 
     @Override

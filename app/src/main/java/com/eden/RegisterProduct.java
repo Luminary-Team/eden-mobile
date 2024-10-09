@@ -30,7 +30,7 @@ public class RegisterProduct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastrar_produto);
+        setContentView(R.layout.activity_register_product);
 
         FirebaseProdutoUtil db = new FirebaseProdutoUtil();
         Button btnAvancar = findViewById(R.id.btnCadastroAvancar);
@@ -61,14 +61,15 @@ public class RegisterProduct extends AppCompatActivity {
                 Toast.makeText(this, "O valor deve ser maior que 0", Toast.LENGTH_SHORT).show();
             } else {
                 // Salvando produto
-                db.salvarProduto(this,
-                        new Product(123, 0, 0, name.getText().toString(),
-                                Float.parseFloat(preco.getText().toString()), descricao.getText().toString(),
-                                "", Float.parseFloat(tipoEntrega.getText().toString()), 0));
+//                db.salvarProduto(this,
+//                        new Product(123, 0, 0, name.getText().toString(),
+//                                Float.parseFloat(preco.getText().toString()), descricao.getText().toString(),
+//                                "", Float.parseFloat(tipoEntrega.getText().toString()), 0));
                 finish();
             }
         });
 
+        productImage = findViewById(R.id.register_product_image);
         productImage.setOnClickListener(v -> {
             // Selecionando imagem
             ImagePicker.with(this)

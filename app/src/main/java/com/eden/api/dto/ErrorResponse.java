@@ -1,4 +1,4 @@
-package com.eden.api.schemas;
+package com.eden.api.dto;
 
 public class ErrorResponse {
 
