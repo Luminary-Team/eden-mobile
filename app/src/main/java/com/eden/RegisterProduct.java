@@ -3,11 +3,14 @@ package com.eden;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.ImageCapture;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.model.Product;
+import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseProdutoUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
@@ -38,7 +42,7 @@ public class RegisterProduct extends AppCompatActivity {
 //        preco = findViewById(R.id.editText_valor_produto);
 //        descricao = findViewById(R.id.editText_descricao_produto);
 //        tipoEntrega = findViewById(R.id.editText_meio_entrega);
-//        productImage = findViewById(R.id.product_image);
+        productImage = findViewById(R.id.register_product_image);
 
         // Selecionando imagem
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -47,7 +51,23 @@ public class RegisterProduct extends AppCompatActivity {
                         Intent data = result.getData();
                         if(data!=null && data.getData()!=null){
                             selectedImageUri = data.getData();
-                            Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(productImage);
+                            Glide.with(this).load(selectedImageUri).centerCrop().into(productImage);
+
+                            // Definir nome e caminho pra imagem
+                            String name = "image_" + System.currentTimeMillis() + ".jpg";
+                            ContentValues values = new ContentValues();
+                            values.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                            values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+                            values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/CameraSalaF");
+
+                            // Carregar imagem com as configs
+                            ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions.Builder(
+                                    getContentResolver(),
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    values
+                            ).build();
+
+                            AndroidUtil.uploadProfilePicToFirebase(selectedImageUri);
                         }
                     }
                 }

@@ -1,6 +1,5 @@
 package com.eden;
 
-import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 AndroidUtil.getToken();
 
                 // Setting the perfil photo
-                AndroidUtil.downloadImageFromFirebase(this, btnSidebar);
-                AndroidUtil.downloadImageFromFirebase(this, profilePic);
+                AndroidUtil.downloadProfilePicFromFirebase(this, btnSidebar);
+                AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
             } else {
                 Log.d("login", "Current User não encontrado: " + auth.getCurrentUser());
             }

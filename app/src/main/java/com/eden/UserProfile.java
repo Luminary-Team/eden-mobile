@@ -85,7 +85,7 @@ public class UserProfile extends AppCompatActivity {
 
         // Setting perfil photo
         profilePic = findViewById(R.id.profile_pic);
-        AndroidUtil.downloadImageFromFirebase(this, profilePic);
+        AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
 
         headerProfile.setOnClickListener(v -> {
             openActivity(this, UserProfileEdit.class);

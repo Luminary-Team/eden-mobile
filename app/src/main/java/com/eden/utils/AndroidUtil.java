@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -20,25 +18,19 @@ import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.model.Token;
-import com.eden.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AndroidUtil {
     public static String token;
@@ -57,9 +49,9 @@ public class AndroidUtil {
         Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 
-    public static void uploadImageToFirebase(Uri uri) {
+    public static void uploadImageToFirebase(Uri uri, String imagePath) {
         // Criando pasta referência "images" no firebase
-        StorageReference imageRef = storageRef.child("images/ProfilePic_" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+        StorageReference imageRef = storageRef.child(imagePath);
 
         // Subindo a imagem pro firebase
         UploadTask uploadTask = imageRef.putFile(uri);
@@ -73,9 +65,9 @@ public class AndroidUtil {
         });
     }
 
-    public static void downloadImageFromFirebase(Context context, ImageView imageView) {
+    public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
         // Crie uma referência para a imagem
-        StorageReference imageRef = storageRef.child("images/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+        StorageReference imageRef = storageRef.child(imagePath);
 
         // Baixe a imagem do Firebase Storage
         imageRef.getDownloadUrl()
@@ -92,6 +84,13 @@ public class AndroidUtil {
                 }).addOnFailureListener(e -> {
                     Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
                 });
+    }
+
+    public static void uploadProfilePicToFirebase(Uri uri) {
+        uploadImageToFirebase(uri, "images/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+    }
+    public static void downloadProfilePicFromFirebase(Context context, ImageView imageView) {
+        downloadImageFromFirebase(context, imageView, "images/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
     }
 
     public static void getToken() {

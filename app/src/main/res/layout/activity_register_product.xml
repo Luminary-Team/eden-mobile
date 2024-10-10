@@ -7,61 +7,16 @@
     tools:context=".RegisterProduct">
 
 
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
-
-        <ImageView
-            android:id="@+id/btnCarrinho"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/cart_icon"
-            app:tint="@color/edenBlue" />
-
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@drawable/search_bar_shape"
-            android:drawableStart="@drawable/search_icon"
-            android:drawablePadding="4dp"
-            android:drawableTint="@color/edenBlue"
-            android:ems="10"
-            android:hint="Buscar"
-            android:maxLines="1"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
-            android:textColor="@color/edenBlue"
-            android:textColorHint="@color/edenBlue"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/btnSidebar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/eden_logotipo_2" />
-
-
-    </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header"
+        android:layout_marginTop="50dp"
         android:layout_centerInParent="true">
 
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header"
             android:layout_marginHorizontal="30dp">
 
             <!--        Nome Produto-->
@@ -78,72 +33,95 @@
                 android:id="@+id/register_product_image"
                 android:layout_width="400dp"
                 android:layout_height="240dp"
-                android:layout_below="@id/textView_register_product"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
+                android:layout_below="@id/textView_register_product"
                 android:background="@drawable/camera_placeholder" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editTextLayout_product_name"
+            <EditText
+                android:id="@+id/editText_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/register_product_image">
+                android:layout_below="@id/register_product_image"
+                android:drawableStart="@drawable/pencil_icon"
+                android:drawableTint="@color/edenBlue"
+                android:drawablePadding="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:hint="Nome do Produto"
+                android:inputType="text|textEmailAddress"
+                android:padding="10dp"
+                android:textSize="15sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_product_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text_default_background"
-                    android:drawableStart="@drawable/pencil_icon"
-                    android:drawablePadding="10dp"
-                    android:drawableTint="@color/edenBlue"
-                    android:hint="Nome do Produto"
-                    android:textColor="@color/edenBlue"
-                    android:textColorHint="@color/edenBlue" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editTextLayout_product_price"
+            <EditText
+                android:id="@+id/editText_product_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextLayout_product_name">
+                android:layout_below="@id/editText_product_name"
+                android:drawableStart="@drawable/money_icon"
+                android:drawableTint="@color/edenBlue"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:hint="Nome do Produto"
+                android:inputType="text|textEmailAddress"
+                android:padding="10dp"
+                android:textSize="15sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_product_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text_default_background"
-                    android:drawableStart="@drawable/money_icon"
-                    android:drawablePadding="10dp"
-                    android:drawableTint="@color/edenBlue"
-                    android:hint="Preço"
-                    android:textColor="@color/edenBlue"
-                    android:textColorHint="@color/edenBlue" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editTextLayout_product_description"
+            <EditText
+                android:id="@+id/editText_product_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editTextLayout_product_price">
+                android:layout_below="@id/editText_product_price"
+                android:drawableStart="@drawable/description_icon"
+                android:drawableTint="@color/edenBlue"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:hint="Descrição"
+                android:inputType="text|textEmailAddress"
+                android:padding="10dp"
+                android:textSize="15sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_product_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text_default_background"
-                    android:drawableStart="@drawable/description_icon"
-                    android:drawablePadding="10dp"
-                    android:drawableTint="@color/edenBlue"
-                    android:hint="Descrição"
-                    android:textColor="@color/edenBlue"
-                    android:textColorHint="@color/edenBlue" />
+            <EditText
+                android:id="@+id/editText_product_cep_entrega"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText_product_description"
+                android:drawableStart="@drawable/description_icon"
+                android:drawableTint="@color/edenBlue"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:hint="CEP de entrega"
+                android:inputType="text|textEmailAddress"
+                android:padding="10dp"
+                android:textSize="15sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            <Spinner
+                android:id="@+id/spinner_condicao"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText_product_cep_entrega"
+                android:drawableStart="@drawable/description_icon"
+                android:drawableTint="@color/edenBlue"
+                android:drawablePadding="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:hint="Descrição"
+                android:entries="@array/spinner"
+                android:inputType="text|textEmailAddress"
+                android:padding="10dp"
+                android:textSize="15sp" />
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText_product_cep_entrega"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:text="Premium"
+                />
 
         </RelativeLayout>
 

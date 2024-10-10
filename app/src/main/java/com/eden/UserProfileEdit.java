@@ -4,6 +4,7 @@ import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.getUser;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.ImageCapture;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -80,12 +82,11 @@ public class UserProfileEdit extends AppCompatActivity {
 
             // Verifies if profile picture was selected
             if (isProfilePicSelected) {
-                AndroidUtil.uploadImageToFirebase(finalSelectedImageUri);
+                AndroidUtil.uploadProfilePicToFirebase(finalSelectedImageUri);
                 Log.d("LOG", "onActivityResult: deu bom");
                 Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
                 isProfilePicSelected = false;
             }
-
 
             // Calling api (CALL ME MAYBE)
             saveUser(updatedUser);
@@ -120,13 +121,28 @@ public class UserProfileEdit extends AppCompatActivity {
                         // Defines user has selected an image
                         isProfilePicSelected = true;
 
+
+                        // Definir nome e caminho pra imagem
+                        String name = "image_" + System.currentTimeMillis() + ".jpg";
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                        values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/CameraSalaF");
+
+                        // Carregar imagem com as configs
+                        ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions.Builder(
+                                getContentResolver(),
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values
+                        ).build();
+
                         selectedImageUri = data.getData();
                         Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);
                     }
                 }
         );
 
-        AndroidUtil.downloadImageFromFirebase(this, profilePic);
+        AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
 
         // Logout
         (findViewById(R.id.textView_logout)).setOnClickListener(v -> {
