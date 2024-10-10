@@ -20,6 +20,7 @@
             android:layout_height="125dp"
             android:layout_alignParentTop="true"
             android:backgroundTint="@color/edenProductBlue"
+            android:scaleType="centerCrop"
             android:src="@drawable/eden_logotipo_2" />
 
         <TextView

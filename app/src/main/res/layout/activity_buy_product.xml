@@ -5,26 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".BuyProduct">
 
         <ImageView
             android:id="@+id/product_image"
             android:layout_width="match_parent"
-            android:layout_height="270dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="274dp"
+            android:backgroundTint="@color/lightGrey"
+            android:scaleType="fitCenter"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="20dp"
-            tools:layout_editor_absoluteY="288dp">
+            android:layout_below="@id/product_image"
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/product_title"
@@ -41,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/product_title"
                 android:layout_marginTop="10dp"
-                android:text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus id velit laudantium nostrum, quod dolorum doloremque ducimus repudiandae enim exercitationem eaque libero? Velit, facere? Cum aliquam odio dolorem accusamus voluptates?"
+                android:text="Descrição"
                 android:textSize="14sp" />
 
             <RelativeLayout
@@ -136,6 +135,6 @@
 
         </RelativeLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </ScrollView>

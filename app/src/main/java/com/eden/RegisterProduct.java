@@ -35,7 +35,7 @@ import retrofit2.Response;
 
 public class RegisterProduct extends AppCompatActivity {
 
-    EditText title, price, description, cepEntrega;
+    EditText title, price, description;
     Spinner condition;
     ImageView productImage;
 
@@ -52,7 +52,6 @@ public class RegisterProduct extends AppCompatActivity {
         title = findViewById(R.id.editText_product_title);
         price = findViewById(R.id.editText_product_price);
         description = findViewById(R.id.editText_product_description);
-        cepEntrega = findViewById(R.id.editText_product_cep_entrega);
         condition = findViewById(R.id.spinner_condicao);
 
         // Selecionando imagem
@@ -77,8 +76,6 @@ public class RegisterProduct extends AppCompatActivity {
                                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                     values
                             ).build();
-
-                            AndroidUtil.uploadProfilePicToFirebase(selectedImageUri);
                         }
                     }
                 }
@@ -86,6 +83,7 @@ public class RegisterProduct extends AppCompatActivity {
 
         // Saving data on database
         btnAvancar.setOnClickListener(v -> {
+
             ProductRequest product = new ProductRequest(
                     1,
                     1,
@@ -94,7 +92,7 @@ public class RegisterProduct extends AppCompatActivity {
                     description.getText().toString(),
                     Float.parseFloat(price.getText().toString()),
                     "12345678",
-                    3
+                    0
             );
 
             // Calling API
@@ -106,6 +104,10 @@ public class RegisterProduct extends AppCompatActivity {
                 public void onResponse(Call<Product> call, Response<Product> response) {
                     if (response.isSuccessful()) {
                         Product product = response.body();
+
+                        AndroidUtil.uploadImageToFirebase(selectedImageUri,
+                                "product_" + product.getId() + ".jpg");
+
                         Log.d("Product", product.toString());
                         Toast.makeText(RegisterProduct.this, "Produto criado com sucesso!", Toast.LENGTH_SHORT).show();
                     } else  {

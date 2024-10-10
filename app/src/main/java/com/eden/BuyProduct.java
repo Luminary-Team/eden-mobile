@@ -1,5 +1,7 @@
 package com.eden;
 
+import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -11,9 +13,13 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.eden.model.Product;
+import com.eden.utils.AndroidUtil;
 
 public class BuyProduct extends AppCompatActivity {
     @Override
@@ -28,21 +34,25 @@ public class BuyProduct extends AppCompatActivity {
         TextView product_delivery = findViewById(R.id.product_delivery);
         Button btnComprar = findViewById(R.id.button_buy_now);
 
-
         Intent intent = getIntent();
+
+        downloadImageFromFirebase(this, product_image, "product_" + intent.getIntExtra("id", 0) + ".jpg");
+
         if (intent != null) {
             productTitle.setText(intent.getStringExtra("nome"));
             product_price.setText("R$ " + intent.getStringExtra("valor"));
             product_description.setText(intent.getStringExtra("descricao"));
             product_delivery.setText(intent.getStringExtra("tipoEntrega"));
-        } else {
-            product_image.setImageResource(intent.getIntExtra("imagem", 0));
         }
 
         btnComprar.setOnClickListener(v -> {
             notificar();
         });
 
+    }
+
+    private void getProduto(int id) {
+//        Call<Product>
     }
 
     public void notificar() {

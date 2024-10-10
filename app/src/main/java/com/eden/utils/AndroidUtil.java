@@ -58,7 +58,7 @@ public class AndroidUtil {
         uploadTask.addOnSuccessListener(v -> {
             Log.d("CHECKPOINT", "Image uploaded successfully!");
             imageRef.getDownloadUrl().addOnSuccessListener(taskSnapshot -> {
-                Log.d("CHECKPOINT", "Download URL: " + uri.toString());
+                Log.d("CHECKPOINT", "Download URL: " + uri);
             }).addOnFailureListener(e -> {
                 Log.e("CHECKPOINT", "Error uploading image: " + e.getMessage());
             });

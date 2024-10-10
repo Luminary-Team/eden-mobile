@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,15 +57,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             if (product.getPrice() != 0) {
                 holder.price.setText("R$ " + product.getPrice());
             }
+            if (product.getRating() >= 0 && product.getRating() <= 5) {
+                holder.ratingBar.setRating(product.getRating());
+            }
 
-            downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "images/" + product.getId() + ".jpg");
+            downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "product_" + product.getId() + ".jpg");
 
             holder.itemView.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("product", (Serializable) product);
-
                 Intent intent = new Intent(v.getContext(), BuyProduct.class);
-
+                intent.putExtra("id", product.getId());
+                intent.putExtra("nome", product.getTitle());
+                intent.putExtra("valor", product.getPrice());
+                intent.putExtra("descricao", product.getDescription());
+                intent.putExtra("rating", product.getRating());
                 v.getContext().startActivity(intent);
             });
         }
@@ -77,14 +82,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public class ViewHolderProduto extends RecyclerView.ViewHolder {
         private TextView usageTimeId, usageTime, conditionTypeId, user,
-                title, description, price, maxPrice, senderZipCode, rating;
+                title, description, price, maxPrice, senderZipCode;
         private ImageView imageView;
+        private RatingBar ratingBar;
 
 
         public ViewHolderProduto(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.titulo_produto);
             price = itemView.findViewById(R.id.valor_produto);
+            ratingBar = itemView.findViewById(R.id.rating_produto);
             imageView = itemView.findViewById(R.id.imagem_produto);
         }
     }
