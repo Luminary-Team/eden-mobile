@@ -6,7 +6,9 @@ import static com.eden.utils.AndroidUtil.getUser;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -32,6 +34,9 @@ import com.eden.utils.FirebaseUserUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 
 import retrofit2.Call;
@@ -92,6 +97,10 @@ public class UserProfileEdit extends AppCompatActivity {
             saveUser(updatedUser);
         });
 
+//        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//        }
+
         // Choosing perfil photo
         profilePic.setOnClickListener(v -> {
             ImagePicker.with(this)
@@ -122,19 +131,33 @@ public class UserProfileEdit extends AppCompatActivity {
                         isProfilePicSelected = true;
 
 
-                        // Definir nome e caminho pra imagem
-                        String name = "image_" + System.currentTimeMillis() + ".jpg";
-                        ContentValues values = new ContentValues();
-                        values.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-                        values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-                        values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/CameraSalaF");
+                        // Saves image to gallery if user has taken a photo
+                        if (data.getExtras() != null && data.getExtras().containsKey("android.intent.extras.CAMERA_IMAGE")) {
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "perfil_" + System.currentTimeMillis());
+                            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
 
-                        // Carregar imagem com as configs
-                        ImageCapture.OutputFileOptions outputOptions = new ImageCapture.OutputFileOptions.Builder(
-                                getContentResolver(),
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                values
-                        ).build();
+                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+                            try {
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                                OutputStream outputStream = getContentResolver().openOutputStream(uri);
+
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+                                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                    outputStream.write(buffer, 0, bytesRead);
+                                }
+
+                                inputStream.close();
+                                outputStream.close();
+
+                                Toast.makeText(UserProfileEdit.this, "Foto salva na galeria!", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                         selectedImageUri = data.getData();
                         Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);

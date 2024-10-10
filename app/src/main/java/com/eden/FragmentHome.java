@@ -52,7 +52,6 @@ public class FragmentHome extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     products = response.body();
-
                     recyclerView.setAdapter(new ProductAdapter(products));
                 } else {
                     try {

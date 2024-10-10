@@ -11,21 +11,32 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.eden.api.RetrofitClient;
+import com.eden.api.dto.ProductRequest;
+import com.eden.api.services.ProductService;
 import com.eden.model.Product;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseProdutoUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.firebase.auth.FirebaseAuth;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterProduct extends AppCompatActivity {
 
-    EditText name, preco, descricao, tipoEntrega;
+    EditText title, price, description, cepEntrega;
+    Spinner condition;
     ImageView productImage;
 
     ActivityResultLauncher<Intent> imagePickLauncher;
@@ -36,13 +47,13 @@ public class RegisterProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_product);
 
-        FirebaseProdutoUtil db = new FirebaseProdutoUtil();
-        Button btnAvancar = findViewById(R.id.btnCadastroAvancar);
-//        name = findViewById(R.id.editText_name_produto);
-//        preco = findViewById(R.id.editText_valor_produto);
-//        descricao = findViewById(R.id.editText_descricao_produto);
-//        tipoEntrega = findViewById(R.id.editText_meio_entrega);
+        Button btnAvancar = findViewById(R.id.button_register_product);
         productImage = findViewById(R.id.register_product_image);
+        title = findViewById(R.id.editText_product_title);
+        price = findViewById(R.id.editText_product_price);
+        description = findViewById(R.id.editText_product_description);
+        cepEntrega = findViewById(R.id.editText_product_cep_entrega);
+        condition = findViewById(R.id.spinner_condicao);
 
         // Selecionando imagem
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -73,20 +84,43 @@ public class RegisterProduct extends AppCompatActivity {
                 }
         );
 
-        // Salvando os dados no firebase
+        // Saving data on database
         btnAvancar.setOnClickListener(v -> {
-            if (name.getText().toString().isEmpty() || preco.getText().toString().isEmpty() || descricao.getText().toString().isEmpty() || tipoEntrega.getText().toString().isEmpty()) {
-                Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
-            } else if (Double.parseDouble(preco.getText().toString()) <= 0) {
-                Toast.makeText(this, "O valor deve ser maior que 0", Toast.LENGTH_SHORT).show();
-            } else {
-                // Salvando produto
-//                db.salvarProduto(this,
-//                        new Product(123, 0, 0, name.getText().toString(),
-//                                Float.parseFloat(preco.getText().toString()), descricao.getText().toString(),
-//                                "", Float.parseFloat(tipoEntrega.getText().toString()), 0));
-                finish();
-            }
+            ProductRequest product = new ProductRequest(
+                    1,
+                    1,
+                    FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                    title.getText().toString(),
+                    description.getText().toString(),
+                    Float.parseFloat(price.getText().toString()),
+                    "12345678",
+                    3
+            );
+
+            // Calling API
+            ProductService productService = RetrofitClient.getClient().create(ProductService.class);
+            Call<Product> call = productService.registerProduct(product);
+
+            call.enqueue(new Callback<Product>() {
+                @Override
+                public void onResponse(Call<Product> call, Response<Product> response) {
+                    if (response.isSuccessful()) {
+                        Product product = response.body();
+                        Log.d("Product", product.toString());
+                        Toast.makeText(RegisterProduct.this, "Produto criado com sucesso!", Toast.LENGTH_SHORT).show();
+                    } else  {
+                        Log.d("Product", response.errorBody().toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Product> call, Throwable throwable) {
+                    // TODO: handle failure
+                    Log.d("Product", throwable.getMessage());
+                }
+            });
+
+            finish();
         });
 
         productImage = findViewById(R.id.register_product_image);
