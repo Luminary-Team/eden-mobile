@@ -1,4 +1,4 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -19,13 +19,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.ProductRequest;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.FirebaseProdutoUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -98,7 +97,7 @@ public class RegisterProduct extends AppCompatActivity {
             // Calling API
             ProductService productService = RetrofitClient.getClient().create(ProductService.class);
             Call<Product> call = productService.registerProduct(product);
-
+            Bundle bundle = getIntent().getExtras();
             call.enqueue(new Callback<Product>() {
                 @Override
                 public void onResponse(Call<Product> call, Response<Product> response) {

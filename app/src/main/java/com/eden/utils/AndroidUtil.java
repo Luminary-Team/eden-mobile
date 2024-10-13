@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.TokenRequest;
@@ -36,7 +38,7 @@ public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
 
-    // Abrir intent
+    // Open intent
     public static void openActivity(Context context, Class<?> className) {
         context.startActivity(new Intent(context, className));
     }
@@ -50,10 +52,10 @@ public class AndroidUtil {
     }
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
-        // Criando pasta referência "images" no firebase
+        // Create "images" folder reference in Firebase Storage
         StorageReference imageRef = storageRef.child(imagePath);
 
-        // Subindo a imagem pro firebase
+        // Upload image to Firebase Storage
         UploadTask uploadTask = imageRef.putFile(uri);
         uploadTask.addOnSuccessListener(v -> {
             Log.d("CHECKPOINT", "Image uploaded successfully!");
@@ -66,23 +68,25 @@ public class AndroidUtil {
     }
 
     public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
-        // Crie uma referência para a imagem
+        // Create reference to the image
         StorageReference imageRef = storageRef.child(imagePath);
 
-        // Baixe a imagem do Firebase Storage
+        // Download image from Firebase Storage
         imageRef.getDownloadUrl()
                 .addOnSuccessListener(uri -> {
                     if (context instanceof Activity && !((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
                         Log.d("CHECKPOINT", "Download URL: " + uri.toString());
-                        // Use a URL de download para exibir a imagem
+                        // Use the download URL to display the image
                         Glide.with(context)
                                 .load(uri)
+                                .override(300, 300) // Resize the image to 300x300 pixels
+                                .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
                                 .into(imageView);
                     } else {
                         Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
                     }
                 }).addOnFailureListener(e -> {
-                    Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
+                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
                 });
     }
 
@@ -106,7 +110,7 @@ public class AndroidUtil {
                     getUser();
                     Log.d("TOKEN", "Token: " + token);
                 } else {
-                    Log.d("TOKEN", "Erro ao obter o token");
+                    Log.d("TOKEN", "Error getting token");
                 }
             }
             @Override
@@ -150,7 +154,7 @@ public class AndroidUtil {
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {
-            android.Manifest.permission.CAMERA,
+            Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
 
@@ -163,41 +167,33 @@ public class AndroidUtil {
         return true;
     }
 
-//    public static void notificar(Context context, Context localContext) {
+//    public static void notify(Context context, Context localContext) {
 //
-//        // Criar Notificação
-//        Intent intent = new Intent(context, NotificaionReceiver.class);
-//        PendingIntent pendindIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+//        // Create Notification
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 //
 //        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
 //                .setSmallIcon(R.drawable.eden_logotipo_2)
-//                .setContentTitle("Título da notificação")
-//                .setContentText("CLIQUE E RECEBA!")
+//                .setContentTitle("Notification Title")
+//                .setContentText("CLICK AND RECEIVE!")
 //                .setPriority(NotificationCompat.PRIORITY_HIGH)
 //                .setAutoCancel(true)
-//                .setContentIntent(pendindIntent);
+//                .setContentIntent(pendingIntent);
 //
-//        // Criar Canal de Notificação
-//        NotificationChannel channel = new NotificationChannel("channel_id", "Notificar",
+//        // Create Notification Channel
+//        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
 //                NotificationManager.IMPORTANCE_HIGH);
 //        NotificationManager manager = getSystemService(NotificationManager.class);
 //        manager.createNotificationChannel(channel);
 //
-//        // Mostrar notificação
-//        NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(localContext);
+//        // Show notification
+//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
 //        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
+//            // TODO: Handle missing permission
 //            return;
 //        }
-//        notificationCompat.notify(1, builder.build());
-//
-//
+//        notificationManagerCompat.notify(1, builder.build());
 //    }
 
 }

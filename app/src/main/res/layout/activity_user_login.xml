@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".UserLogin">
+    tools:context=".ui.activities.UserLogin">
 
     <ImageView
         android:id="@+id/imageView_eden_robot"
@@ -109,7 +109,7 @@
                 app:tint="@color/edenBlue" />
 
 
-            <TextView
+            <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

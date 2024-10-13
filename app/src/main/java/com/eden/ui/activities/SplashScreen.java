@@ -1,22 +1,14 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.eden.utils.AndroidUtil;
+import com.eden.R;
 import com.eden.utils.FirebaseUserUtil;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Objects;
 
 public class SplashScreen extends AppCompatActivity {
 

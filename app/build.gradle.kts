@@ -69,4 +69,8 @@ dependencies {
 
     // ImagePicker by Dhaval2404
     implementation(libs.imagepicker)
+
+    // Google Material
+    implementation(libs.material.v160)
+
 }

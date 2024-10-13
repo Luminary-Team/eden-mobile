@@ -1,8 +1,10 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.eden.R;
 
 public class PontoColeta extends AppCompatActivity {
 

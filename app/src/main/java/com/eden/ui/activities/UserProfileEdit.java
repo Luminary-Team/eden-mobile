@@ -1,14 +1,11 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
-import static com.eden.utils.AndroidUtil.getUser;
 
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,23 +18,20 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.ImageCapture;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
-import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.FirebaseUserUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 
 import retrofit2.Call;
 import retrofit2.Callback;

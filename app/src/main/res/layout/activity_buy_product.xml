@@ -8,15 +8,28 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".BuyProduct">
+        tools:context=".ui.activities.BuyProduct">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/product_image"
             android:layout_width="match_parent"
             android:layout_height="274dp"
             android:backgroundTint="@color/lightGrey"
             android:scaleType="fitCenter"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_favorite"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_below="@id/product_image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-35dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/edenBlue"
+            android:src="@drawable/heart_add_icon"
+            app:fabCustomSize="72dp"
+            app:maxImageSize="30dp" />
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
@@ -40,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/product_title"
                 android:layout_marginTop="10dp"
+                android:maxLines="10"
                 android:text="Descrição"
                 android:textSize="14sp" />
 
@@ -85,24 +99,12 @@
 
             </RelativeLayout>
 
-            <RatingBar
-                android:id="@+id/product_rating"
-                style="@style/Widget.AppCompat.RatingBar.Indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/relativeLayout_price_and_delivery"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/shape_product_rating"
-                android:numStars="5"
-                android:progressTint="@color/edenBlue"
-                tools:rating="10" />
-
             <Button
                 android:id="@+id/button_buy_now"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/product_rating"
                 android:layout_marginTop="20dp"
+                android:layout_below="@id/relativeLayout_price_and_delivery"
                 android:background="@drawable/shape_button_buy_now"
                 android:text="Comprar agora"
                 android:textColor="@color/white"
@@ -118,20 +120,6 @@
                 android:text="Adicionar ao carrinho"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/product_comements_section"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button_add_cart"
-                android:layout_marginTop="20dp"
-                android:text="Comentários" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_comments"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/product_comements_section"
-                tools:listitem="@layout/comments_layout" />
 
         </RelativeLayout>
 

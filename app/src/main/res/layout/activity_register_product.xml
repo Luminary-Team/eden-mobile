@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterProduct">
+    tools:context=".ui.activities.RegisterProduct">
 
 
     <ScrollView
@@ -51,7 +51,7 @@
                 android:drawablePadding="10dp"
                 android:background="@drawable/rounded_corner_shape"
                 android:hint="Nome do Produto"
-                android:inputType=""
+                android:inputType="textCapSentences"
                 android:padding="10dp"
                 android:textSize="15sp" />
 
@@ -73,16 +73,16 @@
             <EditText
                 android:id="@+id/editText_product_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_below="@id/editText_product_price"
                 android:drawableStart="@drawable/description_icon"
                 android:drawableTint="@color/edenBlue"
                 android:drawablePadding="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_corner_shape"
-                android:hint="Descrição"
-                android:inputType="text|textEmailAddress"
                 android:padding="10dp"
+                android:background="@drawable/rounded_corner_shape"
+                android:inputType="text|textEmailAddress"
+                android:hint="Descrição"
                 android:textSize="15sp" />
 
             <Spinner
@@ -122,6 +122,7 @@
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="30dp"
+        android:layout_gravity="end|bottom"
         android:backgroundTint="@color/edenBlueButton"
         android:text="Publicar"
         android:textColor="@color/white"

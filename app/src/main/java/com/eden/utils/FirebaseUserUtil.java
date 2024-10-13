@@ -1,12 +1,9 @@
 package com.eden.utils;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.eden.MainActivity;
+import com.eden.ui.activities.MainActivity;
 import com.eden.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

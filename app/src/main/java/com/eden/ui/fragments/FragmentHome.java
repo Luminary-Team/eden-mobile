@@ -1,4 +1,4 @@
-package com.eden;
+package com.eden.ui.fragments;
 
 import android.os.Bundle;
 
@@ -12,21 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.eden.R;
 import com.eden.adapter.ProductAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
-import com.eden.utils.FirebaseProdutoUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class FragmentHome extends Fragment {
 
@@ -44,6 +42,8 @@ public class FragmentHome extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
+
+        // TODO: Notify no Adapter quando for registrado
 
         Call<List<Product>> call = productService.getAllProducts();
         call.enqueue(new Callback<List<Product>>() {
