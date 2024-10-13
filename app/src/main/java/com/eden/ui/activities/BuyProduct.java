@@ -73,7 +73,7 @@ public class BuyProduct extends AppCompatActivity {
 
     private void addCart(int productId) {
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
-        Call<CartResponse> call = cartService.registerCart(new Cart(currentUser.getId(), productId));
+        Call<CartResponse> call = cartService.registerCart(new Cart(3, productId));
         call.enqueue(new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {

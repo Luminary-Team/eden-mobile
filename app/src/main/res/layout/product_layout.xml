@@ -15,7 +15,7 @@
         android:padding="15dp">
 
         <ImageView
-            android:id="@+id/imagem_produto"
+            android:id="@+id/product_image"
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:layout_alignParentTop="true"
@@ -24,10 +24,10 @@
             android:src="@drawable/eden_logotipo_2" />
 
         <TextView
-            android:id="@+id/titulo_produto"
+            android:id="@+id/product_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imagem_produto"
+            android:layout_below="@id/product_image"
             android:backgroundTint="@color/edenProductBlue"
             android:maxLines="2"
             android:text="Título"
@@ -66,10 +66,10 @@
         <!--            />-->
 
         <TextView
-            android:id="@+id/valor_produto"
+            android:id="@+id/product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/titulo_produto"
+            android:layout_below="@id/product_title"
             android:backgroundTint="@color/edenProductBlue"
             android:maxLines="1"
             android:textColor="@color/edenBlue"
@@ -78,10 +78,10 @@
             />
 
         <TextView
-            android:id="@+id/valor_de_mercado"
+            android:id="@+id/max_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/valor_produto"
+            android:layout_below="@id/product_price"
             android:visibility="invisible"
             android:backgroundTint="@color/edenProductBlue"
             android:text="R$"

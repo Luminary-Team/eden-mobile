@@ -5,29 +5,34 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activities.UserProfile"
-    android:orientation="vertical"
-    android:layout_margin="20dp">
+    android:orientation="vertical">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/back_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/back_icon"
-        />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/back_icon" />
 
     <TextView
         android:id="@+id/textView_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/back_btn"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="12dp"
+        android:layout_toRightOf="@id/back_btn"
         android:text="Perfil"
-        android:textSize="30sp" />
+        android:textSize="24sp"
+        />
 
     <RelativeLayout
         android:id="@+id/header_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_margin="20dp"
         android:layout_below="@id/textView_profile">
 
 
@@ -99,7 +104,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/header_profile"
-        android:layout_marginTop="10dp">
+        app:tabSelectedTextColor="@color/edenBlue"
+        app:tabIndicatorColor="@color/edenBlue">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

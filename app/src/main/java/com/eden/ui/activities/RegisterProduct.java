@@ -137,5 +137,6 @@ public class RegisterProduct extends AppCompatActivity {
                     });
         });
 
+        (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
     }
 }

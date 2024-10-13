@@ -3,6 +3,7 @@ package com.eden.utils;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -47,6 +48,7 @@ public class FirebaseUserUtil {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT).show();
                                 openActivity(context, MainActivity.class);
+                                ((Activity) context).finish();
                             } else {
                                 // Treatment for the email text field
                                 emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
@@ -114,6 +116,7 @@ public class FirebaseUserUtil {
                         if (task.isSuccessful()) {
                             // Registro bem-sucedido
                             FirebaseUser user = mAuth.getCurrentUser();
+                            ((Activity) context).finish();
                             Toast.makeText(context, "Usuário cadastrado no firebase com sucesso!", Toast.LENGTH_SHORT).show();
                         } else {
                             // Caso de falha
