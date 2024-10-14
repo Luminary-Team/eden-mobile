@@ -17,8 +17,6 @@ import com.eden.adapter.CartAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.CartResponse;
 import com.eden.api.services.CartService;
-import com.eden.model.Product;
-import com.eden.utils.AndroidUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,7 @@ public class CartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carrinho);
+        setContentView(R.layout.activity_cart);
 
         ImageButton backBtn = findViewById(R.id.back_btn);
         ProgressBar progressBar = findViewById(R.id.products_progressBar);
@@ -47,7 +45,7 @@ public class CartActivity extends AppCompatActivity {
         // Getting cart items and display them
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
         // TODO: Entender pq não existe nada no current user
-        Call<List<CartResponse>> call = cartService.getCartItemsByCartId(currentUser.getId());
+        Call<List<CartResponse>> call = cartService.getCartItemsByCartId(currentUser.getCartId());
 
         call.enqueue(new Callback<List<CartResponse>>() {
             @Override
