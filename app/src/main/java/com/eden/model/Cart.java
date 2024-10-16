@@ -2,11 +2,11 @@ package com.eden.model;
 
 public class Cart {
     private int cartId;
-    private int productId;
+    private int productsId;
 
-    public Cart(int cartId, int productId) {
+    public Cart(int cartId, int productsId) {
         this.cartId = cartId;
-        this.productId = productId;
+        this.productsId = productsId;
     }
 
     public int getUserId() {
@@ -18,10 +18,10 @@ public class Cart {
     }
 
     public int getProductId() {
-        return productId;
+        return productsId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProductId(int productsId) {
+        this.productsId = productsId;
     }
 }

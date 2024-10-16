@@ -3,6 +3,7 @@ package com.eden.ui.activities;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 import static com.eden.utils.AndroidUtil.getUser;
+import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -19,12 +20,15 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.CartResponse;
 import com.eden.api.services.CartService;
 import com.eden.model.Cart;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +62,10 @@ public class BuyProduct extends AppCompatActivity {
         }
 
         btnComprar.setOnClickListener(v -> {
+            openActivity(this, CartActivity.class);
+            addCart(intent.getIntExtra("id", 0));
             notificar();
+            finish();
         });
 
         btnAdcCart.setOnClickListener(v -> {
@@ -73,16 +80,28 @@ public class BuyProduct extends AppCompatActivity {
 
     private void addCart(int productId) {
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
-        Call<CartResponse> call = cartService.registerCart(new Cart(3, productId));
+        Call<CartResponse> call = cartService.registerCart(new Cart(currentUser.getCartId(), productId));
         call.enqueue(new Callback<CartResponse>() {
             @Override
             public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(BuyProduct.this, "Produto adicionado ao carrinho com sucesso!", Toast.LENGTH_SHORT).show();
+                    Log.d("CartSucess", response.body().toString());
+                } else {
+                    try {
+                        if (response.errorBody().string().contains("Produto já cadastrado nesse carrinho")) {
+                            Toast.makeText(BuyProduct.this, "Produto já cadastrado nesse carrinho", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 // TODO: Tratar exceção
             }
 
             @Override
             public void onFailure(Call<CartResponse> call, Throwable throwable) {
-
+                Toast.makeText(BuyProduct.this, throwable.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

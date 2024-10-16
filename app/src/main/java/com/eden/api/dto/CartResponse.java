@@ -3,13 +3,22 @@ package com.eden.api.dto;
 import com.eden.model.Product;
 
 public class CartResponse {
-
+    private int cartItemId;
     private int cartId;
     private Product product;
 
-    public CartResponse(int cartId, Product product) {
+    public CartResponse(int cartItemId, int cartId, Product product) {
+        this.cartItemId = cartItemId;
         this.cartId = cartId;
         this.product = product;
+    }
+
+    public int getCartItemId() {
+        return cartItemId;
+    }
+
+    public void setCartItemId(int cartItemId) {
+        this.cartItemId = cartItemId;
     }
 
     public int getCartId() {
