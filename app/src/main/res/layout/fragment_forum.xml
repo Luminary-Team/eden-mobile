@@ -27,14 +27,7 @@
             android:id="@+id/recyclerView_posts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
             tools:listitem="@layout/post_forum_layout" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="Fórum" />
 
     </RelativeLayout>
 
