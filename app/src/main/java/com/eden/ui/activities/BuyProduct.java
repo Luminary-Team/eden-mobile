@@ -1,4 +1,8 @@
-package com.eden;
+package com.eden.ui.activities;
+
+import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
+import static com.eden.utils.AndroidUtil.getUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,9 +15,21 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.eden.R;
+import com.eden.api.RetrofitClient;
+import com.eden.api.dto.CartResponse;
+import com.eden.api.services.CartService;
+import com.eden.model.Cart;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class BuyProduct extends AppCompatActivity {
     @Override
@@ -22,27 +38,53 @@ public class BuyProduct extends AppCompatActivity {
         setContentView(R.layout.activity_buy_product);
 
         TextView productTitle = findViewById(R.id.product_title);
-        TextView product_price = findViewById(R.id.product_price);
-        ImageView product_image = findViewById(R.id.product_image);
-        TextView product_description = findViewById(R.id.product_description);
-        TextView product_delivery = findViewById(R.id.product_delivery);
+        TextView productPrice = findViewById(R.id.product_price);
+        ImageView productImage = findViewById(R.id.product_image);
+        TextView productDescription = findViewById(R.id.product_description);
+        TextView productDelivery = findViewById(R.id.product_delivery);
         Button btnComprar = findViewById(R.id.button_buy_now);
-
+        Button btnAdcCart = findViewById(R.id.button_add_cart);
 
         Intent intent = getIntent();
+
+        downloadImageFromFirebase(this, productImage, "product_" + intent.getIntExtra("id", 0) + ".jpg");
+
         if (intent != null) {
             productTitle.setText(intent.getStringExtra("nome"));
-            product_price.setText("R$ " + intent.getStringExtra("valor"));
-            product_description.setText(intent.getStringExtra("descricao"));
-            product_delivery.setText(intent.getStringExtra("tipoEntrega"));
-        } else {
-            product_image.setImageResource(intent.getIntExtra("imagem", 0));
+            productPrice.setText(String.format("R$ %.2f", intent.getFloatExtra("valor", 0.0f)));
+            Log.d("valor", "valor: " + intent.getFloatExtra("valor", 0.0f));
+            productDescription.setText(intent.getStringExtra("descricao"));
+            productDelivery.setText(intent.getStringExtra("tipoEntrega"));
         }
 
         btnComprar.setOnClickListener(v -> {
             notificar();
         });
 
+        btnAdcCart.setOnClickListener(v -> {
+            addCart(intent.getIntExtra("id", 0));
+        });
+
+    }
+
+    private void getProduto(int id) {
+//        Call<Product>
+    }
+
+    private void addCart(int productId) {
+        CartService cartService = RetrofitClient.getClient().create(CartService.class);
+        Call<CartResponse> call = cartService.registerCart(new Cart(currentUser.getId(), productId));
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                // TODO: Tratar exceção
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable throwable) {
+
+            }
+        });
     }
 
     public void notificar() {

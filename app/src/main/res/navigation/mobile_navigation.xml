@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="com.eden.FragmentHome"
+        android:name="com.eden.ui.fragments.FragmentHome"
         android:label="home"
         tools:layout="@layout/fragment_home"  />
     <fragment
         android:id="@+id/forum"
-        android:name="com.eden.FragmentForum"
+        android:name="com.eden.ui.fragments.FragmentForum"
         android:label="fragment_forum"
         tools:layout="@layout/fragment_forum" />
 

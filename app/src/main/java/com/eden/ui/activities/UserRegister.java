@@ -1,6 +1,4 @@
-package com.eden;
-
-import static com.eden.utils.AndroidUtil.getToken;
+package com.eden.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,14 +7,15 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.UserService;
-import com.eden.api.dto.UserSchema;
 import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
@@ -31,8 +30,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserRegister extends AppCompatActivity {
 
@@ -48,7 +45,7 @@ public class UserRegister extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.textInput_email);
         EditText passwordEditText = findViewById(R.id.textInput_senha);
         ImageView passwordToggle = findViewById(R.id.register_password_toggle);
-        TextView btnRegister = findViewById(R.id.btn_cadastro);
+        Button btnRegister = findViewById(R.id.btn_cadastro);
         TextView btnLogin = findViewById(R.id.textView_login);
 
         // Setting underline text

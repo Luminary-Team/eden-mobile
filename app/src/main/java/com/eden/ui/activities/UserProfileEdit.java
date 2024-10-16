@@ -1,9 +1,9 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
-import static com.eden.utils.AndroidUtil.getUser;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,16 +21,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
-import com.eden.model.User;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.FirebaseUserUtil;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,16 +81,19 @@ public class UserProfileEdit extends AppCompatActivity {
 
             // Verifies if profile picture was selected
             if (isProfilePicSelected) {
-                AndroidUtil.uploadImageToFirebase(finalSelectedImageUri);
+                AndroidUtil.uploadProfilePicToFirebase(finalSelectedImageUri);
                 Log.d("LOG", "onActivityResult: deu bom");
                 Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
                 isProfilePicSelected = false;
             }
 
-
             // Calling api (CALL ME MAYBE)
             saveUser(updatedUser);
         });
+
+//        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+//        }
 
         // Choosing perfil photo
         profilePic.setOnClickListener(v -> {
@@ -120,13 +124,42 @@ public class UserProfileEdit extends AppCompatActivity {
                         // Defines user has selected an image
                         isProfilePicSelected = true;
 
+
+                        // Saves image to gallery if user has taken a photo
+                        if (data.getExtras() != null && data.getExtras().containsKey("android.intent.extras.CAMERA_IMAGE")) {
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "perfil_" + System.currentTimeMillis());
+                            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
+
+                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+                            try {
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                                OutputStream outputStream = getContentResolver().openOutputStream(uri);
+
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+                                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                    outputStream.write(buffer, 0, bytesRead);
+                                }
+
+                                inputStream.close();
+                                outputStream.close();
+
+                                Toast.makeText(UserProfileEdit.this, "Foto salva na galeria!", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         selectedImageUri = data.getData();
                         Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);
                     }
                 }
         );
 
-        AndroidUtil.downloadImageFromFirebase(this, profilePic);
+        AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
 
         // Logout
         (findViewById(R.id.textView_logout)).setOnClickListener(v -> {

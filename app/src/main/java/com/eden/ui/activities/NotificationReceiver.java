@@ -1,4 +1,4 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

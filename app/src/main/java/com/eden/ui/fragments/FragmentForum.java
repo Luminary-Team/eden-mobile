@@ -1,4 +1,4 @@
-package com.eden;
+package com.eden.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eden.R;
 import com.eden.model.Post;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class FragmentForum extends Fragment {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.post_forum, parent, false);
+                        .inflate(R.layout.post_forum_layout, parent, false);
                 return new RecyclerView.ViewHolder(view) {};
             }
 

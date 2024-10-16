@@ -1,8 +1,10 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageButton;
+
+import com.eden.R;
 
 public class CartActivity extends AppCompatActivity {
     ImageButton backBtn;

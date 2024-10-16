@@ -2,6 +2,11 @@
     <string name="app_name">Eden</string>
     <string name="open">Open Navigation Drawer</string>
     <string name="close">Close Navigation Drawer</string>
+    <string-array name="spinner">
+        <item>Novo</item>
+        <item>Semi-Novo</item>
+        <item>Usado</item>
+    </string-array>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

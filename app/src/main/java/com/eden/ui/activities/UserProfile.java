@@ -1,28 +1,21 @@
-package com.eden;
+package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.eden.adapter.ProductAdapter;
+import com.eden.R;
 import com.eden.adapter.ViewPagerAdapter;
 import com.eden.utils.AndroidUtil;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -85,7 +78,7 @@ public class UserProfile extends AppCompatActivity {
 
         // Setting perfil photo
         profilePic = findViewById(R.id.profile_pic);
-        AndroidUtil.downloadImageFromFirebase(this, profilePic);
+        AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
 
         headerProfile.setOnClickListener(v -> {
             openActivity(this, UserProfileEdit.class);
