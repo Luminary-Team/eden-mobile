@@ -1,20 +1,20 @@
 package com.eden.model;
 
 public class Cart {
-    private int userId;
+    private int cartId;
     private int productId;
 
-    public Cart(int userId, int productId) {
-        this.userId = userId;
+    public Cart(int cartId, int productId) {
+        this.cartId = cartId;
         this.productId = productId;
     }
 
     public int getUserId() {
-        return userId;
+        return cartId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserId(int cartId) {
+        this.cartId = cartId;
     }
 
     public int getProductId() {

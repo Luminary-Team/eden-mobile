@@ -63,7 +63,7 @@ public class FragmentHome extends Fragment {
                     handler.removeCallbacks(runnable);
                 }
                 runnable = () -> {
-                    String query = "%25on%25";
+                    String query = "%25" + s + "%25";
                     if (s != null) {
                         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
                         Call<List<Product>> call = productService.getProductByTitle(query);

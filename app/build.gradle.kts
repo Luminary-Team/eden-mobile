@@ -53,6 +53,8 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    implementation(libs.androidx.cardview)
+
     implementation(libs.material)
     implementation(libs.glide) // Glide
 

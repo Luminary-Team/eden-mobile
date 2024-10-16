@@ -1,0 +1,7 @@
+package com.eden.model;
+
+public class UsageTime {
+    int id;
+    String time;
+    float discountPercentage;
+}

@@ -46,8 +46,7 @@ public class CartActivity extends AppCompatActivity {
 
         // Getting cart items and display them
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
-        // TODO: Entender pq não existe nada no current user
-        Call<List<CartResponse>> call = cartService.getCartItemsByCartId(currentUser.getId());
+        Call<List<CartResponse>> call = cartService.getCartItemsByCartId(3);
 
         call.enqueue(new Callback<List<CartResponse>>() {
             @Override

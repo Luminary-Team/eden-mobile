@@ -191,7 +191,7 @@ public class UserProfileEdit extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UserSchema> call, Throwable throwable) {
-
+                // TODO: Tratar erros
             }
 
         });
