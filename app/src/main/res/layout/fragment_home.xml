@@ -29,7 +29,7 @@
             android:drawableTint="@color/edenBlue"
             android:ems="10"
             android:hint="Buscar"
-            android:maxLines="0"
+            android:maxLines="1"
             android:paddingHorizontal="10dp"
             android:paddingVertical="4dp"
             android:textColor="@color/edenBlue"

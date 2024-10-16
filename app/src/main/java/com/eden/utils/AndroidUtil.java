@@ -79,7 +79,7 @@ public class AndroidUtil {
                         // Use the download URL to display the image
                         Glide.with(context)
                                 .load(uri)
-                                .override(300, 300) // Resize the image to 300x300 pixels
+                                .override(500, 500) // Resize the image to 300x300 pixels
                                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
                                 .into(imageView);
                     } else {
