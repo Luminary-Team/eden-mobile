@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.api.RetrofitClient;
+import com.eden.api.dto.UserEdit;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.model.User;
@@ -73,10 +74,11 @@ public class UserProfileEdit extends AppCompatActivity {
             String updatedPhone = editPhone.getText().toString();
 
             // Setting new values to user
-            UserSchema updatedUser = new UserSchema();
+            UserEdit updatedUser = new UserEdit();
             updatedUser.setName(updatedName);
             updatedUser.setUserName(updatedUserName);
             updatedUser.setCellphone(updatedPhone);
+            updatedUser.setCpf(currentUser.getCpf());
 
             // Verifies if profile picture was selected
             if (isProfilePicSelected) {
@@ -85,7 +87,6 @@ public class UserProfileEdit extends AppCompatActivity {
                 Toast.makeText(this, "Foto atualizada!", Toast.LENGTH_SHORT).show();
                 isProfilePicSelected = false;
             }
-
 
             // Calling api (CALL ME MAYBE)
             saveUser(updatedUser);
@@ -140,7 +141,7 @@ public class UserProfileEdit extends AppCompatActivity {
 
     }
 
-    public void saveUser(UserSchema newUser) {
+    public void saveUser(UserEdit newUser) {
 
         // Updating user
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);

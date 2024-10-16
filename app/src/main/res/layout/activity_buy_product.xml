@@ -14,6 +14,7 @@
             android:id="@+id/product_image"
             android:layout_width="match_parent"
             android:layout_height="270dp"
+            android:backgroundTint="@color/lightGrey"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

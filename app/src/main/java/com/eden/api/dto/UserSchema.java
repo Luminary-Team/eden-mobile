@@ -1,8 +1,6 @@
 package com.eden.api.dto;
 
-import java.io.Serializable;
-
-public class UserSchema implements Serializable {
+public class UserSchema {
     private int id;
     private String cpf;
     private String name;
