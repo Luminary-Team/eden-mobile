@@ -1,12 +1,10 @@
 package com.eden.utils;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.eden.MainActivity;
+import com.eden.ui.activities.MainActivity;
 import com.eden.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +48,7 @@ public class FirebaseUserUtil {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT).show();
                                 openActivity(context, MainActivity.class);
+                                ((Activity) context).finish();
                             } else {
                                 // Treatment for the email text field
                                 emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
@@ -117,6 +116,7 @@ public class FirebaseUserUtil {
                         if (task.isSuccessful()) {
                             // Registro bem-sucedido
                             FirebaseUser user = mAuth.getCurrentUser();
+                            ((Activity) context).finish();
                             Toast.makeText(context, "Usuário cadastrado no firebase com sucesso!", Toast.LENGTH_SHORT).show();
                         } else {
                             // Caso de falha

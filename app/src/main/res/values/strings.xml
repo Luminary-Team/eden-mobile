@@ -2,6 +2,12 @@
     <string name="app_name">Eden</string>
     <string name="open">Open Navigation Drawer</string>
     <string name="close">Close Navigation Drawer</string>
+    <string-array name="spinner">
+        <item>Novo</item>
+        <item>Semi-Novo</item>
+        <item>Usado</item>
+    </string-array>
+    <string name="price_text">Apenas <font color="#0000ff"><b>R$ 15,00</b></font> por 30 dias</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -98,4 +104,5 @@
     <string name="publicacoes">Publicações</string>
     <string name="title_activity_maps_teste">MapsActivityTeste</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sollicitudin ante molestie eros lobortis viverra. Aenean commodo est dui, a luctus justo laoreet id. Duis mi mauris, blandit a sollicitudin id, maximus eu mauris. Integer vel metus et nunc semper faucibus at sed est. Proin in rhoncus libero. Nunc rhoncus, mauris quis sollicitudin bibendum, quam lorem molestie eros, congue blandit libero augue sed risus. Aenean luctus tortor a nunc laoreet fermentum. Suspendisse vehicula, ante sit amet tincidunt euismod, risus nisl lacinia magna, id porta mi leo congue elit. Ut erat leo, volutpat vitae sapien sit amet, pulvinar pretium nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse ultrices orci diam, quis dictum est mattis suscipit. Nunc ultricies, magna ut tristique volutpat, dolor dolor viverra libero, nec blandit ligula turpis eu tellus. Nullam dictum felis id tellus vulputate condimentum. Integer facilisis viverra dui.</string>
+    <string name="turbinacao_anuncios">Com a \"Turbinacao de Anúncios\", seu produto ganha destaque e maior prioridade nas buscas, atraindo mais olhares de potenciais compradores.</string>
 </resources>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Produto Turbinado"
+        android:textSize="24sp"
+        android:textColor="@color/edenBlue"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txtDescricao"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTitulo"
+        android:layout_marginTop="8dp"
+        android:text="Um plano premium em nosso aplicativo oferece benefícios excepcionais para vendedores que desejam aumentar sua visibilidade e vendas."
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txtPreco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/price_text"
+        android:textSize="18sp"
+        android:layout_below="@id/txtDescricao"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/txtBeneficios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Benefícios"
+        android:textSize="24sp"
+        android:textColor="@color/edenBlue"
+        android:textStyle="bold"
+        android:layout_below="@id/txtPreco"
+        android:layout_marginTop="24dp"/>
+
+    <ImageView
+        android:id="@+id/imgBeneficio1"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_below="@id/txtBeneficios"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/fire_icon"
+        app:tint="@color/edenBlue"/>
+
+    <TextView
+        android:id="@+id/txtBeneficio1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/turbinacao_anuncios"
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/imgBeneficio1"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+
+    <ImageView
+        android:id="@+id/imgBeneficio2"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_below="@id/txtBeneficio1"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/verified_icon"
+        app:tint="@color/edenBlue"/>
+
+    <TextView
+        android:id="@+id/txtBeneficio2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opte pelo plano premium e veja seus anúncios se destacarem no mercado, garantindo uma experiência de venda mais eficaz e lucrativa."
+        android:layout_marginHorizontal="30dp"
+        android:layout_below="@id/imgBeneficio2"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnComprar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtBeneficio2"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/button_blue"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="Prosseguir"/>
+
+
+</RelativeLayout>

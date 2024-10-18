@@ -1,6 +1,8 @@
 package com.eden.api.dto;
 
-public class UserSchema {
+import java.io.Serializable;
+
+public class UserSchema implements Serializable {
     private int id;
     private String cpf;
     private String name;
@@ -9,8 +11,13 @@ public class UserSchema {
     private float rating;
     private String email;
     private String cellphone;
+    private int cartId;
 
-    public UserSchema(int id, String cpf, String name, String userName, String password, float rating, String email, String cellphone) {
+    public UserSchema() {
+    }
+
+    public UserSchema(int id, String cpf, String name, String userName,
+                      String password, float rating, String email, String cellphone, int cartId) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;
@@ -19,6 +26,78 @@ public class UserSchema {
         this.rating = rating;
         this.email = email;
         this.cellphone = cellphone;
+        this.cartId = cartId;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCellphone() {
+        return cellphone;
+    }
+
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
+    }
 }

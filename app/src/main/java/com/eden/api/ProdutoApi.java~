@@ -1,0 +1,10 @@
+package com.eden.api;
+
+import com.eden.model.Product;
+
+import retrofit2.http.GET;
+
+public interface ProdutoApi {
+    @GET("products")
+    Call<List<Product>> getProducts();
+}

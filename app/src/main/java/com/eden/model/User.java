@@ -19,6 +19,10 @@ public class User {
         this.cellphone = cellphone;
     }
 
+    public User() {
+
+    }
+
     public String getCpf() {
         return cpf;
     }
