@@ -17,15 +17,24 @@
 
 <h2>📄 Telas Criadas</h2>
 <ul>
+  <li><strong>Articles</strong></li>
+  <li><strong>BoostedProduct</strong></li>
+  <li><strong>BuyProduct</strong></li>
+  <li><strong>Cart</strong></li>
+  <li><strong>CreditCardInfo</strong></li>
+  <li><strong>Favorities</strong></li>
   <li><strong>Main</strong></li>
-  <li><strong>Splash Screen</strong></li>
-  <li><strong>User Login</strong></li>
-  <li><strong>User Profile</strong></li>
-  <li><strong>User Cadastro</strong></li>
-  <li><strong>Cadastrar Produto</strong></li>
-  <li><strong>Buy Product</strong></li>
-  <li><strong>Carrinho</strong></li>
-  <li><strong>Ponto Coleta</strong></li>
+  <li><strong>Maps</strong></li>
+  <li><strong>NotificationReceiver</strong></li>
+  <li><strong>PontoColeta</strong></li>
+  <li><strong>PostsProfileTab</strong></li>
+  <li><strong>ProductsProfileTab</strong></li>
+  <li><strong>RegisterProduct</strong></li>
+  <li><strong>SplashScreen</strong></li>
+  <li><strong>UserLogin</strong></li>
+  <li><strong>UserProfile</strong></li>
+  <li><strong>UserProfileEdit</strong></li>
+  <li><strong>UserRegister</strong></li>
 </ul>
 
 <hr>
