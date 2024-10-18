@@ -1,5 +1,6 @@
 package com.eden.ui.activities;
 
+import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.eden.R;
 import com.eden.ui.fragments.FragmentForum;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ShapeableImageView profilePic;
     private ImageView btnSidebar;
+    private TextView name, username;
 
     @Override
     protected void onStart() {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 // Setting the perfil photo
                 AndroidUtil.downloadProfilePicFromFirebase(this, btnSidebar);
                 AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
+
             } else {
                 Log.d("login", "Current User não encontrado: " + auth.getCurrentUser());
             }
@@ -64,12 +68,18 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         profilePic = headerView.findViewById(R.id.profile_pic);
         btnSidebar = findViewById(R.id.btnSidebar);
+        name = headerView.findViewById(R.id.profile_name);
+        username = headerView.findViewById(R.id.profile_username);
 
         // Fragmento inicial
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
 
         // Botão do sidebar
         btnSidebar.setOnClickListener(v -> {
+            // Setting name and username on the sidebar header
+            name.setText(currentUser.getName());
+            username.setText(currentUser.getUserName());
+
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START);
             } else {
@@ -83,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             if (menuItem.getItemId() == R.id.nav_favoritos)
                 openActivity(this, FavoritesActivity.class);
             if (menuItem.getItemId() == R.id.nav_pontos)
-                openActivity(this, MapsActivityTeste.class);
+                openActivity(this, EcoPoint.class);
             if (menuItem.getItemId() == R.id.nav_artigos)
                 openActivity(this, ArticlesActivity.class);
 

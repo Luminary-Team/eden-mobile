@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    tools:context=".ui.activities.CreditCardInfo">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -49,8 +51,10 @@
             android:layout_marginTop="16dp"
             android:hint="Nome completo"
             android:textColorHint="@color/edenBlue"
+            android:inputType="textCapWords"
             android:drawableStart="@drawable/profile_fulfilled_icon"
             android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
             android:background="@drawable/edit_text_default_background"
             android:padding="16dp"
             android:textSize="16sp" />
@@ -63,9 +67,12 @@
             android:layout_marginTop="16dp"
             android:hint="Número do cartão"
             android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="19"
             android:background="@drawable/edit_text_default_background"
             android:drawableStart="@drawable/credit_icon"
             android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
             android:padding="16dp"
             android:textSize="16sp" />
 
@@ -77,6 +84,8 @@
             android:layout_marginTop="16dp"
             android:hint="CVV"
             android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="3"
             android:background="@drawable/edit_text_default_background"
             android:padding="16dp"
             android:textSize="16sp" />
@@ -89,8 +98,10 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
-            android:textColorHint="@color/edenBlue"
             android:hint="Data de validade"
+            android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="5"
             android:background="@drawable/edit_text_default_background"
             android:padding="16dp"
             android:textSize="16sp" />
@@ -125,9 +136,12 @@
             android:layout_marginTop="16dp"
             android:hint="CEP"
             android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="9"
             android:background="@drawable/edit_text_default_background"
             android:drawableStart="@drawable/location_icon"
             android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
             android:padding="16dp"
             android:textSize="16sp" />
 

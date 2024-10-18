@@ -48,13 +48,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDeyZcu09KkXC8gS1Sumyzcx83p0d0o8BY" />
-
         <activity
-            android:name=".ui.activities.MapsActivityTeste"
-            android:exported="false"
-            android:label="@string/title_activity_maps_teste" />
-        <activity
-            android:name=".ui.activities.PontoColeta"
+            android:name=".ui.activities.EcoPoint"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

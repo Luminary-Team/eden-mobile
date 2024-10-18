@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.firebase.storage)
     implementation(libs.camera.core)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -74,5 +75,7 @@ dependencies {
 
     // Google Material
     implementation(libs.material.v160)
+
+    implementation(libs.libphonenumber)
 
 }

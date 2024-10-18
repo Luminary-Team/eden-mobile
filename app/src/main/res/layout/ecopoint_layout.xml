@@ -3,16 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:layout_marginHorizontal="40dp"
     android:layout_marginTop="20dp"
     app:cardCornerRadius="16dp"
-    android:background="@color/edenBlue"
     >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp">
+        android:padding="20dp"
+        android:background="@drawable/ecopoint_shape">
 
         <TextView
             android:id="@+id/txtEcoPonto"

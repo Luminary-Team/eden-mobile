@@ -29,21 +29,6 @@ public class SplashScreen extends AppCompatActivity {
                 }
                 finish();
             }
-        }, 2500);
+        }, 2000);
     }
-
- //   @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Verifica se o usuário está logado
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if (currentUser != null) {
-//            Log.d("SPLASH", "Não logado");
-//            // Se o usuário está logado, navegue para a tela principal
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//        Log.d("SPLASH", "Não logado");
-//    }
 }

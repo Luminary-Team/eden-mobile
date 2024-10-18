@@ -142,11 +142,10 @@ public class AndroidUtil {
         });
     }
 
-    public static CompletableFuture<UserSchema> getUser() {
+    public static void getUser() {
         UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Call<UserSchema> call = service.getParam(email);
-        CompletableFuture<UserSchema> future = new CompletableFuture<>();
 
         call.enqueue(new Callback<UserSchema>() {
             @Override
@@ -154,14 +153,12 @@ public class AndroidUtil {
                 if (response.isSuccessful() && response.body() != null) {
                     currentUser = response.body();
                     UserSchema user = response.body();
-                    future.complete(user);
                     Log.d("USER", "User: " + currentUser.toString());
                 } else {
                     try {
                         Log.d("ErrorBody", response.errorBody().string());
-                        future.completeExceptionally(new Throwable("Failed to get user"));
                     } catch (IOException e) {
-                        future.completeExceptionally(e);
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -169,10 +166,8 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<UserSchema> call, Throwable throwable) {
                 Log.d("CHECKPOINT", throwable.getMessage());
-                future.completeExceptionally(throwable);
             }
         });
-        return future;
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

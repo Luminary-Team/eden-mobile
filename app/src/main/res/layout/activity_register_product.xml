@@ -71,23 +71,24 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_corner_shape"
             android:hint="Preço"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:padding="10dp"
             android:textSize="15sp" />
 
         <EditText
             android:id="@+id/editText_product_description"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/editText_product_price"
-            android:drawableStart="@drawable/description_icon"
-            android:drawableTint="@color/edenBlue"
-            android:drawablePadding="10dp"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
             android:background="@drawable/rounded_corner_shape"
-            android:inputType="text|textEmailAddress"
+            android:drawableStart="@drawable/description_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/edenBlue"
             android:hint="Descrição"
+            android:inputType="textCapSentences"
+            android:padding="10dp"
+            android:singleLine="false"
             android:textSize="15sp" />
 
         <Spinner
