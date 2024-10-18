@@ -19,5 +19,4 @@ public interface CartService {
     @POST("/cart/register")
         Call<CartResponse> registerCart(@Body Cart cart);
 
-
 }

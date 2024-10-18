@@ -24,7 +24,7 @@
         android:backgroundTint="@color/lightGrey"
         android:foreground="@drawable/rounded_thick_border_image_shape"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/arredondar"
+        app:shapeAppearanceOverlay="@style/to_circle"
         tools:srcCompat="@tools:sample/avatars" />
 
     <EditText

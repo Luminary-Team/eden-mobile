@@ -39,6 +39,7 @@ public class UserProductAdapter extends RecyclerView.Adapter<UserProductAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull UserProductAdapter.ViewHolderUserProduto holder, int position) {
+        Log.d("Hellow", "Position: " + position);
         if (userProducts != null) {
             Log.d("ProductAdapter", "Position: " + position);
             Product product = userProducts.get(position);

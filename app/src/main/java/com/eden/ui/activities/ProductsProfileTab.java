@@ -74,6 +74,8 @@ public class ProductsProfileTab extends Fragment {
             }
         });
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         return view;
     }
 }

@@ -1,6 +1,7 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.openActivity;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -23,7 +24,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.R;
 import com.eden.api.RetrofitClient;
-import com.eden.api.dto.UserEdit;
+import com.eden.api.dto.UserEditRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.utils.AndroidUtil;
@@ -75,7 +76,7 @@ public class UserProfileEdit extends AppCompatActivity {
             String updatedPhone = editPhone.getText().toString();
 
             // Setting new values to user
-            UserEdit updatedUser = new UserEdit();
+            UserEditRequest updatedUser = new UserEditRequest();
             updatedUser.setName(updatedName);
             updatedUser.setUserName(updatedUserName);
             updatedUser.setCellphone(updatedPhone);
@@ -112,30 +113,28 @@ public class UserProfileEdit extends AppCompatActivity {
         // Changing profile picture and uploading to firebase
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    // TODO : Salvar na galeria
 
                     Intent data = result.getData();
-                    if(result.getResultCode() == Activity.RESULT_OK &&
-                            data!=null && data.getData()!=null) {
+                    if (result.getResultCode() == Activity.RESULT_OK &&
+                            data != null && data.getData() != null) {
 
                         Uri selectedImageUri = data.getData();
                         profilePic.setImageURI(selectedImageUri);
 
                         finalSelectedImageUri = selectedImageUri;
 
-                        // Defines user has selected an image
+                        // Define que o usuário selecionou uma imagem
                         isProfilePicSelected = true;
 
+                        // Tentar salvar a imagem na galeria
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "perfil_" + System.currentTimeMillis());
+                        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                        contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
 
-                        // Saves image to gallery if user has taken a photo
-                        if (data.getExtras() != null && data.getExtras().containsKey("android.intent.extras.CAMERA_IMAGE")) {
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "perfil_" + System.currentTimeMillis());
-                            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
+                        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
-                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
+                        if (uri != null) {
                             try {
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
                                 OutputStream outputStream = getContentResolver().openOutputStream(uri);
@@ -152,10 +151,13 @@ public class UserProfileEdit extends AppCompatActivity {
                                 Toast.makeText(UserProfileEdit.this, "Foto salva na galeria!", Toast.LENGTH_SHORT).show();
                             } catch (IOException e) {
                                 e.printStackTrace();
+                                Toast.makeText(UserProfileEdit.this, "Falha ao salvar a foto!", Toast.LENGTH_SHORT).show();
                             }
+                        } else {
+                            Toast.makeText(UserProfileEdit.this, "Falha ao inserir no MediaStore!", Toast.LENGTH_SHORT).show();
                         }
 
-                        selectedImageUri = data.getData();
+                        // Exibe a imagem no perfil
                         Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(profilePic);
                     }
                 }
@@ -171,11 +173,14 @@ public class UserProfileEdit extends AppCompatActivity {
             startActivity(intent);
         });
 
-        (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
+        (findViewById(R.id.back_btn)).setOnClickListener(v -> {
+            openActivity(this, UserProfile.class);
+            finish();
+        });
 
     }
 
-    public void saveUser(UserEdit newUser) {
+    public void saveUser(UserEditRequest newUser) {
 
         // Updating user
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);

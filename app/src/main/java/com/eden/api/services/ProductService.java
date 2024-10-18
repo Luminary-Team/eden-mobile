@@ -17,7 +17,7 @@ public interface ProductService {
     Call<List<Product>> getAllProducts();
     @GET("/product/getByTitle")
     Call<List<Product>> getProductByTitle(@Query("title") String title);
-    @POST("/product/getByUserId/{id}")
+    @GET("/product/getByUserId/{id}")
     Call<List<Product>> getProductsByUserId(@Path("id") int id);
     @POST("/product/register")
     Call<Product> registerProduct(@Body ProductRequest productRequest);

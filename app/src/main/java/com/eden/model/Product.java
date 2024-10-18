@@ -1,9 +1,5 @@
 package com.eden.model;
 
-import com.eden.api.dto.ConditionType;
-import com.eden.api.dto.UsageTime;
-import com.eden.api.dto.UserSchema;
-
 public class Product {
     private int id;
     private int usageTimeId;

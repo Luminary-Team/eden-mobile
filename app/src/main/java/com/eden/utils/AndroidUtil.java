@@ -80,6 +80,28 @@ public class AndroidUtil {
                         Glide.with(context)
                                 .load(uri)
                                 .override(500, 500) // Resize the image to 300x300 pixels
+                                .into(imageView);
+                    } else {
+                        Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                });
+    }
+
+    public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
+        // Create reference to the image
+        StorageReference imageRef = storageRef.child(imagePath);
+
+        // Download image from Firebase Storage
+        imageRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    if (context instanceof Activity && !((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        Log.d("CHECKPOINT", "Download URL: " + uri.toString());
+                        // Use the download URL to display the image
+                        Glide.with(context)
+                                .load(uri)
+                                .override(500, 500) // Resize the image to 300x300 pixels
                                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
                                 .into(imageView);
                     } else {
