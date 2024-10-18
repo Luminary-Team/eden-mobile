@@ -27,11 +27,10 @@
             android:drawableStart="@drawable/search_icon"
             android:drawablePadding="4dp"
             android:drawableTint="@color/edenBlue"
-            android:ems="10"
             android:hint="Buscar"
-            android:maxLines="1"
             android:paddingHorizontal="10dp"
             android:paddingVertical="4dp"
+            android:singleLine="true"
             android:textColor="@color/edenBlue"
             android:textColorHint="@color/edenBlue" />
 

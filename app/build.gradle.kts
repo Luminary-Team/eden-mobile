@@ -75,4 +75,6 @@ dependencies {
     // Google Material
     implementation(libs.material.v160)
 
+    implementation(libs.libphonenumber)
+
 }

@@ -86,7 +86,7 @@
                 android:layout_below="@id/textInput_numero"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginTop="10dp"
-                android:maxLength="11"
+                android:maxLength="14"
                 android:background="@drawable/rounded_corner_shape"
                 android:drawableStart="@drawable/cpf_icon"
                 android:drawablePadding="9dp"

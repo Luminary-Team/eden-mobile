@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -98,6 +100,83 @@ public class UserRegister extends AppCompatActivity {
             }
         });
 
+        // Formatar Telefone
+        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                String phone = s.toString();
+                phone = phone.replaceAll("[^0-9]", "");
+
+                if (!phone.isEmpty()) {
+                    if (phone.length() > 2) {
+                        if (phone.length() <= 7) {
+                            phone = "(" + phone.substring(0, 2) + ") " + phone.substring(2);
+                        } else if (phone.length() <= 10) {
+                            phone = "(" + phone.substring(0, 2) + ") " + phone.substring(2, 7) + "-" + phone.substring(7);
+                        } else if (phone.length() == 11) {
+                            phone = "(" + phone.substring(0, 2) + ") " + phone.substring(2, 7) + "-" + phone.substring(7, 10) + " " + phone.substring(10);
+                        }
+                    }
+
+                    if (!phone.equals(s.toString())) {
+                        phoneNumberEditText.removeTextChangedListener(this);
+                        phoneNumberEditText.setText(phone);
+                        phoneNumberEditText.setSelection(phone.length());
+                        phoneNumberEditText.addTextChangedListener(this);
+                    }
+                }
+            }
+        });
+
+        // Formatar CPF
+        cpfEditText.addTextChangedListener(new TextWatcher() {
+            private String current = "";
+            private int cursorPosition = 0;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                cursorPosition = start; // Armazena a posição do cursor antes da mudança
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Não faz nada durante a mudança
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String cpf = s.toString();
+                cpf = cpf.replaceAll("[^0-9]", "");
+
+                if (!cpf.isEmpty()) {
+                    if (cpf.length() >= 3) {
+                        if (cpf.length() <= 6) {
+                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3);
+                        } else if (cpf.length() <= 9) {
+                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6);
+                        } else if (cpf.length() <= 11) {
+                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
+                        }
+                    }
+
+                    if (!cpf.equals(s.toString())) {
+                        cpfEditText.removeTextChangedListener(this);
+                        cpfEditText.setText(cpf);
+                        cpfEditText.setSelection(cpf.length());
+                        cpfEditText.addTextChangedListener(this);
+                    }
+                }
+            }
+        });
 
 
     }

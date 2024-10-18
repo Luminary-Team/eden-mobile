@@ -9,8 +9,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +58,9 @@ public class UserProfileEdit extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile_edit);
 
         // Setting Values
-        TextView editName = findViewById(R.id.editText_full_name);
-        TextView editUserName = findViewById(R.id.editText_username);
-        TextView editPhone = findViewById(R.id.editText_phone);
+        EditText editName = findViewById(R.id.editText_full_name);
+        EditText editUserName = findViewById(R.id.editText_username);
+        EditText editPhone = findViewById(R.id.editText_phone);
 
         profilePic = findViewById(R.id.profile_pic);
         btnSave = findViewById(R.id.btn_save_profile);
@@ -162,6 +165,46 @@ public class UserProfileEdit extends AppCompatActivity {
                     }
                 }
         );
+
+        // Format phoneNumber
+        editPhone.addTextChangedListener(new TextWatcher() {
+            private String current = "";
+            private int cursorPosition = 0;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                cursorPosition = start; // Armazena a posição do cursor antes da mudança
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Não faz nada durante a mudança
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(current)) {
+                    String clean = s.toString().replaceAll("[^\\d]", ""); // Remove caracteres não numéricos
+                    StringBuilder formatted = new StringBuilder();
+
+                    if (clean.length() > 0) {
+                        formatted.append("(").append(clean.substring(0, Math.min(2, clean.length()))); // Adiciona o DDD
+                    }
+                    if (clean.length() > 2) {
+                        formatted.append(") ");
+                        formatted.append(clean.substring(2, Math.min(7, clean.length()))); // Adiciona os primeiros 5 dígitos
+                    }
+                    if (clean.length() >= 7) {
+                        formatted.append("-");
+                        formatted.append(clean.substring(7, Math.min(11, clean.length()))); // Adiciona os últimos 4 dígitos
+                    }
+
+                    current = formatted.toString();
+                    editPhone.setText(current);
+                    editPhone.setSelection(Math.min(current.length(), cursorPosition + 1)); // Move o cursor para a posição correta
+                }
+            }
+        });
 
         AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
 
