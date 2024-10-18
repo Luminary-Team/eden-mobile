@@ -1,6 +1,7 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,6 +37,7 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         ImageButton backBtn = findViewById(R.id.back_btn);
+        Button cartBtn = findViewById(R.id.btn_cart);
         ProgressBar progressBar = findViewById(R.id.products_progressBar);
         RecyclerView recyclerView = findViewById(R.id.cart_recyclerView);
         RelativeLayout emptyCart = findViewById(R.id.empty_cart);
@@ -44,20 +47,21 @@ public class CartActivity extends AppCompatActivity {
 
         // Getting cart items and display them
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
-        // TODO: Entender pq não existe nada no current user
+
         Call<List<CartResponse>> call = cartService.getCartItemsByCartId(currentUser.getCartId());
 
         call.enqueue(new Callback<List<CartResponse>>() {
             @Override
             public void onResponse(Call<List<CartResponse>> call, Response<List<CartResponse>> response) {
                 progressBar.setVisibility(View.GONE);
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && !response.body().isEmpty()) {
                     // TODO: Tratar exceção
                     emptyCart.setVisibility(View.GONE);
                     cartResponses = response.body();
                     recyclerView.setAdapter(new CartAdapter(cartResponses));
-                }
-                if (response.body() == null) {
+
+                    cartBtn.setOnClickListener(v -> openActivity(CartActivity.this, CreditCardInfo.class));
+                } else {
                     emptyCart.setVisibility(View.VISIBLE);
                 }
             }
@@ -72,6 +76,8 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Setting up back button
-        backBtn.setOnClickListener(v -> finish());
+        backBtn.setOnClickListener(v -> {
+            finish();
+        });
     }
 }

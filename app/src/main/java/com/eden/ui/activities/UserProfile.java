@@ -71,8 +71,6 @@ public class UserProfile extends AppCompatActivity {
             rating.setRating(currentUser.getRating());
         }
 
-
-
         // Setting header
         RelativeLayout headerProfile = findViewById(R.id.header_profile);
 

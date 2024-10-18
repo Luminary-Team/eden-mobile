@@ -1,14 +1,14 @@
 package com.eden.api.dto;
 
-public class UserEdit {
+public class UserEditRequest {
     private String name;
     private String userName;
     private String cellphone;
     private String cpf;
 
-    public UserEdit() {}
+    public UserEditRequest() {}
 
-    public UserEdit(String name, String userName, String cellphone, String cpf) {
+    public UserEditRequest(String name, String userName, String cellphone, String cpf) {
         this.name = name;
         this.userName = userName;
         this.cellphone = cellphone;

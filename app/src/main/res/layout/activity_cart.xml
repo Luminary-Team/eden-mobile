@@ -60,8 +60,50 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@id/textView_cart"
+      android:layout_marginHorizontal="20dp"
       android:layout_marginTop="20dp"
       tools:listitem="@layout/product_view_layout"/>
+
+  <androidx.cardview.widget.CardView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@color/white"
+      app:cardElevation="20dp"
+      android:layout_alignParentBottom="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingHorizontal="40dp">
+
+      <TextView
+          android:id="@+id/textView_total"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:text="Total: R$ 0,00"
+          android:textColor="@color/edenBlue"
+          android:textStyle="bold"
+          />
+
+      <Button
+          android:id="@+id/btn_cart"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/textView_total"
+          android:layout_marginTop="16dp"
+          android:background="@drawable/button_blue"
+          android:text="Prosseguir"
+          android:textColor="@color/white"
+          android:textSize="20sp"
+          />
+
+    </RelativeLayout>
+
+
+  </androidx.cardview.widget.CardView>
 
   <ProgressBar
       android:id="@+id/products_progressBar"

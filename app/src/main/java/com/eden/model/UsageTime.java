@@ -1,4 +1,4 @@
-package com.eden.api.dto;
+package com.eden.model;
 
 public class UsageTime {
     private int id;

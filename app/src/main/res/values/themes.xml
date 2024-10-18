@@ -14,9 +14,18 @@
         <item name="android:indeterminateTint">@color/edenBlue</item>
     </style>
 
-    <style name="arredondar" parent="">
+    <style name="full_screen" parent="Base.Theme.Eden">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="to_circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="arrendar" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
     </style>
     
     <style name="Theme.Eden" parent="Base.Theme.Eden" />

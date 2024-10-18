@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="30dp"
     android:layout_marginVertical="15dp"
     app:cardBackgroundColor="@color/edenProductBlue"
     app:cardCornerRadius="20dp"
@@ -71,8 +70,15 @@
                 android:textSize="12sp"
                 />
 
-
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/btn_more"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/dots_icon" />
 
     </RelativeLayout>
 

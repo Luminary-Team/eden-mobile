@@ -42,7 +42,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="30dp"
-            app:shapeAppearance="@style/arredondar"
+            app:shapeAppearance="@style/to_circle"
             android:background="@drawable/camera_placeholder"
             android:scaleType="centerCrop" />
 
