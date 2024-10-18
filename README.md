@@ -32,6 +32,32 @@
 
 <h2>📂 Estrutura do Repositório</h2>
 <ul>
+  <li>java/com/eden</li>
+  <ul>
+    <li>adapater</li>
+    <li>api</li>
+    <ul>
+      <li>dto</li>
+      <li>services</li>
+    </ul>
+    <li>model</li>
+    <li>ui</li>
+    <ul>
+      <li>activities</li>
+      <li>fragments</li>
+    </ul>
+    <li>utils</li>
+  </ul>
+  <li>res</li>
+  <ul>
+    <li>drawable</li>
+    <li>layout</li>
+    <li>menu</li>
+    <li>mipmaps</li>
+    <li>navigation</li>
+    <li>value</li>
+    <li>xml</li>
+  </ul>
 </ul>
 
 <h2>📚 Sobre o Projeto</h2>
