@@ -64,7 +64,7 @@ public class UserRegister extends AppCompatActivity {
             // Verifies if none of the values are null
             if (!name.isEmpty() && !phoneNumber.isEmpty()
                     && !cpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                registerUser (name, cpf, phoneNumber, email, password);
+                registerUser(name, cpf, phoneNumber, email, password);
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
             }
