@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileEdit">
+    tools:context=".ui.activities.UserProfileEdit">
 
     <ImageView
         android:id="@+id/back_btn"
@@ -24,7 +24,7 @@
         android:backgroundTint="@color/lightGrey"
         android:foreground="@drawable/rounded_thick_border_image_shape"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/arredondar"
+        app:shapeAppearanceOverlay="@style/to_circle"
         tools:srcCompat="@tools:sample/avatars" />
 
     <EditText
@@ -38,6 +38,7 @@
         android:drawableStart="@drawable/pencil_icon"
         android:drawablePadding="10dp"
         android:drawableTint="@color/edenBlue"
+        android:inputType="textPersonName"
         android:hint="Nome completo"
         android:padding="10dp"
         android:textColorHint="@color/edenBlue"
@@ -70,6 +71,8 @@
         android:drawableStart="@drawable/telephone_icon"
         android:drawablePadding="10dp"
         android:drawableTint="@color/edenBlue"
+        android:maxLength="11"
+        android:inputType="phone"
         android:hint="Telefone"
         android:padding="10dp"
         android:textColorHint="@color/edenBlue"

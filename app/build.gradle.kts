@@ -48,9 +48,12 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.activity)
     implementation(libs.firebase.storage)
+    implementation(libs.camera.core)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(libs.androidx.cardview)
 
     implementation(libs.material)
     implementation(libs.glide) // Glide
@@ -68,4 +71,8 @@ dependencies {
 
     // ImagePicker by Dhaval2404
     implementation(libs.imagepicker)
+
+    // Google Material
+    implementation(libs.material.v160)
+
 }

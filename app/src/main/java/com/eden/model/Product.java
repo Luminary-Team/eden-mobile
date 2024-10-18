@@ -1,70 +1,57 @@
 package com.eden.model;
 
 public class Product {
-    private long id;
-    private long conditionTypeId;
-    private long usersId;
-    private String name;
-    private float value;
+    private int id;
+    private int usageTimeId;
+    private int conditionTypeId;
+    private int userId;
+    private String title;
     private String description;
-    private String urlImage;
-    private float avaliation;
-    private int stock;
+    private float price;
+    private float maxPrice;
+    private String senderZipCode;
+    private float rating;
 
-    public Product() {
+    public Product() { }
 
-    }
-
-    public Product(long id, long conditionTypeId, long usersId, String name, float value, String description, String urlImage, float avaliation, int stock) {
-        this.id = id;
-        this.conditionTypeId = conditionTypeId;
-        this.usersId = usersId;
-        this.name = name;
-        this.value = value;
-        this.description = description;
-        this.urlImage = urlImage;
-        this.avaliation = avaliation;
-        this.stock = stock;
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getConditionTypeId() {
+    public int getUsageTimeId() {
+        return usageTimeId;
+    }
+
+    public void setUsageTimeId(int usageTimeId) {
+        this.usageTimeId = usageTimeId;
+    }
+
+    public int getConditionTypeId() {
         return conditionTypeId;
     }
 
-    public void setConditionTypeId(long conditionTypeId) {
+    public void setConditionTypeId(int conditionTypeId) {
         this.conditionTypeId = conditionTypeId;
     }
 
-    public long getUsersId() {
-        return usersId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUsersId(long usersId) {
-        this.usersId = usersId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float value) {
-        this.value = value;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -75,27 +62,48 @@ public class Product {
         this.description = description;
     }
 
-    public String getUrlImage() {
-        return urlImage;
+    public float getPrice() {
+        return price;
     }
 
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
-    public float getAvaliation() {
-        return avaliation;
+    public float getMaxPrice() {
+        return maxPrice;
     }
 
-    public void setAvaliation(float avaliation) {
-        this.avaliation = avaliation;
+    public void setMaxPrice(float maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
-    public int getStock() {
-        return stock;
+    public String getSenderZipCode() {
+        return senderZipCode;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setSenderZipCode(String senderZipCode) {
+        this.senderZipCode = senderZipCode;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public Product(int id, int usageTimeId, int conditionTypeId, int userId, String title, String description, float price, float maxPrice, String senderZipCode, float rating) {
+        this.id = id;
+        this.usageTimeId = usageTimeId;
+        this.conditionTypeId = conditionTypeId;
+        this.userId = userId;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.maxPrice = maxPrice;
+        this.senderZipCode = senderZipCode;
+        this.rating = rating;
     }
 }
