@@ -47,6 +47,7 @@ public class UserProfileEdit extends AppCompatActivity {
     ImageView profilePic;
     Button btnSave;
     boolean isProfilePicSelected = false;
+    private String unformattedPhoneNumber;
 
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri finalSelectedImageUri;
@@ -68,21 +69,22 @@ public class UserProfileEdit extends AppCompatActivity {
         if (currentUser != null) {
             editName.setText(currentUser.getName());
             editUserName.setText(currentUser.getUserName());
-            editPhone.setText(currentUser.getCellphone());
+            editPhone.setText(formatPhone(currentUser.getCellphone()));
         }
+
+        formatPhone(editPhone);
 
         btnSave = findViewById(R.id.btn_save_profile);
         btnSave.setOnClickListener(v -> {
 
             String updatedName = editName.getText().toString();
             String updatedUserName = editUserName.getText().toString();
-            String updatedPhone = editPhone.getText().toString();
 
             // Setting new values to user
             UserEditRequest updatedUser = new UserEditRequest();
             updatedUser.setName(updatedName);
             updatedUser.setUserName(updatedUserName);
-            updatedUser.setCellphone(updatedPhone);
+            updatedUser.setCellphone(unformattedPhoneNumber);
             updatedUser.setCpf(currentUser.getCpf());
 
             // Verifies if profile picture was selected
@@ -95,6 +97,7 @@ public class UserProfileEdit extends AppCompatActivity {
 
             // Calling api (CALL ME MAYBE)
             saveUser(updatedUser);
+
         });
 
 //        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -166,46 +169,6 @@ public class UserProfileEdit extends AppCompatActivity {
                 }
         );
 
-        // Format phoneNumber
-        editPhone.addTextChangedListener(new TextWatcher() {
-            private String current = "";
-            private int cursorPosition = 0;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                cursorPosition = start; // Armazena a posição do cursor antes da mudança
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Não faz nada durante a mudança
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().equals(current)) {
-                    String clean = s.toString().replaceAll("[^\\d]", ""); // Remove caracteres não numéricos
-                    StringBuilder formatted = new StringBuilder();
-
-                    if (clean.length() > 0) {
-                        formatted.append("(").append(clean.substring(0, Math.min(2, clean.length()))); // Adiciona o DDD
-                    }
-                    if (clean.length() > 2) {
-                        formatted.append(") ");
-                        formatted.append(clean.substring(2, Math.min(7, clean.length()))); // Adiciona os primeiros 5 dígitos
-                    }
-                    if (clean.length() >= 7) {
-                        formatted.append("-");
-                        formatted.append(clean.substring(7, Math.min(11, clean.length()))); // Adiciona os últimos 4 dígitos
-                    }
-
-                    current = formatted.toString();
-                    editPhone.setText(current);
-                    editPhone.setSelection(Math.min(current.length(), cursorPosition + 1)); // Move o cursor para a posição correta
-                }
-            }
-        });
-
         AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
 
         // Logout
@@ -223,7 +186,7 @@ public class UserProfileEdit extends AppCompatActivity {
 
     }
 
-    public void saveUser(UserEditRequest newUser) {
+    private void saveUser(UserEditRequest newUser) {
 
         // Updating user
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
@@ -243,11 +206,79 @@ public class UserProfileEdit extends AppCompatActivity {
             public void onFailure(Call<UserSchema> call, Throwable throwable) {
                 // TODO: Tratar erros
             }
-
         });
-
     }
 
+    private String formatPhone(String phoneNumber) {
+        StringBuilder formatted = new StringBuilder();
+        String unformatted = phoneNumber.replaceAll("[^\\d]", ""); // Remove tudo que não é dígito
+
+        if (unformatted.length() > 0) {
+            formatted.append("(");
+            formatted.append(unformatted.substring(0, Math.min(unformatted.length(), 2))); // DDD
+            if (unformatted.length() >= 3) {
+                formatted.append(") ");
+                formatted.append(unformatted.substring(2, Math.min(unformatted.length(), 7))); // Primeira parte do número
+                if (unformatted.length() >= 8) {
+                    formatted.append("-");
+                    formatted.append(unformatted.substring(7)); // Segunda parte do número
+                }
+            }
+        }
+        return formatted.toString();
+    }
+
+    private void formatPhone(EditText editPhone) {
+
+        // Format phoneNumber
+        editPhone.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) { return; }
+
+                isUpdating = true;
+                unformattedPhoneNumber = s.toString().replaceAll("[^\\d]", ""); // Armazena o número não formatado
+
+                if (unformattedPhoneNumber.length() > 11) {
+                    unformattedPhoneNumber = unformattedPhoneNumber.substring(0, 11); // Limita a 11 dígitos
+                }
+
+                StringBuilder formatted = new StringBuilder();
+                int length = unformattedPhoneNumber.length();
+
+                if (length > 0) {
+                    formatted.append("(");
+                    formatted.append(unformattedPhoneNumber.substring(0, Math.min(length, 2))); // DDD
+                    if (length >= 3) {
+                        formatted.append(") ");
+                        formatted.append(unformattedPhoneNumber.substring(2, Math.min(length, 7))); // Primeira parte do número
+                        if (length >= 8) {
+                            formatted.append("-");
+                            formatted.append(unformattedPhoneNumber.substring(7)); // Segunda parte do número
+                        }
+                    }
+                }
+                editPhone.setText(formatted.toString());
+                int selectionPosition = formatted.length();
+
+                if (selectionPosition > editPhone.getText().length()) {
+                    selectionPosition = editPhone.getText().length();
+                }
+                editPhone.setSelection(selectionPosition); // Define a posição da seleção corretamente
+                isUpdating = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
 
 
 
