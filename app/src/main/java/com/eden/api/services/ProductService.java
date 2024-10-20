@@ -1,6 +1,8 @@
 package com.eden.api.services;
 
 import com.eden.api.dto.ProductRequest;
+import com.eden.api.dto.UserEditRequest;
+import com.eden.api.dto.UserSchema;
 import com.eden.model.Product;
 
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -21,4 +24,6 @@ public interface ProductService {
     Call<List<Product>> getProductsByUserId(@Path("id") int id);
     @POST("/product/register")
     Call<Product> registerProduct(@Body ProductRequest productRequest);
+    @PATCH("/product/update/{id}")
+    Call<Product> updateProduct(@Body ProductRequest productRequest, @Path("id") int id);
 }

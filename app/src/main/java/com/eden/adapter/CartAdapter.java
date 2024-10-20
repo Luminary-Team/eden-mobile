@@ -2,6 +2,7 @@ package com.eden.adapter;
 
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eden.R;
 import com.eden.api.dto.CartResponse;
 import com.eden.model.Product;
+import com.eden.ui.activities.BuyProduct;
 
 import java.util.List;
 
@@ -42,6 +44,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
             holder.maxPrice.setText(item.getMaxPrice() != 0 ? String.format("R$ %.2f", item.getMaxPrice()) : "");
 
             downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "product_" + item.getId() + ".jpg");
+
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), BuyProduct.class);
+                intent.putExtra("id", item.getId());
+                intent.putExtra("nome", item.getTitle());
+                intent.putExtra("valor", item.getPrice());
+                intent.putExtra("descricao", item.getDescription());
+                intent.putExtra("rating", item.getRating());
+                v.getContext().startActivity(intent);
+            });
+
         }
     }
 
@@ -54,14 +67,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
         private TextView title, description, price, maxPrice;
         private ImageView imageView;
 
-
         public ViewHolderItem(@NonNull View itemView) {
             super(itemView);
+            ImageView overflowMenu = itemView.findViewById(R.id.overflow_menu);
+            overflowMenu.setVisibility(View.GONE);
             imageView = itemView.findViewById(R.id.cart_product_image);
             title = itemView.findViewById(R.id.cart_product_title);
             description = itemView.findViewById(R.id.cart_product_description);
             price = itemView.findViewById(R.id.cart_product_price);
             maxPrice = itemView.findViewById(R.id.cart_max_price);
+
         }
     }
 }
