@@ -65,7 +65,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return listaProducts.size();
     }
 
-    public class ViewHolderProduto extends RecyclerView.ViewHolder {
+    public static class ViewHolderProduto extends RecyclerView.ViewHolder {
         private TextView usageTimeId, usageTime, conditionTypeId, user,
                 title, description, price, maxPrice, senderZipCode;
         private ImageView imageView;

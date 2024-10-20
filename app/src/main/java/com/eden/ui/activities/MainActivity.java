@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Navigation footer configuration
         footer.setOnItemSelectedListener(item -> {
-
             if(item.getItemId() == R.id.menu_add){
                 openActivity(this, RegisterProduct.class);
             }

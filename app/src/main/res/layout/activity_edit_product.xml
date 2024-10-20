@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.RegisterProduct">
+    tools:context=".ui.activities.EditProduct">
 
 
     <ImageButton
@@ -18,26 +18,26 @@
         android:background="@drawable/back_icon" />
 
     <TextView
-        android:id="@+id/textView_editUser"
+        android:id="@+id/textView_favorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:layout_marginStart="12dp"
         android:layout_toRightOf="@id/back_btn"
-        android:text="Editar Produto"
+        android:text="Edit Produto"
         android:textSize="24sp"
         />
 
 
     <RelativeLayout
-        android:id="@+id/layout_register_product"
+        android:id="@+id/layout_edit_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_below="@id/textView_editUser">
+        android:layout_below="@id/textView_favorites">
 
         <ImageView
-            android:id="@+id/register_product_image"
+            android:id="@+id/edit_product_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -51,7 +51,7 @@
             android:id="@+id/editText_product_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_product_image"
+            android:layout_below="@id/edit_product_image"
             android:drawableStart="@drawable/pencil_icon"
             android:drawableTint="@color/edenBlue"
             android:drawablePadding="10dp"
@@ -89,7 +89,6 @@
             android:hint="Descrição"
             android:inputType="textCapSentences"
             android:padding="10dp"
-            android:singleLine="false"
             android:textSize="15sp" />
 
         <Spinner
@@ -120,17 +119,17 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/button_register_product"
+        android:id="@+id/button_edit_product"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/layout_register_product"
+        android:layout_below="@id/layout_edit_product"
         android:layout_centerInParent="true"
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="30dp"
         android:layout_gravity="end|bottom"
         android:background="@drawable/button_blue"
-        android:text="Publicar"
+        android:text="Editar"
         android:textColor="@color/white"
         android:textSize="20sp" />
 

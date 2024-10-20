@@ -134,15 +134,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/endereco_entrega_subtitle"
             android:layout_marginTop="16dp"
-            android:hint="CEP"
-            android:textColorHint="@color/edenBlue"
-            android:inputType="number"
-            android:maxLength="9"
             android:background="@drawable/edit_text_default_background"
             android:drawableStart="@drawable/location_icon"
-            android:drawableTint="@color/edenBlue"
             android:drawablePadding="10dp"
+            android:drawableTint="@color/edenBlue"
+            android:hint="CEP"
+            android:inputType="number"
+            android:maxLength="8"
             android:padding="16dp"
+            android:textColorHint="@color/edenBlue"
             android:textSize="16sp" />
 
     </RelativeLayout>
