@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Eden" parent="Theme.AppCompat.Light.NoActionBar">
 <!--        <item name="colorPrimary">@color/white</item>-->
+        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="backgroundColor">@color/white</item>
         <item name="android:textColor">#111</item>
         <item name="colorOnPrimary">@color/edenBlue</item>

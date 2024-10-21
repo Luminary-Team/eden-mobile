@@ -29,13 +29,16 @@ import com.eden.R;
 import com.eden.ui.activities.EditProduct;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.util.Collections;
 import java.util.List;
 
 public class UserProductAdapter extends RecyclerView.Adapter<UserProductAdapter.ViewHolderUserProduto> {
-    private List<Product> userProducts;
 
-    public UserProductAdapter(List<Product> userProducts) {
-        this.userProducts = userProducts;
+    private final List<Product> userProducts;
+
+    public UserProductAdapter(List<Product> args) {
+        Collections.reverse(args);
+        this.userProducts = args;
     }
 
     @NonNull
