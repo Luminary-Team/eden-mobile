@@ -87,7 +87,7 @@ public class BuyProduct extends AppCompatActivity {
                 // Muda o ícone com animação
                 if (isFavorite) {
                     btnFavorite.setImageResource(R.drawable.heart_selected_icon);
-                    btnFavorite.setImageTintList(ColorStateList.valueOf(Color.RED));
+                    btnFavorite.setImageTintList(ColorStateList.valueOf(Color.CYAN));
                     btnFavorite.setScaleX(1.2f);
                     btnFavorite.setScaleY(1.2f);
                 } else {

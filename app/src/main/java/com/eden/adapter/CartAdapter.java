@@ -18,13 +18,16 @@ import com.eden.api.dto.CartResponse;
 import com.eden.model.Product;
 import com.eden.ui.activities.BuyProduct;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem> {
-    List<CartResponse> listaCartResponses;
 
-    public CartAdapter(List<CartResponse> arg) {
-        this.listaCartResponses = arg;
+    private final List<CartResponse> listaCartResponses;
+
+    public CartAdapter(List<CartResponse> args) {
+        Collections.reverse(args);
+        this.listaCartResponses = args;
     }
 
     @NonNull

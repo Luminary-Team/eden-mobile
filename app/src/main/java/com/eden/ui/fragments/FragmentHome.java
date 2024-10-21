@@ -158,7 +158,6 @@ public class FragmentHome extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-
     }
 
 }
