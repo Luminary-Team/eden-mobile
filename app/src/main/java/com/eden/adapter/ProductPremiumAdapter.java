@@ -14,28 +14,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.eden.ui.activities.BuyProduct;
-import com.eden.model.Product;
 import com.eden.R;
+import com.eden.model.Product;
+import com.eden.ui.activities.BuyProduct;
 
+import java.util.Collections;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolderProduto> {
-    private List<Product> listaProducts;
+public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAdapter.ViewHolderProductPremium>{
+    private final List<Product> listaProducts;
 
-    public ProductAdapter(List<Product> arg) {
+    public ProductPremiumAdapter(List<Product> arg) {
+        Collections.shuffle(arg);
         this.listaProducts = arg;
     }
 
     @NonNull
     @Override
-    public ProductAdapter.ViewHolderProduto onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductPremiumAdapter.ViewHolderProductPremium onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_layout, parent, false);
-        return new ViewHolderProduto(view);
+        return new ProductPremiumAdapter.ViewHolderProductPremium(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.ViewHolderProduto holder, int position) {
+    public void onBindViewHolder(@NonNull ProductPremiumAdapter.ViewHolderProductPremium holder, int position) {
         if (listaProducts != null) {
             Log.d("ProductAdapter", "Position: " + position);
             Product product = listaProducts.get(position);
@@ -54,7 +56,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 intent.putExtra("nome", product.getTitle());
                 intent.putExtra("valor", product.getPrice());
                 intent.putExtra("descricao", product.getDescription());
-                intent.putExtra("rating", product.getRating());
                 v.getContext().startActivity(intent);
             });
         }
@@ -65,18 +66,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return listaProducts.size();
     }
 
-    public class ViewHolderProduto extends RecyclerView.ViewHolder {
+    public static class ViewHolderProductPremium extends RecyclerView.ViewHolder {
         private TextView usageTimeId, usageTime, conditionTypeId, user,
                 title, description, price, maxPrice, senderZipCode;
         private ImageView imageView;
         private RatingBar ratingBar;
 
 
-        public ViewHolderProduto(@NonNull View itemView) {
+        public ViewHolderProductPremium(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.titulo_produto);
-            price = itemView.findViewById(R.id.valor_produto);
-            imageView = itemView.findViewById(R.id.imagem_produto);
+            title = itemView.findViewById(R.id.product_title);
+            price = itemView.findViewById(R.id.product_price);
+            imageView = itemView.findViewById(R.id.product_image);
         }
     }
+
 }

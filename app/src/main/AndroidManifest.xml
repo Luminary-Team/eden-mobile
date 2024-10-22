@@ -19,6 +19,15 @@
         android:theme="@style/Theme.Eden"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activities.PremiumProduct"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.EditProduct"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.CreditCardInfo"
             android:exported="false" />
         <activity
@@ -48,6 +57,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDeyZcu09KkXC8gS1Sumyzcx83p0d0o8BY" />
+
         <activity
             android:name=".ui.activities.EcoPoint"
             android:exported="false"
@@ -88,7 +98,8 @@
         <activity
             android:name=".ui.activities.SplashScreen"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

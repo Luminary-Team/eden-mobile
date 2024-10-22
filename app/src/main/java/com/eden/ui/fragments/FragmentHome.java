@@ -1,5 +1,7 @@
 package com.eden.ui.fragments;
 
+import static com.eden.utils.AndroidUtil.currentUser;
+
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -50,7 +52,18 @@ public class FragmentHome extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         // Configura o RecyclerView
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(container.getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (recyclerView.getAdapter().getItemViewType(position) == 1) {
+                    return 2;
+                }
+                return 1;
+            }
+        });
 
         // Chama os produtos ao carregar a tela
         loadProducts(recyclerView, progressBar);
@@ -71,7 +84,7 @@ public class FragmentHome extends Fragment {
     private void loadProducts(RecyclerView recyclerView, ProgressBar progressBar) {
         progressBar.setVisibility(View.VISIBLE);
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-        Call<List<Product>> call = productService.getAllProducts();
+        Call<List<Product>> call = productService.getAllProducts(currentUser.getId());
 
         call.enqueue(new Callback<List<Product>>() {
             @Override
@@ -116,22 +129,21 @@ public class FragmentHome extends Fragment {
                     handler.removeCallbacks(runnable);
                 }
                 runnable = () -> {
-                    String query = s.toString(); // Atualize a query de busca com a string digitada pelo usuário
-                    if (!query.isEmpty()) {
-                        String encodedQuery = Uri.encode(query);
+                    String query = "%"+ s.toString()+ "%"; // Atualize a query de busca com a string digitada pelo usuário
+                    if (!query.contentEquals("%%")) {
                         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-                        Call<List<Product>> call = productService.getProductByTitle(encodedQuery); // Atualize a chamada da API com a query de busca
+                        Call<List<Product>> call = productService.getProductByTitle(query); // Atualize a chamada da API com a query de busca
                         call.enqueue(new Callback<List<Product>>() {
                             @Override
                             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                                 if (response.isSuccessful()) {
                                     if (response.body() != null) {
-                                        progressBar.setVisibility(View.GONE);
                                         products = response.body(); // Atualize a lista de produtos com os resultados da busca
                                         recyclerView.setAdapter(new ProductAdapter(products)); // Notifique o adapter sobre a atualização da lista de produtos
-                                    } else {
                                         progressBar.setVisibility(View.GONE);
+                                    } else {
                                         Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 } else {
                                     try {
@@ -148,6 +160,8 @@ public class FragmentHome extends Fragment {
                                 throwable.printStackTrace();
                             }
                         });
+                    } else {
+                        loadProducts(recyclerView, progressBar);
                     }
                 };
                 handler.postDelayed(runnable, 500);
@@ -157,7 +171,6 @@ public class FragmentHome extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-
     }
 
 }

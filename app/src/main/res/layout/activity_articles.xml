@@ -7,42 +7,41 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.ArticlesActivity">
 
-<!--    TODO: Arrumar o título da página-->
+
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/back_icon" />
+
     <TextView
         android:id="@+id/textView_articles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/back_btn"
         android:text="Artigos"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="24sp"
         />
 
-    <EditText
-        android:id="@+id/searchBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="20dp"
-        android:layout_below="@id/textView_articles"
-        android:background="@drawable/search_bar_shape"
-        android:drawableStart="@drawable/search_icon"
-        android:drawablePadding="4dp"
-        android:drawableTint="@color/edenBlue"
-        android:ems="10"
-        android:hint="Buscar"
-        android:maxLines="1"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="4dp"
-        android:textColor="@color/edenBlue"
-        android:textColorHint="@color/edenBlue" />
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_articles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchBar"
-        android:layout_marginHorizontal="20dp"
+        android:layout_below="@id/textView_articles"
         android:layout_marginTop="20dp"
         tools:listitem="@layout/article_layout" />
+
+    <ProgressBar
+        android:id="@+id/products_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>
