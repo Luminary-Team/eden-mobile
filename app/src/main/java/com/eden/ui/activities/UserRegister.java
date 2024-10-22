@@ -36,6 +36,7 @@ import retrofit2.Response;
 public class UserRegister extends AppCompatActivity {
 
     FirebaseUserUtil db = new FirebaseUserUtil();
+    private String unformattedPhoneNumber, unformattedCpf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +57,13 @@ public class UserRegister extends AppCompatActivity {
         // Register the user
         btnRegister.setOnClickListener(v -> {
             String name = nameEditText.getText().toString().trim();
-            String phoneNumber = phoneNumberEditText.getText().toString().trim();
-            String cpf = cpfEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
             // Verifies if none of the values are null
-            if (!name.isEmpty() && !phoneNumber.isEmpty()
-                    && !cpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                registerUser(name, cpf, phoneNumber, email, password);
+            if (!name.isEmpty() && !unformattedPhoneNumber.isEmpty()
+                    && !unformattedCpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
             }
@@ -100,84 +99,11 @@ public class UserRegister extends AppCompatActivity {
             }
         });
 
-        // Formatar Telefone
-        phoneNumberEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            public void afterTextChanged(Editable s) {
-                String phone = s.toString();
-                phone = phone.replaceAll("[^0-9]", "");
-
-                if (!phone.isEmpty()) {
-                    if (phone.length() > 2) {
-                        if (phone.length() <= 7) {
-                            phone = "(" + phone.substring(0, 2) + ") " + phone.substring(2);
-                        } else if (phone.length() <= 10) {
-                            phone = "(" + phone.substring(0, 2) + ") " + phone.substring(2, 7) + "-" + phone.substring(7);
-                        } else if (phone.length() == 11) {
-                            phone = "(" + phone.substring(0, 2) + ") " + phone.substring(2, 7) + "-" + phone.substring(7, 10) + " " + phone.substring(10);
-                        }
-                    }
-
-                    if (!phone.equals(s.toString())) {
-                        phoneNumberEditText.removeTextChangedListener(this);
-                        phoneNumberEditText.setText(phone);
-                        phoneNumberEditText.setSelection(phone.length());
-                        phoneNumberEditText.addTextChangedListener(this);
-                    }
-                }
-            }
-        });
+        // Formatar Cellphone
+        formatPhone(phoneNumberEditText);
 
         // Formatar CPF
-        cpfEditText.addTextChangedListener(new TextWatcher() {
-            private String current = "";
-            private int cursorPosition = 0;
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                cursorPosition = start; // Armazena a posição do cursor antes da mudança
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Não faz nada durante a mudança
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String cpf = s.toString();
-                cpf = cpf.replaceAll("[^0-9]", "");
-
-                if (!cpf.isEmpty()) {
-                    if (cpf.length() >= 3) {
-                        if (cpf.length() <= 6) {
-                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3);
-                        } else if (cpf.length() <= 9) {
-                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6);
-                        } else if (cpf.length() <= 11) {
-                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
-                        }
-                    }
-
-                    if (!cpf.equals(s.toString())) {
-                        cpfEditText.removeTextChangedListener(this);
-                        cpfEditText.setText(cpf);
-                        cpfEditText.setSelection(cpf.length());
-                        cpfEditText.addTextChangedListener(this);
-                    }
-                }
-            }
-        });
-
+        formatCpf(cpfEditText);
 
     }
 
@@ -185,8 +111,6 @@ public class UserRegister extends AppCompatActivity {
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
 
         UserService api = RetrofitClient.getClient().create(UserService.class);
-
-        Log.d("CHECKPOINT", phoneNumber);
 
         // Creating User
         User user = new User(cpf, name, name,
@@ -266,5 +190,100 @@ public class UserRegister extends AppCompatActivity {
             }
         });
     }
+
+    private void formatCpf(EditText cpfEditText) {
+        cpfEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                String cpf = s.toString();
+
+                // Armazena o CPF não formatado
+                unformattedCpf = cpf.replaceAll("[^0-9]", "");
+
+                cpf = cpf.replaceAll("[^0-9]", "");
+
+                if (!cpf.isEmpty()) {
+                    if (cpf.length() >= 3) {
+                        if (cpf.length() <= 6) {
+                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3);
+                        } else if (cpf.length() <= 9) {
+                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6);
+                        } else if (cpf.length() <= 11) {
+                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
+                        }
+                    }
+
+                    if (!cpf.equals(s.toString())) {
+                        cpfEditText.removeTextChangedListener(this);
+                        cpfEditText.setText(cpf);
+                        cpfEditText.setSelection(cpf.length());
+                        cpfEditText.addTextChangedListener(this);
+                    }
+                }
+            }
+        });
+    }
+
+    private void formatPhone(EditText editPhone) {
+
+        // Format phoneNumber
+        editPhone.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) { return; }
+
+                isUpdating = true;
+                unformattedPhoneNumber = s.toString().replaceAll("[^\\d]", ""); // Armazena o número não formatado
+
+                if (unformattedPhoneNumber.length() > 11) {
+                    unformattedPhoneNumber = unformattedPhoneNumber.substring(0, 11); // Limita a 11 dígitos
+                }
+
+                StringBuilder formatted = new StringBuilder();
+                int length = unformattedPhoneNumber.length();
+
+                if (length > 0) {
+                    formatted.append("(");
+                    formatted.append(unformattedPhoneNumber.substring(0, Math.min(length, 2))); // DDD
+                    if (length >= 3) {
+                        formatted.append(") ");
+                        formatted.append(unformattedPhoneNumber.substring(2, Math.min(length, 7))); // Primeira parte do número
+                        if (length >= 8) {
+                            formatted.append("-");
+                            formatted.append(unformattedPhoneNumber.substring(7)); // Segunda parte do número
+                        }
+                    }
+                }
+                editPhone.setText(formatted.toString());
+                int selectionPosition = formatted.length();
+
+                if (selectionPosition > editPhone.getText().length()) {
+                    selectionPosition = editPhone.getText().length();
+                }
+                editPhone.setSelection(selectionPosition); // Define a posição da seleção corretamente
+                isUpdating = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
 
 }

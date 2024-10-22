@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.api.dto.CartItemResponse;
 import com.eden.api.dto.CartResponse;
 import com.eden.model.Product;
 import com.eden.ui.activities.BuyProduct;
@@ -23,11 +23,11 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem> {
 
-    private final List<CartResponse> listaCartResponses;
+    private final List<CartItemResponse> cartItems;
 
-    public CartAdapter(List<CartResponse> args) {
+    public CartAdapter(List<CartItemResponse> args) {
         Collections.reverse(args);
-        this.listaCartResponses = args;
+        this.cartItems = args;
     }
 
     @NonNull
@@ -39,8 +39,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolderItem holder, int position) {
-        if (!listaCartResponses.isEmpty()) {
-            Product item = listaCartResponses.get(position).getProduct();
+        Product item = cartItems.get(position).getProduct();
+        if (!cartItems.isEmpty()) {
             holder.title.setText(item.getTitle() != null ? item.getTitle() : "");
             holder.price.setText(item.getPrice() != 0 ? String.format("R$ %.2f", item.getPrice()) : "");
             holder.description.setText(item.getDescription() != null ? item.getDescription() : "");
@@ -54,7 +54,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
                 intent.putExtra("nome", item.getTitle());
                 intent.putExtra("valor", item.getPrice());
                 intent.putExtra("descricao", item.getDescription());
-                intent.putExtra("rating", item.getRating());
                 v.getContext().startActivity(intent);
             });
 
@@ -63,7 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
 
     @Override
     public int getItemCount() {
-        return listaCartResponses.size();
+        return cartItems.size();
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {
@@ -79,7 +78,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
             description = itemView.findViewById(R.id.cart_product_description);
             price = itemView.findViewById(R.id.cart_product_price);
             maxPrice = itemView.findViewById(R.id.cart_max_price);
-
         }
     }
 }

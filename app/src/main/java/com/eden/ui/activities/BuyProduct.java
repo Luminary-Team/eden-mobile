@@ -2,7 +2,6 @@ package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
-import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +26,7 @@ import android.widget.Toast;
 
 import com.eden.R;
 import com.eden.api.RetrofitClient;
-import com.eden.api.dto.CartResponse;
+import com.eden.api.dto.CartItemResponse;
 import com.eden.api.services.CartService;
 import com.eden.model.Cart;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,7 +36,6 @@ import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class BuyProduct extends AppCompatActivity {
     boolean isFavorite = false;
@@ -119,10 +116,10 @@ public class BuyProduct extends AppCompatActivity {
 
     private void addCart(int productId) {
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
-        Call<CartResponse> call = cartService.registerCart(new Cart(currentUser.getCartId(), productId));
-        call.enqueue(new Callback<CartResponse>() {
+        Call<CartItemResponse> call = cartService.registerCart(new Cart(currentUser.getCartId(), productId));
+        call.enqueue(new Callback<CartItemResponse>() {
             @Override
-            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+            public void onResponse(Call<CartItemResponse> call, Response<CartItemResponse> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(BuyProduct.this, "Produto adicionado ao carrinho com sucesso!", Toast.LENGTH_SHORT).show();
                     Log.d("CartSucess", response.body().toString());
@@ -139,7 +136,7 @@ public class BuyProduct extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CartResponse> call, Throwable throwable) {
+            public void onFailure(Call<CartItemResponse> call, Throwable throwable) {
                 Toast.makeText(BuyProduct.this, throwable.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
