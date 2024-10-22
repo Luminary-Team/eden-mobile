@@ -22,7 +22,7 @@
             android:layout_marginBottom="20dp"
             android:padding="2dp"
             android:scaleType="centerCrop"
-            app:shapeAppearance="@style/arredondar"
+            app:shapeAppearance="@style/to_circle"
             app:strokeColor="@color/edenBlue"
             app:strokeWidth="2dp"
             tools:srcCompat="@tools:sample/avatars" />
@@ -48,7 +48,6 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/eden_faxada"
             />
-
 
 <!--        <FrameLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -79,7 +78,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/footer_navigation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="?android:attr/windowBackground"

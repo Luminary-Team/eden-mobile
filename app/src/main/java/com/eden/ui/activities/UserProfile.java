@@ -50,6 +50,7 @@ public class UserProfile extends AppCompatActivity {
 
             }
         });
+
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -57,8 +58,6 @@ public class UserProfile extends AppCompatActivity {
                 tabLayout.getTabAt(position).select();
             }
         });
-
-
 
         // Setting Values
         TextView name = findViewById(R.id.profile_name);
@@ -70,8 +69,6 @@ public class UserProfile extends AppCompatActivity {
             username.setText(currentUser.getUserName());
             rating.setRating(currentUser.getRating());
         }
-
-
 
         // Setting header
         RelativeLayout headerProfile = findViewById(R.id.header_profile);

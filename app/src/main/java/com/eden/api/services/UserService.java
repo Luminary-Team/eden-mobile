@@ -1,6 +1,7 @@
 package com.eden.api.services;
 
 import com.eden.api.dto.TokenRequest;
+import com.eden.api.dto.UserEditRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.model.Token;
 import com.eden.model.User;
@@ -27,6 +28,6 @@ public interface UserService {
     Call<UserSchema> getParam(@Query("email") String email);
 
     @PATCH("/user/update/{id}")
-    Call<UserSchema> updateUser(@Body UserSchema user, @Path("id") String id);
+    Call<UserSchema> updateUser(@Body UserEditRequest user, @Path("id") String id);
 
 }

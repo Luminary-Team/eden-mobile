@@ -20,6 +20,7 @@ import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.model.Token;
+import com.eden.ui.activities.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -80,6 +81,28 @@ public class AndroidUtil {
                         Glide.with(context)
                                 .load(uri)
                                 .override(500, 500) // Resize the image to 300x300 pixels
+                                .into(imageView);
+                    } else {
+                        Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                });
+    }
+
+    public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
+        // Create reference to the image
+        StorageReference imageRef = storageRef.child(imagePath);
+
+        // Download image from Firebase Storage
+        imageRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    if (context instanceof Activity && !((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                        Log.d("CHECKPOINT", "Download URL: " + uri.toString());
+                        // Use the download URL to display the image
+                        Glide.with(context)
+                                .load(uri)
+                                .override(500, 500) // Resize the image to 300x300 pixels
                                 .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
                                 .into(imageView);
                     } else {
@@ -120,11 +143,10 @@ public class AndroidUtil {
         });
     }
 
-    public static CompletableFuture<UserSchema> getUser() {
+    public static void getUser() {
         UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Call<UserSchema> call = service.getParam(email);
-        CompletableFuture<UserSchema> future = new CompletableFuture<>();
 
         call.enqueue(new Callback<UserSchema>() {
             @Override
@@ -132,14 +154,12 @@ public class AndroidUtil {
                 if (response.isSuccessful() && response.body() != null) {
                     currentUser = response.body();
                     UserSchema user = response.body();
-                    future.complete(user);
                     Log.d("USER", "User: " + currentUser.toString());
                 } else {
                     try {
                         Log.d("ErrorBody", response.errorBody().string());
-                        future.completeExceptionally(new Throwable("Failed to get user"));
                     } catch (IOException e) {
-                        future.completeExceptionally(e);
+                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -147,10 +167,62 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<UserSchema> call, Throwable throwable) {
                 Log.d("CHECKPOINT", throwable.getMessage());
-                future.completeExceptionally(throwable);
             }
         });
-        return future;
+    }
+
+    public static void authenticate(Context context) {
+
+        // Getting token
+        Retrofit client = RetrofitClient.getClient();
+        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+        UserService service = client.create(UserService.class);
+        Call<Token> call = service.getToken(new TokenRequest(email));
+        call.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(Call<Token> call, Response<Token> response) {
+                if (response.isSuccessful()) {
+                    token = response.body().getToken();
+
+                    // GetUser
+                    UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
+                    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    Call<UserSchema> userCall = service.getParam(email);
+                    userCall.enqueue(new Callback<UserSchema>() {
+                        @Override
+                        public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                currentUser = response.body();
+
+                                openActivity(context, MainActivity.class);
+                                ((Activity) context).finish();
+
+                                Log.d("USER", "User: " + currentUser.toString());
+                            } else {
+                                try {
+                                    Log.d("ErrorBody", response.errorBody().string());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserSchema> call, Throwable throwable) {
+                            Log.d("CHECKPOINT", throwable.getMessage());
+                        }
+                    });
+
+                } else {
+                    Log.d("TOKEN", "Error getting token");
+                }
+            }
+            @Override
+            public void onFailure(Call<Token> call, Throwable throwable) {
+                Log.d("TOKEN", throwable.getMessage());
+            }
+        });
+
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

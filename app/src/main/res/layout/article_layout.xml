@@ -26,8 +26,8 @@
 
                         <ImageView
                             android:id="@+id/article_photo"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             />
 
                         <TextView
@@ -35,8 +35,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toEndOf="@id/article_photo"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="10dp"
                             android:text="Titulo artigo"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             />
 
                         <TextView
@@ -47,7 +49,6 @@
                             android:text="@string/lorem_ipsum"
                             android:ellipsize="end"
                             android:maxLines="10"
-
                             />
 
                 </RelativeLayout>

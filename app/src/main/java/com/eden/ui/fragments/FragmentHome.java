@@ -1,10 +1,14 @@
 package com.eden.ui.fragments;
 
+import static com.eden.utils.AndroidUtil.currentUser;
+
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.text.Editable;
@@ -35,6 +39,7 @@ import retrofit2.Response;
 public class FragmentHome extends Fragment {
 
     List<Product> products = new ArrayList<>();
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,70 +49,43 @@ public class FragmentHome extends Fragment {
         EditText searchBar = view.findViewById(R.id.search_bar);
         ProgressBar progressBar = view.findViewById(R.id.products_progressBar);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_produtos);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
-        progressBar.setVisibility(View.VISIBLE);
+        // Configura o RecyclerView
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(container.getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
-        searchBar.addTextChangedListener(new TextWatcher() {
-            private Handler handler = new Handler();
-            private Runnable runnable;
-
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                recyclerView.setAdapter(null);
-                progressBar.setVisibility(View.VISIBLE);
-                if (runnable != null) {
-                    handler.removeCallbacks(runnable);
+            public int getSpanSize(int position) {
+                if (recyclerView.getAdapter().getItemViewType(position) == 1) {
+                    return 2;
                 }
-                runnable = () -> {
-                    String query = "%25on%25";
-                    if (s != null) {
-                        ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-                        Call<List<Product>> call = productService.getProductByTitle(query);
-                        call.enqueue(new Callback<List<Product>>() {
-                            @Override
-                            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                                if (response.isSuccessful()) {
-                                    if (response.body() != null) {
-                                        progressBar.setVisibility(View.GONE);
-                                        Log.d("Product", response.body().toString());
-                                        recyclerView.setAdapter(new ProductAdapter(products));
-                                    } else {
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(view.getContext(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    try {
-                                        Log.d("ErrorBody", response.errorBody().string());
-                                    } catch (IOException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Product>> call, Throwable throwable) {
-                                progressBar.setVisibility(View.GONE);
-                                throwable.printStackTrace();
-                            }
-                        });
-                    }
-                };
-                handler.postDelayed(runnable, 1000);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                return 1;
             }
         });
 
-        // Getting products and display them
+        // Chama os produtos ao carregar a tela
+        loadProducts(recyclerView, progressBar);
+
+        // Search for Products
+        searchProducts(searchBar, recyclerView, progressBar);
+
+        // Recarregar ao puxar para baixo
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            recyclerView.setAdapter(null);
+            loadProducts(recyclerView, progressBar);
+            swipeRefreshLayout.setRefreshing(false); // Parar o ícone de loading
+        });
+
+        return view;
+    }
+
+    private void loadProducts(RecyclerView recyclerView, ProgressBar progressBar) {
+        progressBar.setVisibility(View.VISIBLE);
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-        // TODO: Notify no Adapter quando for registrado
-        Call<List<Product>> call = productService.getAllProducts();
+        Call<List<Product>> call = productService.getAllProducts(currentUser.getId());
+
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
@@ -130,10 +108,69 @@ public class FragmentHome extends Fragment {
                 throwable.printStackTrace();
             }
         });
+    }
 
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 2));
+    private void searchProducts(EditText searchBar, RecyclerView recyclerView, ProgressBar progressBar) {
 
-        return view;
+        // Search for Products
+        searchBar.addTextChangedListener(new TextWatcher() {
+            private Handler handler = new Handler();
+            private Runnable runnable;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                recyclerView.setAdapter(null);
+                progressBar.setVisibility(View.VISIBLE);
+                if (runnable != null) {
+                    handler.removeCallbacks(runnable);
+                }
+                runnable = () -> {
+                    String query = "%"+ s.toString()+ "%"; // Atualize a query de busca com a string digitada pelo usuário
+                    if (!query.contentEquals("%%")) {
+                        ProductService productService = RetrofitClient.getClient().create(ProductService.class);
+                        Call<List<Product>> call = productService.getProductByTitle(query); // Atualize a chamada da API com a query de busca
+                        call.enqueue(new Callback<List<Product>>() {
+                            @Override
+                            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                                if (response.isSuccessful()) {
+                                    if (response.body() != null) {
+                                        products = response.body(); // Atualize a lista de produtos com os resultados da busca
+                                        recyclerView.setAdapter(new ProductAdapter(products)); // Notifique o adapter sobre a atualização da lista de produtos
+                                        progressBar.setVisibility(View.GONE);
+                                    } else {
+                                        Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                } else {
+                                    try {
+                                        Log.d("ErrorBody", response.errorBody().string());
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Product>> call, Throwable throwable) {
+                                progressBar.setVisibility(View.GONE);
+                                throwable.printStackTrace();
+                            }
+                        });
+                    } else {
+                        loadProducts(recyclerView, progressBar);
+                    }
+                };
+                handler.postDelayed(runnable, 500);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
 }

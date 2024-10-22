@@ -11,11 +11,13 @@ public class UserSchema implements Serializable {
     private float rating;
     private String email;
     private String cellphone;
+    private int cartId;
 
     public UserSchema() {
     }
 
-    public UserSchema(int id, String cpf, String name, String userName, String password, float rating, String email, String cellphone) {
+    public UserSchema(int id, String cpf, String name, String userName,
+                      String password, float rating, String email, String cellphone, int cartId) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;
@@ -24,16 +26,7 @@ public class UserSchema implements Serializable {
         this.rating = rating;
         this.email = email;
         this.cellphone = cellphone;
-    }
-
-    public void setUserSchema(String cpf, String name, String userName, String password, float rating, String email, String cellphone) {
-        this.cpf = cpf;
-        this.name = name;
-        this.userName = userName;
-        this.password = password;
-        this.rating = rating;
-        this.email = email;
-        this.cellphone = cellphone;
+        this.cartId = cartId;
     }
 
     public int getId() {
@@ -100,17 +93,11 @@ public class UserSchema implements Serializable {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "UserSchema{" +
-                "id='" + id + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", name='" + name + '\'' +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", rating=" + rating +
-                ", email='" + email + '\'' +
-                ", cellphone='" + cellphone + '\'' +
-                '}';
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
 }

@@ -2,29 +2,30 @@ package com.eden.api.dto;
 
 import com.eden.model.Product;
 
+import java.util.List;
+
 public class CartResponse {
+    private List<CartItemResponse> cartItems;
+    private float totalSale;
 
-    private int cartId;
-    private Product product;
-
-    public CartResponse(int cartId, Product product) {
-        this.cartId = cartId;
-        this.product = product;
+    public CartResponse(List<CartItemResponse> cartItems, float totalSale) {
+        this.cartItems = cartItems;
+        this.totalSale = totalSale;
     }
 
-    public int getCartId() {
-        return cartId;
+    public List<CartItemResponse> getCartItems() {
+        return cartItems;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public void setCartItems(List<CartItemResponse> cartItems) {
+        this.cartItems = cartItems;
     }
 
-    public Product getProduct() {
-        return product;
+    public float getTotalSale() {
+        return totalSale;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setTotalSale(float totalSale) {
+        this.totalSale = totalSale;
     }
 }
