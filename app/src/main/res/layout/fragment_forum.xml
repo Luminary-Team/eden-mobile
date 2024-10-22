@@ -3,38 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.FragmentForum">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="50dp"
+
+        <TextView
+            android:id="@+id/textView_forum"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/button_blue"
-            android:drawableEnd="@drawable/pencil_icon"
-            android:drawableTint="@color/white"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:layout_margin="20dp"
+            android:text="Fórum"
+            android:textSize="24sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_posts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
+            android:layout_below="@+id/textView_forum"
             tools:listitem="@layout/post_forum_layout" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_margin="20dp"
-            android:text="Fórum" />
+            android:backgroundTint="@color/edenBlue"
+            android:src="@drawable/add_icon"
+            android:tint="@color/white"
+            app:fabCustomSize="72dp"
+            app:maxImageSize="50dp" />
 
     </RelativeLayout>
 

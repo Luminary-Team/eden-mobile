@@ -19,11 +19,22 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
     private static final String baseUrl ="https://desenvolvimento-ii.onrender.com/";
+    private static final String baseUrlMongo ="https://eden-api-mongo.onrender.com/";
 
     public static Retrofit getClient() {
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit;
+    }
+
+    public static Retrofit getClientMongo() {
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrlMongo)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

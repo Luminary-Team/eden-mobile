@@ -1,5 +1,7 @@
 package com.eden.ui.activities;
 
+import static com.eden.utils.AndroidUtil.authenticate;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Paint;
@@ -128,9 +130,6 @@ public class UserRegister extends AppCompatActivity {
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
 
-                        // Ir para home
-                        AndroidUtil.openActivity(UserRegister.this, MainActivity.class);
-
                         Log.d("CHECKPOINT", "JSON Object: " + jsonObject.toString());
                         Log.d("CHECKPOINT", response.message());
 
@@ -193,42 +192,66 @@ public class UserRegister extends AppCompatActivity {
 
     private void formatCpf(EditText cpfEditText) {
         cpfEditText.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false; // Variável para evitar loops infinitos
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Não faz nada antes da mudança
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    return; // Se já está atualizando, não faz nada
+                }
+
+                isUpdating = true; // Inicia a atualização
+
+                String cpf = s.toString();
+
+                cpf = cpf.replaceAll("[^0-9]", "");
+
+                // Armazena o CPF não formatado
+                unformattedCpf = cpf;
+
+
+                // Limita a 11 dígitos
+                if (cpf.length() > 11) {
+                    cpf = cpf.substring(0, 11);
+                }
+
+                StringBuilder formattedCpf = new StringBuilder();
+                int length = cpf.length();
+
+                // Formatação do CPF
+                if (length > 0) {
+                    formattedCpf.append(cpf.substring(0, Math.min(length, 3))); // Primeiros 3 dígitos
+                    if (length >= 4) {
+                        formattedCpf.append(".").append(cpf.substring(3, Math.min(length, 6))); // Próximos 3 dígitos
+                    }
+                    if (length >= 7) {
+                        formattedCpf.append(".").append(cpf.substring(6, Math.min(length, 9))); // Próximos 3 dígitos
+                    }
+                    if (length >= 10) {
+                        formattedCpf.append("-").append(cpf.substring(9)); // Últimos 2 dígitos
+                    }
+                }
+
+                // Atualiza o EditText com o CPF formatado
+                cpfEditText.setText(formattedCpf.toString());
+                int selectionPosition = formattedCpf.length(); // Define a posição do cursor
+
+                // Garante que a posição do cursor não ultrapasse o comprimento do texto
+                if (selectionPosition > cpfEditText.getText().length()) {
+                    selectionPosition = cpfEditText.getText().length();
+                }
+                cpfEditText.setSelection(selectionPosition); // Define a posição da seleção corretamente
+                isUpdating = false; // Finaliza a atualização
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                String cpf = s.toString();
-
-                // Armazena o CPF não formatado
-                unformattedCpf = cpf.replaceAll("[^0-9]", "");
-
-                cpf = cpf.replaceAll("[^0-9]", "");
-
-                if (!cpf.isEmpty()) {
-                    if (cpf.length() >= 3) {
-                        if (cpf.length() <= 6) {
-                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3);
-                        } else if (cpf.length() <= 9) {
-                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6);
-                        } else if (cpf.length() <= 11) {
-                            cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
-                        }
-                    }
-
-                    if (!cpf.equals(s.toString())) {
-                        cpfEditText.removeTextChangedListener(this);
-                        cpfEditText.setText(cpf);
-                        cpfEditText.setSelection(cpf.length());
-                        cpfEditText.addTextChangedListener(this);
-                    }
-                }
+                // Não faz nada após a mudança
             }
         });
     }
