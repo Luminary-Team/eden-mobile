@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_premium_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"

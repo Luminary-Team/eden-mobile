@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.eden.ui.activities.PostsProfileTab;
-import com.eden.ui.activities.ProductsProfileTab;
+import com.eden.ui.tabs.PostsProfileTab;
+import com.eden.ui.tabs.ProductsProfileTab;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 

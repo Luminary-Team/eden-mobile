@@ -1,4 +1,4 @@
-package com.eden.ui.activities;
+package com.eden.ui.tabs;
 
 import android.os.Bundle;
 
