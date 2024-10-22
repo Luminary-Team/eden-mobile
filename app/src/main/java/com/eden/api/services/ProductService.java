@@ -20,6 +20,8 @@ import retrofit2.http.Query;
 public interface ProductService {
     @GET("/product/getProducts")
     Call<List<Product>> getAllProducts(@Header("userId") int userId);
+    @GET("/product/getPremiumProducts")
+    Call<List<Product>> getPremiumProducts(@Header("userId") int userId);
     @GET("/product/getByTitle")
     Call<List<Product>> getProductByTitle(@Query("title") String title);
     @GET("/product/getByUserId/{id}")

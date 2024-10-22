@@ -1,4 +1,4 @@
-package com.eden.ui.activities;
+package com.eden.ui.tabs;
 
 import static com.eden.utils.AndroidUtil.currentUser;
 
@@ -8,23 +8,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.eden.R;
-import com.eden.adapter.ProductAdapter;
 import com.eden.adapter.UserProductAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
-import com.eden.utils.AndroidUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

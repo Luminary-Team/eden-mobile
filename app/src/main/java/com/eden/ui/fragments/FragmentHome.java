@@ -52,7 +52,18 @@ public class FragmentHome extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         // Configura o RecyclerView
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(), 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(container.getContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if (recyclerView.getAdapter().getItemViewType(position) == 1) {
+                    return 2;
+                }
+                return 1;
+            }
+        });
 
         // Chama os produtos ao carregar a tela
         loadProducts(recyclerView, progressBar);
