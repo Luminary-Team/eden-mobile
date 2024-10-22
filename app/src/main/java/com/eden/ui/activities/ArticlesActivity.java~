@@ -2,7 +2,6 @@ package com.eden.ui.activities;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
@@ -36,7 +35,6 @@ public class ArticlesActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_articles);
 
-        ImageButton backBtn = findViewById(R.id.back_btn);
         ProgressBar progressBar = findViewById(R.id.products_progressBar);
         RecyclerView recyclerView = findViewById(R.id.recyclerView_articles);
 
@@ -67,11 +65,6 @@ public class ArticlesActivity extends AppCompatActivity {
         });
 
         recyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
-
-        // Setting up back button
-        backBtn.setOnClickListener(v -> {
-            finish();
-        });
 
     }
 }

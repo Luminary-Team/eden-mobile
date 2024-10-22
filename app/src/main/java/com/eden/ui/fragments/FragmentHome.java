@@ -1,5 +1,7 @@
 package com.eden.ui.fragments;
 
+import static com.eden.utils.AndroidUtil.currentUser;
+
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -71,7 +73,7 @@ public class FragmentHome extends Fragment {
     private void loadProducts(RecyclerView recyclerView, ProgressBar progressBar) {
         progressBar.setVisibility(View.VISIBLE);
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-        Call<List<Product>> call = productService.getAllProducts();
+        Call<List<Product>> call = productService.getAllProducts(currentUser.getId());
 
         call.enqueue(new Callback<List<Product>>() {
             @Override

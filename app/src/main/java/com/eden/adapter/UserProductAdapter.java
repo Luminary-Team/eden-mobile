@@ -82,7 +82,6 @@ public class UserProductAdapter extends RecyclerView.Adapter<UserProductAdapter.
                                 intent.putExtra("nome", product.getTitle());
                                 intent.putExtra("valor", product.getPrice());
                                 intent.putExtra("descricao", product.getDescription());
-                                intent.putExtra("rating", product.getRating());
                                 view.getContext().startActivity(intent);
                                 return true;
                             } else if (item.getItemId() == R.id.edit_option) {

@@ -1,5 +1,5 @@
 package com.eden.api.services;
 
-public class CEPService {
+public interface CEPService {
 
 }

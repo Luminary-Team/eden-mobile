@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
             // If the user is already logged in
             if (auth.getCurrentUser() != null) {
 
-                // Setting token
-                AndroidUtil.getToken();
-
                 // Setting the perfil photo
                 AndroidUtil.downloadProfilePicFromFirebase(this, btnSidebar);
                 AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);

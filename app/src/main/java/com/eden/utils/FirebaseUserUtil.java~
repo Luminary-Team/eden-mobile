@@ -122,6 +122,7 @@ public class FirebaseUserUtil {
                             // Ir para home
                             authenticate(context);
 
+                            ((Activity) context).finish();
                             Toast.makeText(context, "Usuário cadastrado no firebase com sucesso!", Toast.LENGTH_SHORT).show();
                         } else {
                             // Caso de falha

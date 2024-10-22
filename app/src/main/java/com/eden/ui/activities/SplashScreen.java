@@ -1,5 +1,7 @@
 package com.eden.ui.activities;
 
+import static com.eden.utils.AndroidUtil.authenticate;
+import static com.eden.utils.AndroidUtil.getToken;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.eden.R;
+import com.eden.utils.AndroidUtil;
 import com.eden.utils.FirebaseUserUtil;
 
 public class SplashScreen extends AppCompatActivity {
@@ -19,16 +22,19 @@ public class SplashScreen extends AppCompatActivity {
 
         Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(FirebaseUserUtil.isLoggedIn()) {
-                    openActivity(SplashScreen.this, MainActivity.class);
-                } else {
+        if(FirebaseUserUtil.isLoggedIn()) {
+            // Goes straight to main
+            authenticate(SplashScreen.this);
+
+        } else {
+            // Wait 2 seconds and go to login
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     openActivity(SplashScreen.this, UserLogin.class);
+                    finish();
                 }
-                finish();
-            }
-        }, 2000);
+            }, 2000);
+        }
     }
 }

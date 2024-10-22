@@ -56,7 +56,6 @@ public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAd
                 intent.putExtra("nome", product.getTitle());
                 intent.putExtra("valor", product.getPrice());
                 intent.putExtra("descricao", product.getDescription());
-                intent.putExtra("rating", product.getRating());
                 v.getContext().startActivity(intent);
             });
         }

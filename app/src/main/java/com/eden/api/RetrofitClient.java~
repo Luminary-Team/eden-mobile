@@ -19,7 +19,7 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
     private static final String baseUrl ="https://desenvolvimento-ii.onrender.com/";
-    private static final String baseUrlMongo ="https://eden-api-mongo.onrender.com/";
+    private static final String baseUrlMongo ="https://eden-api-mongo.onrender.com/news/";
 
     public static Retrofit getClient() {
 

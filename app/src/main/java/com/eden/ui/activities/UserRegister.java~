@@ -130,6 +130,9 @@ public class UserRegister extends AppCompatActivity {
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
 
+                        // Ir para home
+                        authenticate(UserRegister.this);
+
                         Log.d("CHECKPOINT", "JSON Object: " + jsonObject.toString());
                         Log.d("CHECKPOINT", response.message());
 
