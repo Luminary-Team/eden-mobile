@@ -130,7 +130,7 @@ public class AndroidUtil {
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if (response.isSuccessful()) {
                     token = response.body().getToken();
-                    getUser();
+                    getUser(response1 -> {});
                     Log.d("TOKEN", "Token: " + token);
                 } else {
                     Log.d("TOKEN", "Error getting token");
@@ -142,8 +142,8 @@ public class AndroidUtil {
             }
         });
     }
-
-    public static void getUser() {
+    public static void getUser(UserCallback callback) {
+        // TODO: Implementar callback no resto :cry:
         UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Call<UserSchema> call = service.getParam(email);
@@ -155,6 +155,7 @@ public class AndroidUtil {
                     currentUser = response.body();
                     UserSchema user = response.body();
                     Log.d("USER", "User: " + currentUser.toString());
+                    callback.setResponse(currentUser);
                 } else {
                     try {
                         Log.d("ErrorBody", response.errorBody().string());
@@ -167,6 +168,7 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<UserSchema> call, Throwable throwable) {
                 Log.d("CHECKPOINT", throwable.getMessage());
+                callback.setResponse(null);
             }
         });
     }
