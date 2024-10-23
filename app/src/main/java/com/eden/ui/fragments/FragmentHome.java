@@ -39,6 +39,7 @@ import retrofit2.Response;
 public class FragmentHome extends Fragment {
 
     List<Product> products = new ArrayList<>();
+    List<Product> premiumProducts = new ArrayList<>();
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -84,15 +85,32 @@ public class FragmentHome extends Fragment {
     private void loadProducts(RecyclerView recyclerView, ProgressBar progressBar) {
         progressBar.setVisibility(View.VISIBLE);
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-        Call<List<Product>> call = productService.getAllProducts(currentUser.getId());
 
-        call.enqueue(new Callback<List<Product>>() {
+        Call<List<Product>> callProduct = productService.getAllProducts(currentUser.getId());
+        callProduct.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     products = response.body();
-                    recyclerView.setAdapter(new ProductAdapter(products));
+
+                    Call<List<Product>> callPremium = productService.getPremiumProducts(currentUser.getId());
+                    callPremium.enqueue(new Callback<List<Product>>() {
+                        @Override
+                        public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                            if (response.isSuccessful()) {
+                                premiumProducts = response.body();
+
+                                recyclerView.setAdapter(new ProductAdapter(products, premiumProducts));
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<List<Product>> call, Throwable throwable) {
+
+                        }
+                    });
+
                 } else {
                     try {
                         Log.d("ErrorBody", response.errorBody().string());
@@ -139,7 +157,7 @@ public class FragmentHome extends Fragment {
                                 if (response.isSuccessful()) {
                                     if (response.body() != null) {
                                         products = response.body(); // Atualize a lista de produtos com os resultados da busca
-                                        recyclerView.setAdapter(new ProductAdapter(products)); // Notifique o adapter sobre a atualização da lista de produtos
+                                        recyclerView.setAdapter(new ProductAdapter(products, premiumProducts)); // Notifique o adapter sobre a atualização da lista de produtos
                                         progressBar.setVisibility(View.GONE);
                                     } else {
                                         Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();

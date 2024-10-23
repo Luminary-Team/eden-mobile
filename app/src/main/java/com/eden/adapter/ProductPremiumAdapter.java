@@ -22,11 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAdapter.ViewHolderProductPremium>{
-    private final List<Product> listaProducts;
 
-    public ProductPremiumAdapter(List<Product> arg) {
-        Collections.shuffle(arg);
-        this.listaProducts = arg;
+    private final List<Product> premiumProductsList;
+
+    public ProductPremiumAdapter(List<Product> premiumProducts) {
+        this.premiumProductsList = premiumProducts;
     }
 
     @NonNull
@@ -38,32 +38,15 @@ public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAd
 
     @Override
     public void onBindViewHolder(@NonNull ProductPremiumAdapter.ViewHolderProductPremium holder, int position) {
-        if (listaProducts != null) {
-            Log.d("ProductAdapter", "Position: " + position);
-            Product product = listaProducts.get(position);
-            if (product.getTitle() != null) {
-                holder.title.setText(product.getTitle());
-            }
-            if (product.getPrice() != 0) {
-                holder.price.setText(String.format("R$ %.2f", product.getPrice()));
-            }
-
-            downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "product_" + product.getId() + ".jpg");
-
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), BuyProduct.class);
-                intent.putExtra("id", product.getId());
-                intent.putExtra("nome", product.getTitle());
-                intent.putExtra("valor", product.getPrice());
-                intent.putExtra("descricao", product.getDescription());
-                v.getContext().startActivity(intent);
-            });
-        }
+        Product product = premiumProductsList.get(position);
+        holder.title.setText(product.getTitle());
+        holder.price.setText(String.format("R$ %.2f", product.getPrice()));
+        // Carregar imagem e configurar clique
     }
 
     @Override
     public int getItemCount() {
-        return listaProducts.size();
+        return premiumProductsList.size();
     }
 
     public static class ViewHolderProductPremium extends RecyclerView.ViewHolder {
@@ -71,6 +54,7 @@ public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAd
                 title, description, price, maxPrice, senderZipCode;
         private ImageView imageView;
         private RatingBar ratingBar;
+        private RecyclerView recyclerView;
 
 
         public ViewHolderProductPremium(@NonNull View itemView) {

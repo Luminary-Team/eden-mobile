@@ -12,12 +12,14 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
 import com.eden.model.Product;
 import com.eden.R;
 import com.eden.adapter.ProductPremiumAdapter;
+import com.eden.ui.activities.PremiumProduct;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,20 +29,22 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_PREMIUM = 1;
 
-    private final List<Product> listaProducts;
+    private final List<Product> productList;
+    private final List<Product> premiumProducts;
 
-    public ProductAdapter(List<Product> arg) {
-        Collections.shuffle(arg);
-        this.listaProducts = arg;
+    public ProductAdapter(List<Product> args, List<Product> args1) {
+        Collections.shuffle(args);
+        this.productList = args;
+        this.premiumProducts = args1;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position % 10 == 0) {
-            return TYPE_PREMIUM;
-        }
-        return TYPE_NORMAL; 
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+//        if (position % 10 == 0) {
+//            return TYPE_PREMIUM;
+//        }
+//        return TYPE_NORMAL;
+//    }
 
     @NonNull
     @Override
@@ -59,9 +63,9 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         // Normal Product
         if (holder instanceof ViewHolderProduct) {
             ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;
-            if (listaProducts != null) {
+            if (productList != null) {
                 Log.d("ProductAdapter", "Position: " + position);
-                Product product = listaProducts.get(position);
+                Product product = productList.get(position);
                 if (product.getTitle() != null) {
                     viewHolderProduct.title.setText(product.getTitle());
                 }
@@ -80,32 +84,12 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     v.getContext().startActivity(intent);
                 });
             }
-        // Premium Product
-        } else {
-            ProductPremiumAdapter.ViewHolderProductPremium viewHolderProductPremium = (ProductPremiumAdapter.ViewHolderProductPremium) holder;
-            if (listaProducts != null) {
-                Product product = listaProducts.get(position);
-
-//                viewHolderProductPremium.title.setText(product.getTitle());
-//                viewHolderProductPremium.price.setText(String.format("R$ %.2f", product.getPrice()));
-
-//                downloadImageFromFirebase(viewHolderProductPremium.itemView.getContext(), viewHolderProductPremium., "product_" + product.getId() + ".jpg");
-
-                viewHolderProductPremium.itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), BuyProduct.class);
-                    intent.putExtra("id", product.getId());
-                    intent.putExtra("nome", product.getTitle());
-                    intent.putExtra("valor", product.getPrice());
-                    intent.putExtra("descricao", product.getDescription());
-                    v.getContext().startActivity(intent);
-                });
-            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return listaProducts.size();
+        return productList.size();
     }
 
     public static class ViewHolderProduct extends RecyclerView.ViewHolder {
