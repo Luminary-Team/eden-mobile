@@ -6,10 +6,13 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
-import com.eden.adapter.ProductPremiumAdapter;
+import com.eden.adapter.PremiumProductAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
@@ -38,7 +41,7 @@ public class PremiumProduct extends AppCompatActivity {
                 List<Product> products = response.body();
 
                 if (products != null) {
-                    recyclerView.setAdapter(new ProductPremiumAdapter(products));
+                    recyclerView.setAdapter(new PremiumProductAdapter(products));
                 }
 
             }

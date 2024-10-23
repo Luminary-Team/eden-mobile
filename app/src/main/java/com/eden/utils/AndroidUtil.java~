@@ -12,15 +12,12 @@ import android.widget.ImageView;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.model.Token;
-import com.eden.ui.activities.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,7 +36,7 @@ public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
 
-    // Open intent
+    // Abrir intent
     public static void openActivity(Context context, Class<?> className) {
         context.startActivity(new Intent(context, className));
     }
@@ -53,15 +50,15 @@ public class AndroidUtil {
     }
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
-        // Create "images" folder reference in Firebase Storage
+        // Criando pasta referência "images" no firebase
         StorageReference imageRef = storageRef.child(imagePath);
 
-        // Upload image to Firebase Storage
+        // Subindo a imagem pro firebase
         UploadTask uploadTask = imageRef.putFile(uri);
         uploadTask.addOnSuccessListener(v -> {
             Log.d("CHECKPOINT", "Image uploaded successfully!");
             imageRef.getDownloadUrl().addOnSuccessListener(taskSnapshot -> {
-                Log.d("CHECKPOINT", "Download URL: " + uri);
+                Log.d("CHECKPOINT", "Download URL: " + uri.toString());
             }).addOnFailureListener(e -> {
                 Log.e("CHECKPOINT", "Error uploading image: " + e.getMessage());
             });
@@ -69,47 +66,23 @@ public class AndroidUtil {
     }
 
     public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
-        // Create reference to the image
+        // Crie uma referência para a imagem
         StorageReference imageRef = storageRef.child(imagePath);
 
-        // Download image from Firebase Storage
+        // Baixe a imagem do Firebase Storage
         imageRef.getDownloadUrl()
                 .addOnSuccessListener(uri -> {
                     if (context instanceof Activity && !((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
                         Log.d("CHECKPOINT", "Download URL: " + uri.toString());
-                        // Use the download URL to display the image
+                        // Use a URL de download para exibir a imagem
                         Glide.with(context)
                                 .load(uri)
-                                .override(500, 500) // Resize the image to 300x300 pixels
                                 .into(imageView);
                     } else {
                         Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
                     }
                 }).addOnFailureListener(e -> {
-                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
-                });
-    }
-
-    public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
-        // Create reference to the image
-        StorageReference imageRef = storageRef.child(imagePath);
-
-        // Download image from Firebase Storage
-        imageRef.getDownloadUrl()
-                .addOnSuccessListener(uri -> {
-                    if (context instanceof Activity && !((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                        Log.d("CHECKPOINT", "Download URL: " + uri.toString());
-                        // Use the download URL to display the image
-                        Glide.with(context)
-                                .load(uri)
-                                .override(500, 500) // Resize the image to 300x300 pixels
-                                .apply(RequestOptions.bitmapTransform(new RoundedCorners(50)))
-                                .into(imageView);
-                    } else {
-                        Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
-                    }
-                }).addOnFailureListener(e -> {
-                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                    Log.e("CHECKPOINT", "Erro ao baixar a imagem: " + e.getMessage());
                 });
     }
 
@@ -130,10 +103,10 @@ public class AndroidUtil {
             public void onResponse(Call<Token> call, Response<Token> response) {
                 if (response.isSuccessful()) {
                     token = response.body().getToken();
-                    getUser(response1 -> {});
+                    getUser();
                     Log.d("TOKEN", "Token: " + token);
                 } else {
-                    Log.d("TOKEN", "Error getting token");
+                    Log.d("TOKEN", "Erro ao obter o token");
                 }
             }
             @Override
@@ -142,11 +115,12 @@ public class AndroidUtil {
             }
         });
     }
-    public static void getUser(UserCallback callback) {
-        // TODO: Implementar callback no resto :cry:
+
+    public static CompletableFuture<UserSchema> getUser() {
         UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Call<UserSchema> call = service.getParam(email);
+        CompletableFuture<UserSchema> future = new CompletableFuture<>();
 
         call.enqueue(new Callback<UserSchema>() {
             @Override
@@ -154,13 +128,14 @@ public class AndroidUtil {
                 if (response.isSuccessful() && response.body() != null) {
                     currentUser = response.body();
                     UserSchema user = response.body();
+                    future.complete(user);
                     Log.d("USER", "User: " + currentUser.toString());
-                    callback.setResponse(currentUser);
                 } else {
                     try {
                         Log.d("ErrorBody", response.errorBody().string());
+                        future.completeExceptionally(new Throwable("Failed to get user"));
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        future.completeExceptionally(e);
                     }
                 }
             }
@@ -168,67 +143,14 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<UserSchema> call, Throwable throwable) {
                 Log.d("CHECKPOINT", throwable.getMessage());
-                callback.setResponse(null);
+                future.completeExceptionally(throwable);
             }
         });
-    }
-
-    public static void authenticate(Context context) {
-
-        // Getting token
-        Retrofit client = RetrofitClient.getClient();
-        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-        UserService service = client.create(UserService.class);
-        Call<Token> call = service.getToken(new TokenRequest(email));
-        call.enqueue(new Callback<Token>() {
-            @Override
-            public void onResponse(Call<Token> call, Response<Token> response) {
-                if (response.isSuccessful()) {
-                    token = response.body().getToken();
-
-                    // GetUser
-                    UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
-                    String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                    Call<UserSchema> userCall = service.getParam(email);
-                    userCall.enqueue(new Callback<UserSchema>() {
-                        @Override
-                        public void onResponse(Call<UserSchema> call, Response<UserSchema> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                currentUser = response.body();
-
-                                openActivity(context, MainActivity.class);
-                                ((Activity) context).finish();
-
-                                Log.d("USER", "User: " + currentUser.toString());
-                            } else {
-                                try {
-                                    Log.d("ErrorBody", response.errorBody().string());
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<UserSchema> call, Throwable throwable) {
-                            Log.d("CHECKPOINT", throwable.getMessage());
-                        }
-                    });
-
-                } else {
-                    Log.d("TOKEN", "Error getting token");
-                }
-            }
-            @Override
-            public void onFailure(Call<Token> call, Throwable throwable) {
-                Log.d("TOKEN", throwable.getMessage());
-            }
-        });
-
+        return future;
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.CAMERA,
+            android.Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
 
@@ -241,33 +163,41 @@ public class AndroidUtil {
         return true;
     }
 
-//    public static void notify(Context context, Context localContext) {
+//    public static void notificar(Context context, Context localContext) {
 //
-//        // Create Notification
-//        Intent intent = new Intent(context, NotificationReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+//        // Criar Notificação
+//        Intent intent = new Intent(context, NotificaionReceiver.class);
+//        PendingIntent pendindIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 //
 //        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
 //                .setSmallIcon(R.drawable.eden_logotipo_2)
-//                .setContentTitle("Notification Title")
-//                .setContentText("CLICK AND RECEIVE!")
+//                .setContentTitle("Título da notificação")
+//                .setContentText("CLIQUE E RECEBA!")
 //                .setPriority(NotificationCompat.PRIORITY_HIGH)
 //                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent);
+//                .setContentIntent(pendindIntent);
 //
-//        // Create Notification Channel
-//        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
+//        // Criar Canal de Notificação
+//        NotificationChannel channel = new NotificationChannel("channel_id", "Notificar",
 //                NotificationManager.IMPORTANCE_HIGH);
 //        NotificationManager manager = getSystemService(NotificationManager.class);
 //        manager.createNotificationChannel(channel);
 //
-//        // Show notification
-//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
+//        // Mostrar notificação
+//        NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(localContext);
 //        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Handle missing permission
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
 //            return;
 //        }
-//        notificationManagerCompat.notify(1, builder.build());
+//        notificationCompat.notify(1, builder.build());
+//
+//
 //    }
 
 }

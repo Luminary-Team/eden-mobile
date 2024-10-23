@@ -54,7 +54,6 @@ public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAd
                 title, description, price, maxPrice, senderZipCode;
         private ImageView imageView;
         private RatingBar ratingBar;
-        private RecyclerView recyclerView;
 
 
         public ViewHolderProductPremium(@NonNull View itemView) {

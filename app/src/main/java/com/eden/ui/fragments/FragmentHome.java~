@@ -157,7 +157,7 @@ public class FragmentHome extends Fragment {
                                 if (response.isSuccessful()) {
                                     if (response.body() != null) {
                                         products = response.body(); // Atualize a lista de produtos com os resultados da busca
-                                        recyclerView.setAdapter(new ProductAdapter(products, premiumProducts)); // Notifique o adapter sobre a atualização da lista de produtos
+                                        recyclerView.setAdapter(new ProductAdapter(products)); // Notifique o adapter sobre a atualização da lista de produtos
                                         progressBar.setVisibility(View.GONE);
                                     } else {
                                         Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();

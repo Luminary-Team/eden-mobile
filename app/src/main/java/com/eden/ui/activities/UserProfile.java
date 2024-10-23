@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.eden.R;
 import com.eden.adapter.ViewPagerAdapter;
+import com.eden.api.dto.UserSchema;
 import com.eden.utils.AndroidUtil;
+import com.eden.utils.UserCallback;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -59,28 +61,6 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-        // Setting Values
-        TextView name = findViewById(R.id.profile_name);
-        TextView username = findViewById(R.id.profile_username);
-        RatingBar rating = findViewById(R.id.profile_rating);
-
-        if (currentUser != null) {
-            name.setText(currentUser.getName());
-            username.setText(currentUser.getUserName());
-            rating.setRating(currentUser.getRating());
-        }
-
-        // Setting header
-        RelativeLayout headerProfile = findViewById(R.id.header_profile);
-
-        // Setting perfil photo
-        profilePic = findViewById(R.id.profile_pic);
-        AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
-
-        headerProfile.setOnClickListener(v -> {
-            openActivity(this, UserProfileEdit.class);
-        });
-
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
 //        navView.setNavigationItemSelectedListener(item -> {
@@ -92,6 +72,41 @@ public class UserProfile extends AppCompatActivity {
 //            }
 //        });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AndroidUtil.getUser(new UserCallback() {
+            @Override
+            public void setResponse(UserSchema response) {
+
+                // Setting Values
+                TextView name = findViewById(R.id.profile_name);
+                TextView username = findViewById(R.id.profile_username);
+                RatingBar rating = findViewById(R.id.profile_rating);
+
+                if (currentUser != null) {
+                    name.setText(currentUser.getName());
+                    username.setText(currentUser.getUserName());
+                    rating.setRating(currentUser.getRating());
+                }
+
+                // Setting header
+                RelativeLayout headerProfile = findViewById(R.id.header_profile);
+
+                // Setting perfil photo
+                profilePic = findViewById(R.id.profile_pic);
+                AndroidUtil.downloadProfilePicFromFirebase(UserProfile.this, profilePic);
+
+                headerProfile.setOnClickListener(v -> {
+                    openActivity(UserProfile.this, UserProfileEdit.class);
+                });
+
+            }
+        });
 
     }
 }

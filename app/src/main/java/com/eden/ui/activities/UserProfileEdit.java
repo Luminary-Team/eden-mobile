@@ -180,7 +180,6 @@ public class UserProfileEdit extends AppCompatActivity {
         });
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> {
-            openActivity(this, UserProfile.class);
             finish();
         });
 
