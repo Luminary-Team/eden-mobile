@@ -49,8 +49,10 @@
             android:layout_marginTop="16dp"
             android:hint="Nome completo"
             android:textColorHint="@color/edenBlue"
+            android:inputType="textCapWords"
             android:drawableStart="@drawable/profile_fulfilled_icon"
             android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
             android:background="@drawable/edit_text_default_background"
             android:padding="16dp"
             android:textSize="16sp" />
@@ -63,9 +65,11 @@
             android:layout_marginTop="16dp"
             android:hint="Número do cartão"
             android:textColorHint="@color/edenBlue"
+            android:inputType="number"
             android:background="@drawable/edit_text_default_background"
             android:drawableStart="@drawable/credit_icon"
             android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
             android:padding="16dp"
             android:textSize="16sp" />
 
@@ -77,6 +81,7 @@
             android:layout_marginTop="16dp"
             android:hint="CVV"
             android:textColorHint="@color/edenBlue"
+            android:inputType="number"
             android:background="@drawable/edit_text_default_background"
             android:padding="16dp"
             android:textSize="16sp" />
@@ -89,8 +94,9 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
             android:layout_marginStart="8dp"
-            android:textColorHint="@color/edenBlue"
             android:hint="Data de validade"
+            android:textColorHint="@color/edenBlue"
+            android:inputType="number"
             android:background="@drawable/edit_text_default_background"
             android:padding="16dp"
             android:textSize="16sp" />
@@ -125,9 +131,11 @@
             android:layout_marginTop="16dp"
             android:hint="CEP"
             android:textColorHint="@color/edenBlue"
+            android:inputType="number"
             android:background="@drawable/edit_text_default_background"
             android:drawableStart="@drawable/location_icon"
             android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
             android:padding="16dp"
             android:textSize="16sp" />
 

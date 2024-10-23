@@ -1,10 +1,14 @@
 package com.eden.ui.activities;
 
+import static com.eden.utils.AndroidUtil.authenticate;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +38,7 @@ import retrofit2.Response;
 public class UserRegister extends AppCompatActivity {
 
     FirebaseUserUtil db = new FirebaseUserUtil();
+    private String unformattedPhoneNumber, unformattedCpf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +59,13 @@ public class UserRegister extends AppCompatActivity {
         // Register the user
         btnRegister.setOnClickListener(v -> {
             String name = nameEditText.getText().toString().trim();
-            String phoneNumber = phoneNumberEditText.getText().toString().trim();
-            String cpf = cpfEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
             // Verifies if none of the values are null
-            if (!name.isEmpty() && !phoneNumber.isEmpty()
-                    && !cpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                registerUser (name, cpf, phoneNumber, email, password);
+            if (!name.isEmpty() && !unformattedPhoneNumber.isEmpty()
+                    && !unformattedCpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+                registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
             }
@@ -98,7 +101,11 @@ public class UserRegister extends AppCompatActivity {
             }
         });
 
+        // Formatar Cellphone
+        formatPhone(phoneNumberEditText);
 
+        // Formatar CPF
+        formatCpf(cpfEditText);
 
     }
 
@@ -106,8 +113,6 @@ public class UserRegister extends AppCompatActivity {
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
 
         UserService api = RetrofitClient.getClient().create(UserService.class);
-
-        Log.d("CHECKPOINT", phoneNumber);
 
         // Creating User
         User user = new User(cpf, name, name,
@@ -124,9 +129,6 @@ public class UserRegister extends AppCompatActivity {
 
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
-
-                        // Ir para home
-                        AndroidUtil.openActivity(UserRegister.this, MainActivity.class);
 
                         Log.d("CHECKPOINT", "JSON Object: " + jsonObject.toString());
                         Log.d("CHECKPOINT", response.message());
@@ -187,5 +189,124 @@ public class UserRegister extends AppCompatActivity {
             }
         });
     }
+
+    private void formatCpf(EditText cpfEditText) {
+        cpfEditText.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false; // Variável para evitar loops infinitos
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Não faz nada antes da mudança
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) {
+                    return; // Se já está atualizando, não faz nada
+                }
+
+                isUpdating = true; // Inicia a atualização
+
+                String cpf = s.toString();
+
+                cpf = cpf.replaceAll("[^0-9]", "");
+
+                // Armazena o CPF não formatado
+                unformattedCpf = cpf;
+
+
+                // Limita a 11 dígitos
+                if (cpf.length() > 11) {
+                    cpf = cpf.substring(0, 11);
+                }
+
+                StringBuilder formattedCpf = new StringBuilder();
+                int length = cpf.length();
+
+                // Formatação do CPF
+                if (length > 0) {
+                    formattedCpf.append(cpf.substring(0, Math.min(length, 3))); // Primeiros 3 dígitos
+                    if (length >= 4) {
+                        formattedCpf.append(".").append(cpf.substring(3, Math.min(length, 6))); // Próximos 3 dígitos
+                    }
+                    if (length >= 7) {
+                        formattedCpf.append(".").append(cpf.substring(6, Math.min(length, 9))); // Próximos 3 dígitos
+                    }
+                    if (length >= 10) {
+                        formattedCpf.append("-").append(cpf.substring(9)); // Últimos 2 dígitos
+                    }
+                }
+
+                // Atualiza o EditText com o CPF formatado
+                cpfEditText.setText(formattedCpf.toString());
+                int selectionPosition = formattedCpf.length(); // Define a posição do cursor
+
+                // Garante que a posição do cursor não ultrapasse o comprimento do texto
+                if (selectionPosition > cpfEditText.getText().length()) {
+                    selectionPosition = cpfEditText.getText().length();
+                }
+                cpfEditText.setSelection(selectionPosition); // Define a posição da seleção corretamente
+                isUpdating = false; // Finaliza a atualização
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Não faz nada após a mudança
+            }
+        });
+    }
+
+    private void formatPhone(EditText editPhone) {
+
+        // Format phoneNumber
+        editPhone.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isUpdating) { return; }
+
+                isUpdating = true;
+                unformattedPhoneNumber = s.toString().replaceAll("[^\\d]", ""); // Armazena o número não formatado
+
+                if (unformattedPhoneNumber.length() > 11) {
+                    unformattedPhoneNumber = unformattedPhoneNumber.substring(0, 11); // Limita a 11 dígitos
+                }
+
+                StringBuilder formatted = new StringBuilder();
+                int length = unformattedPhoneNumber.length();
+
+                if (length > 0) {
+                    formatted.append("(");
+                    formatted.append(unformattedPhoneNumber.substring(0, Math.min(length, 2))); // DDD
+                    if (length >= 3) {
+                        formatted.append(") ");
+                        formatted.append(unformattedPhoneNumber.substring(2, Math.min(length, 7))); // Primeira parte do número
+                        if (length >= 8) {
+                            formatted.append("-");
+                            formatted.append(unformattedPhoneNumber.substring(7)); // Segunda parte do número
+                        }
+                    }
+                }
+                editPhone.setText(formatted.toString());
+                int selectionPosition = formatted.length();
+
+                if (selectionPosition > editPhone.getText().length()) {
+                    selectionPosition = editPhone.getText().length();
+                }
+                editPhone.setSelection(selectionPosition); // Define a posição da seleção corretamente
+                isUpdating = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
 
 }

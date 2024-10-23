@@ -10,9 +10,21 @@ public class Product {
     private float price;
     private float maxPrice;
     private String senderZipCode;
-    private float rating;
+    private boolean premium;
 
     public Product() { }
+
+    public Product(int id, int usageTimeId, int conditionTypeId, int userId, String title, String description, float price, float maxPrice, String senderZipCode) {
+        this.id = id;
+        this.usageTimeId = usageTimeId;
+        this.conditionTypeId = conditionTypeId;
+        this.userId = userId;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.maxPrice = maxPrice;
+        this.senderZipCode = senderZipCode;
+    }
 
     public int getId() {
         return id;
@@ -86,24 +98,11 @@ public class Product {
         this.senderZipCode = senderZipCode;
     }
 
-    public float getRating() {
-        return rating;
+    public boolean isPremium() {
+        return premium;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    public Product(int id, int usageTimeId, int conditionTypeId, int userId, String title, String description, float price, float maxPrice, String senderZipCode, float rating) {
-        this.id = id;
-        this.usageTimeId = usageTimeId;
-        this.conditionTypeId = conditionTypeId;
-        this.userId = userId;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.maxPrice = maxPrice;
-        this.senderZipCode = senderZipCode;
-        this.rating = rating;
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 }

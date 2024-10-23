@@ -2,7 +2,6 @@ package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
-import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +14,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,18 +26,19 @@ import android.widget.Toast;
 
 import com.eden.R;
 import com.eden.api.RetrofitClient;
-import com.eden.api.dto.CartResponse;
+import com.eden.api.dto.CartItemResponse;
 import com.eden.api.services.CartService;
 import com.eden.model.Cart;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class BuyProduct extends AppCompatActivity {
+    boolean isFavorite = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,7 @@ public class BuyProduct extends AppCompatActivity {
         TextView productDelivery = findViewById(R.id.product_delivery);
         Button btnComprar = findViewById(R.id.button_buy_now);
         Button btnAdcCart = findViewById(R.id.button_add_cart);
+        FloatingActionButton btnFavorite = findViewById(R.id.btn_favorite);
 
         Intent intent = getIntent();
 
@@ -74,18 +76,50 @@ public class BuyProduct extends AppCompatActivity {
             addCart(intent.getIntExtra("id", 0));
         });
 
-    }
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFavorite = !isFavorite;
 
-    private void getProduto(int id) {
-//        Call<Product>
+                // Muda o ícone com animação
+                if (isFavorite) {
+                    btnFavorite.setImageResource(R.drawable.heart_selected_icon);
+                    btnFavorite.setImageTintList(ColorStateList.valueOf(Color.CYAN));
+                    btnFavorite.setScaleX(1.2f);
+                    btnFavorite.setScaleY(1.2f);
+                } else {
+                    btnFavorite.setImageResource(R.drawable.heart_add_icon);
+                    btnFavorite.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+                }
+
+                btnFavorite.animate()
+                        .scaleX(1.2f)
+                        .scaleY(1.2f)
+                        .setDuration(100)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnFavorite.animate()
+                                        .scaleX(1f)
+                                        .scaleY(1f)
+                                        .setDuration(100)
+                                        .start();
+                            }
+                        })
+                        .start();
+            }
+        });
+
+        (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
+
     }
 
     private void addCart(int productId) {
         CartService cartService = RetrofitClient.getClient().create(CartService.class);
-        Call<CartResponse> call = cartService.registerCart(new Cart(currentUser.getCartId(), productId));
-        call.enqueue(new Callback<CartResponse>() {
+        Call<CartItemResponse> call = cartService.registerCart(new Cart(currentUser.getCartId(), productId));
+        call.enqueue(new Callback<CartItemResponse>() {
             @Override
-            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+            public void onResponse(Call<CartItemResponse> call, Response<CartItemResponse> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(BuyProduct.this, "Produto adicionado ao carrinho com sucesso!", Toast.LENGTH_SHORT).show();
                     Log.d("CartSucess", response.body().toString());
@@ -102,7 +136,7 @@ public class BuyProduct extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CartResponse> call, Throwable throwable) {
+            public void onFailure(Call<CartItemResponse> call, Throwable throwable) {
                 Toast.makeText(BuyProduct.this, throwable.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });

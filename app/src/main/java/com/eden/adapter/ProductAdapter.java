@@ -12,67 +12,94 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
 import com.eden.model.Product;
 import com.eden.R;
+import com.eden.adapter.ProductPremiumAdapter;
+import com.eden.ui.activities.PremiumProduct;
 
+import java.util.Collections;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolderProduto> {
-    private List<Product> listaProducts;
+public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public ProductAdapter(List<Product> arg) {
-        this.listaProducts = arg;
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_PREMIUM = 1;
+
+    private final List<Product> productList;
+    private final List<Product> premiumProducts;
+
+    public ProductAdapter(List<Product> args, List<Product> args1) {
+        Collections.shuffle(args);
+        this.productList = args;
+        this.premiumProducts = args1;
     }
+
+//    @Override
+//    public int getItemViewType(int position) {
+//        if (position % 10 == 0) {
+//            return TYPE_PREMIUM;
+//        }
+//        return TYPE_NORMAL;
+//    }
 
     @NonNull
     @Override
-    public ProductAdapter.ViewHolderProduto onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_layout, parent, false);
-        return new ViewHolderProduto(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == TYPE_NORMAL) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_layout, parent, false);
+            return new ViewHolderProduct(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_premium_product, parent, false);
+            return new ProductPremiumAdapter.ViewHolderProductPremium(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.ViewHolderProduto holder, int position) {
-        if (listaProducts != null) {
-            Log.d("ProductAdapter", "Position: " + position);
-            Product product = listaProducts.get(position);
-            if (product.getTitle() != null) {
-                holder.title.setText(product.getTitle());
-            }
-            if (product.getPrice() != 0) {
-                holder.price.setText(String.format("R$ %.2f", product.getPrice()));
-            }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        // Normal Product
+        if (holder instanceof ViewHolderProduct) {
+            ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;
+            if (productList != null) {
+                Log.d("ProductAdapter", "Position: " + position);
+                Product product = productList.get(position);
+                if (product.getTitle() != null) {
+                    viewHolderProduct.title.setText(product.getTitle());
+                }
+                if (product.getPrice() != 0) {
+                    viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
+                }
 
-            downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "product_" + product.getId() + ".jpg");
+                downloadImageFromFirebase(viewHolderProduct.itemView.getContext(), viewHolderProduct.imageView, "product_" + product.getId() + ".jpg");
 
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), BuyProduct.class);
-                intent.putExtra("id", product.getId());
-                intent.putExtra("nome", product.getTitle());
-                intent.putExtra("valor", product.getPrice());
-                intent.putExtra("descricao", product.getDescription());
-                intent.putExtra("rating", product.getRating());
-                v.getContext().startActivity(intent);
-            });
+                viewHolderProduct.itemView.setOnClickListener(v -> {
+                    Intent intent = new Intent(v.getContext(), BuyProduct.class);
+                    intent.putExtra("id", product.getId());
+                    intent.putExtra("nome", product.getTitle());
+                    intent.putExtra("valor", product.getPrice());
+                    intent.putExtra("descricao", product.getDescription());
+                    v.getContext().startActivity(intent);
+                });
+            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return listaProducts.size();
+        return productList.size();
     }
 
-    public class ViewHolderProduto extends RecyclerView.ViewHolder {
+    public static class ViewHolderProduct extends RecyclerView.ViewHolder {
         private TextView usageTimeId, usageTime, conditionTypeId, user,
                 title, description, price, maxPrice, senderZipCode;
         private ImageView imageView;
         private RatingBar ratingBar;
 
 
-        public ViewHolderProduto(@NonNull View itemView) {
+        public ViewHolderProduct(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.product_title);
             price = itemView.findViewById(R.id.product_price);
