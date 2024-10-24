@@ -4,8 +4,6 @@ import com.eden.api.dto.CardRequestSchema;
 import com.eden.api.dto.CardResponse;
 import com.eden.model.Card;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -18,6 +16,6 @@ public interface CardService {
     Call<Card> createCard(@Body CardRequestSchema card);
 
     @GET("/card/user/{userId}")
-    Call<List<CardResponse>> getCardByUserId(@Path("userId") int userId);
+    Call<CardResponse> getCardByUserId(@Path("userId") int userId);
 
 }

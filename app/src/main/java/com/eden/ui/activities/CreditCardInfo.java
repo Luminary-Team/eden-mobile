@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,9 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.CardRequestSchema;
+import com.eden.api.dto.CartResponse;
 import com.eden.api.dto.OrderRequest;
 import com.eden.api.dto.OrderResponse;
 import com.eden.api.services.CardService;
+import com.eden.api.services.CartService;
 import com.eden.api.services.OrderService;
 import com.eden.model.Card;
 
@@ -32,6 +35,8 @@ import retrofit2.Retrofit;
 
 public class CreditCardInfo extends AppCompatActivity {
 
+    TextView total;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +48,12 @@ public class CreditCardInfo extends AppCompatActivity {
         EditText dataValidade = findViewById(R.id.data_validade);
         EditText cep = findViewById(R.id.cep);
         Button btnProsseguir = findViewById(R.id.btn_prosseguir);
+        total = findViewById(R.id.textView_total);
+
+        setTotal();
 
         // Save card info
-        findViewById(R.id.btn_prosseguir).setOnClickListener(card -> {
+        btnProsseguir.setOnClickListener(card -> {
 
             CardRequestSchema cardRequestSchema = new CardRequestSchema(
                     currentUser.getId(),
@@ -68,38 +76,36 @@ public class CreditCardInfo extends AppCompatActivity {
                                 .setPositiveButton("Yes", (dialog, which) -> {
 
                                     // Finish the order
-                                    btnProsseguir.setOnClickListener(order -> {
+                                    OrderRequest orderRequest = new OrderRequest(currentUser.getCartId(), 1, "address");
 
-                                        OrderRequest orderRequest = new OrderRequest(currentUser.getCartId(), 1, "address");
-
-                                        OrderService orderService = RetrofitClient.getClient().create(OrderService.class);
-                                        Call<OrderResponse> orderServiceCall = orderService.registerOrder(orderRequest);
-                                        orderServiceCall.enqueue(new Callback<OrderResponse>() {
-                                            @Override
-                                            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
-                                                if (response.isSuccessful() ) {
-                                                    // TODO: Card to confirm purchase
-                                                    openActivity(CreditCardInfo.this, MainActivity.class);
-                                                } else {
-                                                    // TODO: Handle exception
-                                                    try {
-                                                        Toast.makeText(CreditCardInfo.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
-                                                    } catch (IOException e) {
-                                                        throw new RuntimeException(e);
-                                                    }
+                                    OrderService orderService = RetrofitClient.getClient().create(OrderService.class);
+                                    Call<OrderResponse> orderServiceCall = orderService.registerOrder(orderRequest);
+                                    orderServiceCall.enqueue(new Callback<OrderResponse>() {
+                                        @Override
+                                        public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                                            if (response.isSuccessful() ) {
+                                                // TODO: Card to confirm purchase
+                                                openActivity(CreditCardInfo.this, MainActivity.class);
+                                            } else {
+                                                // TODO: Handle exception
+                                                try {
+                                                    Toast.makeText(CreditCardInfo.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                                } catch (IOException e) {
+                                                    throw new RuntimeException(e);
                                                 }
                                             }
+                                        }
 
-                                            @Override
-                                            public void onFailure(Call<OrderResponse> call, Throwable throwable) {
+                                        @Override
+                                        public void onFailure(Call<OrderResponse> call, Throwable throwable) {
 
-                                            }
-                                        });
+                                        }
                                     });
 
                                 })
                                 .setNegativeButton("No", null)
                                 .show();
+
                     } else {
                         // Handle exception
                         try {
@@ -220,4 +226,24 @@ public class CreditCardInfo extends AppCompatActivity {
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
     }
+
+    private void setTotal() {
+        CartService orderService = RetrofitClient.getClient().create(CartService.class);
+        Call<CartResponse> call = orderService.getCartItemsByCartId(currentUser.getCartId());
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                if (response.isSuccessful()) {
+                    CartResponse cartResponse = response.body();
+                    total.setText("R$ " + String.format("%.2f", cartResponse.getTotalSale()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable throwable) {
+
+            }
+        });
+    }
+
 }
