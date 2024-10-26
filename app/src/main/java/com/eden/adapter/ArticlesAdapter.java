@@ -10,10 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.eden.R;
 import com.eden.model.Article;
-import com.eden.ui.activities.WebViewActivity;
+import com.eden.ui.activities.RestrictedArea;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
             holder.article_content.setText(article.getDescription());
 
             holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(holder.itemView.getContext(), WebViewActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), RestrictedArea.class);
                 intent.putExtra("url", article.getUrl());
                 holder.itemView.getContext().startActivity(intent);
             });

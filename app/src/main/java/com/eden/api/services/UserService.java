@@ -1,10 +1,15 @@
 package com.eden.api.services;
 
+import com.eden.api.dto.RegisterFavoriteRequest;
 import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserEditRequest;
+import com.eden.api.dto.UserResponse;
 import com.eden.api.dto.UserSchema;
+import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.model.User;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -29,5 +34,11 @@ public interface UserService {
 
     @PATCH("/user/update/{id}")
     Call<UserSchema> updateUser(@Body UserEditRequest user, @Path("id") String id);
+
+    @POST("/user/favorites")
+    Call<UserResponse> registerFavorite(@Body RegisterFavoriteRequest registerFavoriteRequest);
+
+    @GET("/user/favorites/{userId}")
+    Call<UserResponse> getFavorites(@Path("userId") String userId);
 
 }

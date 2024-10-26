@@ -133,6 +133,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_below="@id/btn_login"
                 android:text="Não tem uma conta? Cadastre-se"
+                android:textStyle="bold"
                 android:textAlignment="center"
                 />
 

@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
                 openActivity(this, EcoPoint.class);
             if (menuItem.getItemId() == R.id.nav_artigos)
                 openActivity(this, ArticlesActivity.class);
+            if (menuItem.getItemId() == R.id.nav_comprados)
+                openActivity(this, ArticlesActivity.class);
+            if (menuItem.getItemId() == R.id.nav_restricted_area)
+                openActivity(this, RestrictedArea.class);
 
             // Closes drawers after selection
             drawerLayout.closeDrawers();

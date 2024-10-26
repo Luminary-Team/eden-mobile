@@ -8,7 +8,11 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -53,8 +57,13 @@ public class UserRegister extends AppCompatActivity {
         Button btnRegister = findViewById(R.id.btn_cadastro);
         TextView btnLogin = findViewById(R.id.textView_login);
 
-        // Setting underline text
-        btnLogin.setPaintFlags(btnLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        String fullText = "Já tem uma conta? Faça Login";
+        SpannableString spannableString = new SpannableString(fullText);
+        int start = fullText.indexOf("Faça Login");
+        int end = start + "Faça Login".length();
+        spannableString.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edenVeryLightBlue)),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         // Register the user
         btnRegister.setOnClickListener(v -> {
