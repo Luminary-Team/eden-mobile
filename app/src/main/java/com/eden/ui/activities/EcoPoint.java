@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 
 import com.eden.R;
 import com.eden.api.RetrofitClient;
-import com.eden.api.services.CEPService;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -106,30 +105,36 @@ public class EcoPoint extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     private void findNearbyEcopoints(LatLng userLocation) {
+//        double radiusInDegrees = 0.01;
+//
+        final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
 
-        // Define a área de busca como um círculo com 1000 metros de diâmetro ao redor da localização do usuário.
-        CircularBounds circle = CircularBounds.newInstance(userLocation, /* radius = */ 1000);
-
-        // Specify the list of fields to return.
-        final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.DISPLAY_NAME);
-
-// Define latitude and longitude coordinates of the search area.
-        LatLng southWest = new LatLng(37.38816277477739, -122.08813770258874);
-        LatLng northEast = new LatLng(37.39580487866437, -122.07702325966572);
-
-// Use the builder to create a SearchByTextRequest object.
         final SearchByTextRequest searchByTextRequest = SearchByTextRequest.builder("Ecopontos", placeFields)
-                .setMaxResultCount(20)
-                .setLocationRestriction(RectangularBounds.newInstance(southWest, northEast)).build();
+//                .setMaxResultCount()
+//                .setLocationRestriction(bounds) // Adiciona a restrição de localização retangular
+                .build();
 
-// Call PlacesClient.searchByText() to perform the search.
-// Define a response handler to process the returned List of Place objects.
         placesClient.searchByText(searchByTextRequest)
                 .addOnSuccessListener(response -> {
                     List<Place> places = response.getPlaces();
+                    if (places != null && !places.isEmpty()) {
+                        for (Place place : places) {
+                            LatLng latLng = place.getLatLng();
+                            if (latLng != null) {
+                                mMap.addMarker(new MarkerOptions().position(latLng).title(place.getName()));
+                            }
+                        }
+                    } else {
+                        Log.d("EcoPoint", "Nenhum ecoponto encontrado.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("EcoPoint", "Erro ao buscar ecopontos: " + e.getMessage());
+                })
+                .addOnCanceledListener(() -> {
+                    // O chamado da API foi cancelado, por exemplo, ao pressionar o botão de voltar.
+                    Log.e("Error", "O chamado da API foi cancelado.");
                 });
-
-
     }
 
     private FusedLocationProviderClient fusedLocationClient;

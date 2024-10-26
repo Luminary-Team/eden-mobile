@@ -2,6 +2,7 @@ package com.eden.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -9,10 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.eden.R;
 
-public class WebViewActivity extends AppCompatActivity {
-    private WebView webView;
+public class RestrictedArea extends AppCompatActivity {
+    WebView webView;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +21,16 @@ public class WebViewActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
         webView.setWebViewClient(new WebViewClient()); // Para abrir links dentro da WebView
 
-        // Obter a URL passada pela Intent
-        String url = "https://eden-restrict-area.onrender.com/";
-        if (url != null) {
-            webView.loadUrl(url);
-        }
+        webView.loadUrl("https://eden-restrict-area.onrender.com/");
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

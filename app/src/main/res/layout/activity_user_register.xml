@@ -165,6 +165,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_below="@id/btn_cadastro"
                 android:text="Já tem uma conta? Faça Login"
+                android:textStyle="bold"
                 android:textAlignment="center"
                 />
 

@@ -27,15 +27,12 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;
-    private static final int TYPE_PREMIUM = 1;
 
     private final List<Product> productList;
-    private final List<Product> premiumProducts;
 
-    public ProductAdapter(List<Product> args, List<Product> args1) {
+    public ProductAdapter(List<Product> args) {
         Collections.shuffle(args);
         this.productList = args;
-        this.premiumProducts = args1;
     }
 
 //    @Override
