@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eden.ui.activities.BuyProduct;
 import com.eden.model.Product;
 import com.eden.R;
-import com.eden.adapter.ProductPremiumAdapter;
-import com.eden.ui.activities.PremiumProduct;
 
 import java.util.Collections;
 import java.util.List;

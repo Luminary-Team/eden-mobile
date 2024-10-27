@@ -1,6 +1,7 @@
 package com.eden.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,22 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.adapter.PostAdapter;
+import com.eden.api.RetrofitClient;
+import com.eden.api.services.ForumService;
 import com.eden.model.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentForum extends Fragment {
 
@@ -31,30 +41,37 @@ public class FragmentForum extends Fragment {
 
         List<Post> forumList = new ArrayList<>();
 
+        forumList.add(new Post("Lorem Ipsum 1"));
+        forumList.add(new Post("Lorem Ipsum 2"));
+        forumList.add(new Post("Lorem Ipsum 3"));
+        forumList.add(new Post("Lorem Ipsum 4"));
+        forumList.add(new Post("Lorem Ipsum 5"));
+        forumList.add(new Post("Lorem Ipsum 6"));
+
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_posts);
-        recyclerView.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.post_forum_layout, parent, false);
-                return new RecyclerView.ViewHolder(view) {};
-            }
 
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                TextView content = holder.itemView.findViewById(R.id.post_content);
+        recyclerView.setAdapter(new PostAdapter(forumList));
 
-                Post post = forumList.get(position);
+//        ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
+//        Call<List<Post>> call = forumService.getPosts();
+//        call.enqueue(new Callback<List<Post>>() {
+//            @Override
+//            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+//                if (response.isSuccessful()) {
+//                    List<Post> posts = response.body();
+//                    recyclerView.setAdapter(new PostAdapter(posts));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Post>> call, Throwable throwable) {
+//                Log.d("ERROR", throwable.getMessage());
+//            }
+//        });
 
-                content.setText(post.getContent());
-            }
+//        recyclerView.setAdapter(new PostAdapter(forumList));
 
-            @Override
-            public int getItemCount() {
-                return forumList.size();
-            }
-        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
     }

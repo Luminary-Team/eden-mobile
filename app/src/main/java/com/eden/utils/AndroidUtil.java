@@ -22,6 +22,7 @@ import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
+import com.eden.ui.activities.UserLogin;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -39,6 +40,7 @@ import retrofit2.Retrofit;
 public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
+    private static int loginTries = 0;
 
     // Open intent
     public static void openActivity(Context context, Class<?> className) {
@@ -175,7 +177,6 @@ public class AndroidUtil {
     }
 
     public static void authenticate(Context context) {
-
         // Getting token
         Retrofit client = RetrofitClient.getClient();
         String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
@@ -226,7 +227,13 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
                 Log.d("TOKEN", throwable.getMessage());
-                authenticate(context);
+                loginTries++;
+                if (loginTries < 3) {
+                    authenticate(context);
+                } else {
+                    openActivity(context, UserLogin.class);
+                    loginTries = 0;
+                }
             }
         });
 
