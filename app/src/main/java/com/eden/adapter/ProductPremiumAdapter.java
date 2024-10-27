@@ -32,7 +32,7 @@ public class ProductPremiumAdapter extends RecyclerView.Adapter<ProductPremiumAd
     @NonNull
     @Override
     public ProductPremiumAdapter.ViewHolderProductPremium onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.premium_product_layout, parent, false);
         return new ProductPremiumAdapter.ViewHolderProductPremium(view);
     }
 

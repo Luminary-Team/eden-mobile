@@ -107,7 +107,8 @@ public class EditProduct extends AppCompatActivity {
                     description.getText().toString(),
                     Float.parseFloat(price.getText().toString()),
                     "12345678",
-                    5
+                    intent.getBooleanExtra("premium", false)
+
             );
 
             // Calling API

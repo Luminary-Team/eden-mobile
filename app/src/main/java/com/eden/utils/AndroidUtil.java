@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
+import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
@@ -215,6 +216,9 @@ public class AndroidUtil {
                         }
                     });
 
+                } else if (response.code() == 503) {
+                    RetrofitClient.changeService();
+                    authenticate(context);
                 } else {
                     Log.d("TOKEN", "Error getting token");
                 }
@@ -222,6 +226,7 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
                 Log.d("TOKEN", throwable.getMessage());
+                authenticate(context);
             }
         });
 

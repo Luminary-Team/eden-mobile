@@ -59,10 +59,11 @@ public class FragmentHome extends Fragment {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                if (recyclerView.getAdapter().getItemViewType(position) == 1) {
-                    return 2;
+                // Se for a posição 0 (carrossel), ocupa 2 colunas
+                if (position == 0) {
+                    return 2; // Ocupa 2 colunas
                 }
-                return 1;
+                return 1; // Os outros itens ocupam 1 coluna
             }
         });
 
@@ -101,7 +102,7 @@ public class FragmentHome extends Fragment {
                             if (response.isSuccessful()) {
                                 premiumProducts = response.body();
 
-                                recyclerView.setAdapter(new ProductAdapter(products));
+                                recyclerView.setAdapter(new ProductAdapter(products, premiumProducts));
 
                             }
                         }
@@ -157,7 +158,7 @@ public class FragmentHome extends Fragment {
                                 if (response.isSuccessful()) {
                                     if (response.body() != null) {
                                         products = response.body(); // Atualize a lista de produtos com os resultados da busca
-                                        recyclerView.setAdapter(new ProductAdapter(products)); // Notifique o adapter sobre a atualização da lista de produtos
+                                        recyclerView.setAdapter(new ProductAdapter(products, premiumProducts)); // Notifique o adapter sobre a atualização da lista de produtos
                                         progressBar.setVisibility(View.GONE);
                                     } else {
                                         Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();

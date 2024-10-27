@@ -84,9 +84,9 @@ dependencies {
 
 }
 
-//configurations.all {
-//    resolutionStrategy {
-//        force("com.google.android.gms:play-services-location:21.0.1")
-//        force("com.google.android.libraries.places:places:2.6.0")
-//    }
-//}
+configurations.all {
+    resolutionStrategy {
+        force("com.google.android.gms:play-services-location:21.0.1")
+        force("com.google.android.libraries.places:places:4.0.0")
+    }
+}

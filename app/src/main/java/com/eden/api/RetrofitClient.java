@@ -18,8 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static final String baseUrl ="https://desenvolvimento-ii.onrender.com/";
+    private static String baseUrl ="https://desenvolvimento-ii.onrender.com/";
     private static final String baseUrlMongo ="https://eden-api-mongo.onrender.com/";
+    private static final String baseUrlAws = "http://ec2-107-20-132-70.compute-1.amazonaws.com:8080/";
 
     public static Retrofit getClient() {
 
@@ -56,4 +57,9 @@ public class RetrofitClient {
         return retrofit;
 
     }
+
+    public static void changeService() {
+        baseUrl = baseUrlAws;
+    }
+
 }
