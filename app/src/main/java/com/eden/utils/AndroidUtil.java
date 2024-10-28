@@ -57,7 +57,7 @@ public class AndroidUtil {
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
         // Create "images" folder reference in Firebase Storage
-        StorageReference imageRef = storageRef.child(imagePath);
+        StorageReference imageRef = storageRef.child("products/" + imagePath);
 
         // Upload image to Firebase Storage
         UploadTask uploadTask = imageRef.putFile(uri);
@@ -73,7 +73,7 @@ public class AndroidUtil {
 
     public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
         // Create reference to the image
-        StorageReference imageRef = storageRef.child(imagePath);
+        StorageReference imageRef = storageRef.child("product/" + imagePath);
 
         // Download image from Firebase Storage
         imageRef.getDownloadUrl()
@@ -95,7 +95,7 @@ public class AndroidUtil {
 
     public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
         // Create reference to the image
-        StorageReference imageRef = storageRef.child(imagePath);
+        StorageReference imageRef = storageRef.child("product/" + imagePath);
 
         // Download image from Firebase Storage
         imageRef.getDownloadUrl()
@@ -117,10 +117,13 @@ public class AndroidUtil {
     }
 
     public static void uploadProfilePicToFirebase(Uri uri) {
-        uploadImageToFirebase(uri, "images/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+        uploadImageToFirebase(uri, "profiles/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
     }
     public static void downloadProfilePicFromFirebase(Context context, ImageView imageView) {
-        downloadImageFromFirebase(context, imageView, "images/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+        downloadImageFromFirebase(context, imageView, "profiles/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+    }
+    public static void downloadOtherUserProfilePicFromFirebase(Context context, ImageView imageView, String userId) {
+        downloadImageFromFirebase(context, imageView, "profiles/ProfilePic_" + userId + ".jpg");
     }
 
     public static void getToken() {
