@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.api.dto.PostResponse;
+import com.eden.api.dto.PostResponseMongo;
 import com.eden.model.Comment;
 import com.eden.model.Post;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -25,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost> {
-    private final List<Post> postList;
+    private final List<PostResponse> postList;
     private static final List<Comment> comments = new ArrayList<>();
 
-    public PostAdapter(List<Post> forumList) {
+    public PostAdapter(List<PostResponse> forumList) {
         this.postList = forumList;
     }
 
@@ -41,7 +43,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolderPost holder, int position) {
-        Post post = postList.get(position);
+        PostResponse post = postList.get(position);
         holder.content.setText(post.getContent());
         holder.name.setText("Gustavo");
         holder.userName.setText("Gus");
@@ -80,7 +82,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         });
     }
 
-    private List<Comment> getCommentsForPost(Post post) {
+    private List<Comment> getCommentsForPost(PostResponse post) {
         // TODO: Obter os comentários do post
         comments.add(new Comment("Olá, como você está?"));
         comments.add(new Comment("Olá, eu estou bem, obrigado! E você?"));

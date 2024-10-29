@@ -57,7 +57,7 @@ public class AndroidUtil {
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
         // Create "images" folder reference in Firebase Storage
-        StorageReference imageRef = storageRef.child("products/" + imagePath);
+        StorageReference imageRef = storageRef.child(imagePath);
 
         // Upload image to Firebase Storage
         UploadTask uploadTask = imageRef.putFile(uri);
@@ -72,8 +72,8 @@ public class AndroidUtil {
     }
 
     public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
-        // Create reference to the image
-        StorageReference imageRef = storageRef.child("product/" + imagePath);
+        // Create reference to the image:
+        StorageReference imageRef = storageRef.child(imagePath);
 
         // Download image from Firebase Storage
         imageRef.getDownloadUrl()
@@ -95,7 +95,7 @@ public class AndroidUtil {
 
     public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
         // Create reference to the image
-        StorageReference imageRef = storageRef.child("product/" + imagePath);
+        StorageReference imageRef = storageRef.child(imagePath);
 
         // Download image from Firebase Storage
         imageRef.getDownloadUrl()

@@ -82,6 +82,10 @@ dependencies {
 
     implementation(libs.libphonenumber)
 
+    // Lombok
+//    implementation("org.projectlombok:lombok:1.18.28")
+//    implementation("org.projectlombok:lombok:1.18.28")
+
 }
 
 configurations.all {

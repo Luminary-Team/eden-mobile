@@ -11,15 +11,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/edenProductBlue"
-        android:padding="15dp">
+        android:backgroundTint="@color/edenProductBlue">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/product_image"
             android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/arrendar"
             android:src="@drawable/image_premium" />
 

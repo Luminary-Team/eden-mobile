@@ -19,6 +19,10 @@ public class RestrictedArea extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         webView = findViewById(R.id.webView);
+
+        //Ativando o JavaScript
+        webView.getSettings().setJavaScriptEnabled(true);
+
         webView.setWebViewClient(new WebViewClient()); // Para abrir links dentro da WebView
 
         webView.loadUrl("https://eden-restrict-area.onrender.com/");
