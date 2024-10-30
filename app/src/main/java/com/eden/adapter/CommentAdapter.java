@@ -14,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.eden.R;
 import com.eden.model.Comment;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolderComment> {
     private final List<Comment> commentList;
 
     public CommentAdapter(List<Comment> commentList) {
+        Collections.reverse(commentList);
         this.commentList = commentList;
     }
 
@@ -36,9 +38,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         // TODO: Falar pro tabuchi devolver comments
         holder.content.setText(comment.getContent());
-        holder.userName.setText("Gus");
-        holder.name.setText("Gustavo");
-        downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.commentPfp, "6");
+        holder.name.setText(comment.getUser().getName());
+        holder.userName.setText(comment.getUser().getUserName());
+        downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.commentPfp, String.valueOf(comment.getUser().getId()));
 
     }
 

@@ -6,13 +6,13 @@ import java.util.List;
 
 public class PostResponse {
 
-    private int id;
+    private String id;
     private UserSchema user;
     private String content;
     private List<Comment> comments;
     private List<Integer> likeId;
 
-    public PostResponse(int id, UserSchema user, String content, List<Comment> comments, List<Integer> likeId) {
+    public PostResponse(String id, UserSchema user, String content, List<Comment> comments, List<Integer> likeId) {
         this.id = id;
         this.user = user;
         this.content = content;
@@ -20,11 +20,11 @@ public class PostResponse {
         this.likeId = likeId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

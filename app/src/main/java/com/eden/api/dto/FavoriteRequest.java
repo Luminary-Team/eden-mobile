@@ -1,10 +1,10 @@
 package com.eden.api.dto;
 
-public class RegisterFavoriteRequest {
+public class FavoriteRequest {
     private int userId;
     private int productId;
 
-    public RegisterFavoriteRequest(int userId, int productId) {
+    public FavoriteRequest(int userId, int productId) {
         this.userId = userId;
         this.productId = productId;
     }

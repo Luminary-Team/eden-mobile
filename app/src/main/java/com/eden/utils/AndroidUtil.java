@@ -16,10 +16,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.eden.adapter.UserProductAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserSchema;
 import com.eden.api.services.UserService;
+import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
 import com.eden.ui.activities.UserLogin;
@@ -29,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -40,6 +43,7 @@ import retrofit2.Retrofit;
 public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
+    public static List<Product> favorites;
     private static int loginTries = 0;
 
     // Open intent
@@ -53,6 +57,31 @@ public class AndroidUtil {
 
     public static void setProductImage(Context context, Uri imageUri, ImageView imageView) {
         Glide.with(context).load(imageUri).apply(RequestOptions.circleCropTransform()).into(imageView);
+    }
+
+    public static void fetchFavorites() {
+        UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
+        Call<List<Product>> call = userService.getFavorites(String.valueOf(currentUser.getId()));
+        call.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response.isSuccessful()) {
+                    List<Product> favs = response.body();
+                    favorites = favs;
+                } else {
+                    try {
+                        Log.d("FAVORITES", response.errorBody().string());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable throwable) {
+                Log.e("FAVORITES", throwable.getMessage());
+            }
+        });
     }
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
@@ -117,13 +146,18 @@ public class AndroidUtil {
     }
 
     public static void uploadProfilePicToFirebase(Uri uri) {
-        uploadImageToFirebase(uri, "profiles/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+        uploadImageToFirebase(uri, "profiles/ProfilePic_" + currentUser.getId() + ".jpg");
     }
     public static void downloadProfilePicFromFirebase(Context context, ImageView imageView) {
-        downloadImageFromFirebase(context, imageView, "profiles/ProfilePic_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid() + ".jpg");
+        downloadImageFromFirebase(context, imageView, "profiles/ProfilePic_" + currentUser.getId() + ".jpg");
     }
     public static void downloadOtherUserProfilePicFromFirebase(Context context, ImageView imageView, String userId) {
         downloadImageFromFirebase(context, imageView, "profiles/ProfilePic_" + userId + ".jpg");
+    }
+
+    public static boolean isImageFromCamera(Uri uri) {
+        String scheme = uri.getScheme();
+        return scheme != null && scheme.equals("file") && uri.getPath() != null && uri.getPath().contains("camera");
     }
 
     public static void getToken() {

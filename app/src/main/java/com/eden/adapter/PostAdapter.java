@@ -1,15 +1,17 @@
 package com.eden.adapter;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.eden.utils.AndroidUtil.downloadOtherUserProfilePicFromFirebase;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,21 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
 import com.eden.api.dto.PostResponse;
-import com.eden.api.dto.PostResponseMongo;
 import com.eden.model.Comment;
-import com.eden.model.Post;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost> {
     private final List<PostResponse> postList;
-    private static final List<Comment> comments = new ArrayList<>();
 
-    public PostAdapter(List<PostResponse> forumList) {
-        this.postList = forumList;
+    public PostAdapter(List<PostResponse> postList) {
+        Collections.reverse(postList);
+        this.postList = postList;
     }
 
     @NonNull
@@ -45,13 +44,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolderPost holder, int position) {
         PostResponse post = postList.get(position);
         holder.content.setText(post.getContent());
-        holder.name.setText("Gustavo");
-        holder.userName.setText("Gus");
-        downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, "6");
+        holder.name.setText(post.getUser().getName());
+        holder.userName.setText(post.getUser().getUserName());
+        downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, String.valueOf(post.getUser().getId()));
 
         holder.itemView.setOnClickListener(v -> {
-            // Aqui você deve obter os comentários do post
-            List<Comment> comments = getCommentsForPost(post); // Método fictício para obter os comentários
+            List<Comment> comments = post.getComments();
 
             // TODO: Isso vai ter que ser no callback de getCommentsForPost
             openBottomSheet(holder.itemView.getContext(), comments);
@@ -61,35 +59,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
     private void openBottomSheet(Context context, List<Comment> comments) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_comments, null);
+        ProgressBar progressBar = dialogView.findViewById(R.id.comments_progressBar);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView_comments);
 
-//        // Set rounded corners for the bottom sheet
-//        bottomSheetDialog.getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
-//        bottomSheetDialog.getWindow().findViewById(R.layout.bottom_sheet_comments)
-//                .setBackgroundResource(R.drawable.rounded_bottom_sheet);
-
+        // Set up the bottom sheet
         bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.getWindow().setLayout(WRAP_CONTENT, WRAP_CONTENT);
+        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Show the bottom sheet
         bottomSheetDialog.show();
 
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView_comments);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new CommentAdapter(comments));
+        progressBar.setVisibility(View.VISIBLE);
 
-        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                Toast.makeText(context, "Bottom sheet dismissed", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+        if (comments != null && !comments.isEmpty()) {
+            // Set up the RecyclerView
+            recyclerView.setAdapter(new CommentAdapter(comments));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            progressBar.setVisibility(View.GONE);
+        } else {
+            // Set if there are no comments
+            TextView noCommentsText = dialogView.findViewById(R.id.no_comments_text);
+            noCommentsText.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+        }
 
-    private List<Comment> getCommentsForPost(PostResponse post) {
-        // TODO: Obter os comentários do post
-        comments.add(new Comment("Olá, como você está?"));
-        comments.add(new Comment("Olá, eu estou bem, obrigado! E você?"));
-        comments.add(new Comment("Eu estou bem tambem, estou muito feliz em ter conhecido você!"));
-        comments.add(new Comment("Eu tambem, você é muito agradavel!"));
-        comments.add(new Comment("Obrigado, eu tambem acho você muito agradavel!"));
-        return comments;
+//        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialogInterface) {
+//                Toast.makeText(context, "Bottom sheet dismissed", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
     }
 
     @Override

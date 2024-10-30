@@ -1,11 +1,14 @@
 package com.eden.ui.fragments;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.fetchFavorites;
 import static com.eden.utils.AndroidUtil.getUser;
 
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,17 +46,19 @@ public class FragmentHome extends Fragment {
 
     List<Product> products = new ArrayList<>();
     List<Product> premiumProducts = new ArrayList<>();
-    SwipeRefreshLayout swipeRefreshLayout;
+    ProgressBar progressBar;
+    RecyclerView recyclerView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         EditText searchBar = view.findViewById(R.id.search_bar);
-        ProgressBar progressBar = view.findViewById(R.id.products_progressBar);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_produtos);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_home);
+        progressBar = view.findViewById(R.id.products_progressBar);
+        recyclerView = view.findViewById(R.id.recyclerView_produtos);
 
         // Configura o RecyclerView
         GridLayoutManager gridLayoutManager = new GridLayoutManager(container.getContext(), 2);
@@ -77,23 +82,26 @@ public class FragmentHome extends Fragment {
 
                 // Search for Products
                 searchProducts(searchBar, recyclerView, progressBar);
+
+                // Get Favorites
+                fetchFavorites();
             }
         });
 
-        // Recarregar ao puxar para baixo
+        // Reload posts on refresh
         swipeRefreshLayout.setOnRefreshListener(() -> {
             recyclerView.setAdapter(null);
             loadProducts(recyclerView, progressBar);
-            swipeRefreshLayout.setRefreshing(false); // Parar o ícone de loading
+            swipeRefreshLayout.setRefreshing(false);
         });
 
         return view;
     }
 
     private void loadProducts(RecyclerView recyclerView, ProgressBar progressBar) {
+        // Get all products
         progressBar.setVisibility(View.VISIBLE);
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-
         if (currentUser != null) {
             Call<List<Product>> callProduct = productService.getAllProducts(currentUser.getId());
             callProduct.enqueue(new Callback<List<Product>>() {
@@ -101,6 +109,7 @@ public class FragmentHome extends Fragment {
                 public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                     progressBar.setVisibility(View.GONE);
                     if (response.isSuccessful()) {
+
                         products = response.body();
 
                         Call<List<Product>> callPremium = productService.getPremiumProducts(currentUser.getId());
