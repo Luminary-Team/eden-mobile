@@ -18,8 +18,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.eden.adapter.UserProductAdapter;
 import com.eden.api.RetrofitClient;
+import com.eden.api.dto.OrderGetAllResponse;
 import com.eden.api.dto.TokenRequest;
 import com.eden.api.dto.UserSchema;
+import com.eden.api.services.OrderService;
 import com.eden.api.services.UserService;
 import com.eden.model.Product;
 import com.eden.model.Token;
@@ -43,7 +45,7 @@ import retrofit2.Retrofit;
 public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
-    public static List<Product> favorites;
+    public static List<Product> favorites, boughtProducts;
     private static int loginTries = 0;
 
     // Open intent
@@ -80,6 +82,34 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<List<Product>> call, Throwable throwable) {
                 Log.e("FAVORITES", throwable.getMessage());
+            }
+        });
+    }
+
+    public static void fetchBoughtProducts() {
+        OrderService orderService = RetrofitClient.getClient().create(OrderService.class);
+        Call<OrderGetAllResponse> call = orderService.getOrders(String.valueOf(currentUser.getId()));
+        call.enqueue(new Callback<OrderGetAllResponse>() {
+            @Override
+            public void onResponse(Call<OrderGetAllResponse> call, Response<OrderGetAllResponse> response) {
+                if (response.isSuccessful()) {
+                    OrderGetAllResponse jsonOrder = response.body();
+                    List<Product> orders = jsonOrder.getProductList();
+
+                    boughtProducts = orders;
+
+                } else {
+                    try {
+                        Log.d("ORDERS", response.errorBody().string());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderGetAllResponse> call, Throwable throwable) {
+                Log.e("ORDERS", throwable.getMessage());
             }
         });
     }
