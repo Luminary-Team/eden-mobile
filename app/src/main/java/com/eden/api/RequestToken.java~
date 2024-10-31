@@ -1,7 +1,0 @@
-package com.eden.api;
-
-public class RequestToken {
-
-    public String email;
-    public String password;
-}
