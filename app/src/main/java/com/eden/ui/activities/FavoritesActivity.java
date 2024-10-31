@@ -1,8 +1,10 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.favorites;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.eden.api.services.UserService;
 import com.eden.model.Product;
 import com.eden.model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,7 +42,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView_favorites);
 
-        getFavorites();
+        recyclerView.setAdapter(new UserProductAdapter(favorites));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -47,24 +50,4 @@ public class FavoritesActivity extends AppCompatActivity {
 
     }
 
-    public void getFavorites() {
-
-        UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
-        Call<UserResponse> call = userService.getFavorites(String.valueOf(currentUser.getId()));
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if (response.isSuccessful()) {
-                    UserResponse userResponse = response.body();
-                    List<Product> favoriteProducts = userResponse.getProducts();
-                    recyclerView.setAdapter(new UserProductAdapter(favoriteProducts));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable throwable) {
-
-            }
-        });
-    }
 }

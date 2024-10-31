@@ -97,6 +97,9 @@ public class EcoPoint extends AppCompatActivity implements OnMapReadyCallback {
                     .addOnSuccessListener(this, location -> {
                         if (location != null) {
                             LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            // Moves the camera to the user's location
+
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 16));
                             // Buscar ecopontos próximos
                             findNearbyEcopoints(userLocation);
                         }

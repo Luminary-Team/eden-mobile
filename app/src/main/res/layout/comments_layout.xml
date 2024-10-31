@@ -8,7 +8,7 @@
     android:backgroundTint="#E8E8E8"
     app:cardCornerRadius="10dp"
     >
-
+<!--TODO: Modificar o comment-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,26 +17,26 @@
         >
 
         <include
-            android:id="@+id/header_post"
+            android:id="@+id/comment_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             layout="@layout/header_layout"
             />
 
         <TextView
-            android:id="@+id/post_content"
+            android:id="@+id/comment_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header_post"
+            android:layout_below="@id/comment_header"
             android:background="@null"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consectetur"
             />
 
         <ImageView
-            android:id="@+id/post_image"
+            android:id="@+id/comment_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/post_content"
+            android:layout_below="@id/comment_content"
             android:visibility="gone"
             />
 

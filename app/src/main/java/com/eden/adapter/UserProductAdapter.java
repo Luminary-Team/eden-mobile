@@ -23,6 +23,8 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.eden.api.RetrofitClient;
+import com.eden.api.services.ProductService;
 import com.eden.ui.activities.BuyProduct;
 import com.eden.model.Product;
 import com.eden.R;
@@ -31,6 +33,10 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.Collections;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserProductAdapter extends RecyclerView.Adapter<UserProductAdapter.ViewHolderUserProduto> {
 
@@ -82,11 +88,33 @@ public class UserProductAdapter extends RecyclerView.Adapter<UserProductAdapter.
                                 intent.putExtra("nome", product.getTitle());
                                 intent.putExtra("valor", product.getPrice());
                                 intent.putExtra("descricao", product.getDescription());
+                                intent.putExtra("premium", product.isPremium());
                                 view.getContext().startActivity(intent);
                                 return true;
-                            } else if (item.getItemId() == R.id.edit_option) {
-                                Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
-                                // TODO: Implementar exclusão
+                            } else if (item.getItemId() == R.id.delete_option) {
+                                // Delete the product
+                                ProductService productService = RetrofitClient.getClient().create(ProductService.class);
+                                Call<Void> call = productService.deleteProduct(product.getId());
+                                call.enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(view.getContext(), "Product deleted", Toast.LENGTH_SHORT).show();
+                                            notifyItemRemoved(position);
+                                            userProducts.remove(position);
+                                            notifyItemRangeChanged(position, userProducts.size());
+                                        } else {
+                                            Toast.makeText(view.getContext(), "Product not deleted", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable throwable) {
+                                        Toast.makeText(view.getContext(), "Product deleted", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+
                                 return true;
                             }
                             return false;

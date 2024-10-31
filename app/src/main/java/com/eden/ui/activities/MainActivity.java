@@ -75,21 +75,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void setResponse(UserSchema response) {
 
-                // Fragmento inicial
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
+                if (currentUser != null) {
+                    // Fragmento inicial
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
 
-                // Botão do sidebar
-                btnSidebar.setOnClickListener(v -> {
-                    // Setting name and username on the sidebar header
-                    name.setText(currentUser.getName());
-                    username.setText(currentUser.getUserName());
+                    // Botão do sidebar
+                    btnSidebar.setOnClickListener(v -> {
+                        // Setting name and username on the sidebar header
+                        name.setText(currentUser.getName());
+                        username.setText(currentUser.getUserName());
 
-                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    } else {
-                        drawerLayout.openDrawer(GravityCompat.START);
-                    }
-                });
+                        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                        } else {
+                            drawerLayout.openDrawer(GravityCompat.START);
+                        }
+                    });
+                }
 
             }
         });

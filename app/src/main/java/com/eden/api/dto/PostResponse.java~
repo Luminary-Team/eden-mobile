@@ -1,0 +1,17 @@
+package com.eden.api.dto;
+
+import com.eden.model.Comment;
+
+import java.util.List;
+
+public class PostResponse {
+
+    private int id;
+    private UserSchema user;
+    private String content;
+    private List<Comment> comments;
+    private List<Integer> likeId;
+
+
+
+}

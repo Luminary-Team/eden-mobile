@@ -82,11 +82,15 @@ dependencies {
 
     implementation(libs.libphonenumber)
 
+    // Lombok
+//    implementation("org.projectlombok:lombok:1.18.28")
+//    implementation("org.projectlombok:lombok:1.18.28")
+
 }
 
-//configurations.all {
-//    resolutionStrategy {
-//        force("com.google.android.gms:play-services-location:21.0.1")
-//        force("com.google.android.libraries.places:places:2.6.0")
-//    }
-//}
+configurations.all {
+    resolutionStrategy {
+        force("com.google.android.gms:play-services-location:21.0.1")
+        force("com.google.android.libraries.places:places:4.0.0")
+    }
+}

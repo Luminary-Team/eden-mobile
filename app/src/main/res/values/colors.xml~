@@ -6,8 +6,8 @@
     <color name="edenBlue">#0080FF</color>
 <!--    <color name="edenBlueHint">#4C292DB4</color>-->
 <!--    <color name="edenDarkBlue">#22216C</color>-->
-    <color name="edenBlueButton">#00A3FF</color>
-    <color name="edenLightBlue">#0080FF</color>
+    <color name="edenBlueButton">#0080FF</color>
+    <color name="edenLightBlue">#D6F4FF</color>
     <color name="edenVeryLightBlue">#2196F3</color>
     <color name="edenCloudBlue">#8EA6E6</color>
     <color name="edenProductBlue">#F6F6FF</color>
