@@ -1,6 +1,7 @@
 package com.eden.ui.fragments;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.fetchBoughtProducts;
 import static com.eden.utils.AndroidUtil.fetchFavorites;
 import static com.eden.utils.AndroidUtil.getUser;
 
@@ -85,6 +86,9 @@ public class FragmentHome extends Fragment {
 
                 // Get Favorites
                 fetchFavorites();
+
+                // Get Bought Products
+                fetchBoughtProducts();
             }
         });
 
