@@ -42,6 +42,6 @@ public interface UserService {
     @POST("/user/favorites")
     Call<UserResponse> registerFavorite(@Body FavoriteRequest favoriteRequest);
 
-    @POST("/user/favorites")
-    Call<UserResponse> deleteFavorite(@Body FavoriteRequest favoriteRequest);
+    @DELETE("/user/favorites")
+    Call<Void> deleteFavorite(@Query("userId") String userId, @Query("productId") String productId);
 }

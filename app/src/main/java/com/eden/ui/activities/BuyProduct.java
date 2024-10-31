@@ -84,8 +84,6 @@ public class BuyProduct extends AppCompatActivity {
                 isFavorite = true;
                 btnFavorite.setImageResource(R.drawable.heart_selected_icon);
                 btnFavorite.setImageTintList(ColorStateList.valueOf(Color.CYAN));
-            } else {
-                isFavorite = false;
             }
         }
 
@@ -115,6 +113,7 @@ public class BuyProduct extends AppCompatActivity {
                 removeFavorite();
                 btnFavorite.setImageResource(R.drawable.heart_add_icon);
                 btnFavorite.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+                isFavorite = false;
             }
 
             btnFavorite.animate()
@@ -169,7 +168,7 @@ public class BuyProduct extends AppCompatActivity {
     public void addFavorite() {
         // TODO: Talvez fazer callback
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
-        Call<UserResponse> call = userService.registerFavorite(new FavoriteRequest(currentUser.getId(), currentUser.getCartId()));
+        Call<UserResponse> call = userService.registerFavorite(new FavoriteRequest(currentUser.getId(), productId));
         call.enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -195,10 +194,10 @@ public class BuyProduct extends AppCompatActivity {
 
     private void removeFavorite() {
         UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
-        Call<UserResponse> call = userService.deleteFavorite(new FavoriteRequest(currentUser.getId(), currentUser.getCartId()));
-        call.enqueue(new Callback<UserResponse>() {
+        Call<Void> call = userService.deleteFavorite(String.valueOf(currentUser.getId()), String.valueOf(productId));
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     fetchFavorites();
                     Log.d("FAVORITES", "removido com sucesso");
@@ -212,7 +211,7 @@ public class BuyProduct extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserResponse> call, Throwable throwable) {
+            public void onFailure(Call<Void> call, Throwable throwable) {
                 Log.d("FAVORITES", throwable.getMessage());
             }
         });

@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             if (menuItem.getItemId() == R.id.nav_artigos)
                 openActivity(this, ArticlesActivity.class);
             if (menuItem.getItemId() == R.id.nav_comprados)
-                openActivity(this, ArticlesActivity.class);
+                openActivity(this, BoughtProducts.class);
             if (menuItem.getItemId() == R.id.nav_restricted_area)
                 openActivity(this, RestrictedArea.class);
 
