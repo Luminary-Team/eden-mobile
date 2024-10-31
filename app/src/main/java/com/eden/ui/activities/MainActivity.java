@@ -1,6 +1,7 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eden.R;
+import com.eden.api.dto.UserSchema;
 import com.eden.ui.fragments.FragmentForum;
 import com.eden.ui.fragments.FragmentHome;
 import com.eden.utils.AndroidUtil;
+import com.eden.utils.UserCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
@@ -30,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView name, username;
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -68,19 +71,28 @@ public class MainActivity extends AppCompatActivity {
         name = headerView.findViewById(R.id.profile_name);
         username = headerView.findViewById(R.id.profile_username);
 
-        // Fragmento inicial
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
+        getUser(new UserCallback() {
+            @Override
+            public void setResponse(UserSchema response) {
 
-        // Botão do sidebar
-        btnSidebar.setOnClickListener(v -> {
-            // Setting name and username on the sidebar header
-            name.setText(currentUser.getName());
-            username.setText(currentUser.getUserName());
+                if (currentUser != null) {
+                    // Fragmento inicial
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
 
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START);
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START);
+                    // Botão do sidebar
+                    btnSidebar.setOnClickListener(v -> {
+                        // Setting name and username on the sidebar header
+                        name.setText(currentUser.getName());
+                        username.setText(currentUser.getUserName());
+
+                        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                            drawerLayout.closeDrawer(GravityCompat.START);
+                        } else {
+                            drawerLayout.openDrawer(GravityCompat.START);
+                        }
+                    });
+                }
+
             }
         });
 
@@ -93,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                 openActivity(this, EcoPoint.class);
             if (menuItem.getItemId() == R.id.nav_artigos)
                 openActivity(this, ArticlesActivity.class);
+            if (menuItem.getItemId() == R.id.nav_comprados)
+                openActivity(this, ArticlesActivity.class);
+            if (menuItem.getItemId() == R.id.nav_restricted_area)
+                openActivity(this, RestrictedArea.class);
 
             // Closes drawers after selection
             drawerLayout.closeDrawers();

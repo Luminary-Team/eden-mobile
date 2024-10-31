@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -52,6 +53,7 @@ public class RegisterProduct extends AppCompatActivity {
         price = findViewById(R.id.editText_product_price);
         description = findViewById(R.id.editText_product_description);
         condition = findViewById(R.id.spinner_condicao);
+        CheckBox premium = findViewById(R.id.checkBox_premium);
 
         // Selecionando imagem
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -91,7 +93,7 @@ public class RegisterProduct extends AppCompatActivity {
                     description.getText().toString(),
                     Float.parseFloat(price.getText().toString()),
                     "12345678",
-                    0
+                    premium.isChecked()
             );
 
             // Calling API

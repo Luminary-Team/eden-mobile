@@ -2,6 +2,8 @@ package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
+import static com.eden.utils.AndroidUtil.favorites;
+import static com.eden.utils.AndroidUtil.fetchFavorites;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +20,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,8 +28,12 @@ import android.widget.Toast;
 import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.CartItemResponse;
+import com.eden.api.dto.FavoriteRequest;
+import com.eden.api.dto.UserResponse;
 import com.eden.api.services.CartService;
+import com.eden.api.services.UserService;
 import com.eden.model.Cart;
+import com.eden.model.Product;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -38,7 +43,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BuyProduct extends AppCompatActivity {
-    boolean isFavorite = false;
+
+    FloatingActionButton btnFavorite;
+    private Intent intent;
+    private int productId;
+    private boolean isFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,20 +61,35 @@ public class BuyProduct extends AppCompatActivity {
         TextView productDelivery = findViewById(R.id.product_delivery);
         Button btnComprar = findViewById(R.id.button_buy_now);
         Button btnAdcCart = findViewById(R.id.button_add_cart);
-        FloatingActionButton btnFavorite = findViewById(R.id.btn_favorite);
+        btnFavorite = findViewById(R.id.btn_favorite);
 
-        Intent intent = getIntent();
+        intent = getIntent();
 
-        downloadImageFromFirebase(this, productImage, "product_" + intent.getIntExtra("id", 0) + ".jpg");
+        // Getting intent extra
+        productId = intent.getIntExtra("id", 0);
 
-        if (intent != null) {
-            productTitle.setText(intent.getStringExtra("nome"));
-            productPrice.setText(String.format("R$ %.2f", intent.getFloatExtra("valor", 0.0f)));
-            Log.d("valor", "valor: " + intent.getFloatExtra("valor", 0.0f));
-            productDescription.setText(intent.getStringExtra("descricao"));
-            productDelivery.setText(intent.getStringExtra("tipoEntrega"));
+        // Set product image
+        downloadImageFromFirebase(this, productImage, "product_" + productId + ".jpg");
+
+        // Set product info
+        productTitle.setText(intent.getStringExtra("nome"));
+        productPrice.setText(String.format("R$ %.2f", intent.getFloatExtra("valor", 0.0f)));
+        Log.d("valor", "valor: " + intent.getFloatExtra("valor", 0.0f));
+        productDescription.setText(intent.getStringExtra("descricao"));
+        productDelivery.setText(intent.getStringExtra("tipoEntrega"));
+
+        // Check if its favorite
+        for (Product product : favorites) {
+            if (product.getId() == productId) {
+                isFavorite = true;
+                btnFavorite.setImageResource(R.drawable.heart_selected_icon);
+                btnFavorite.setImageTintList(ColorStateList.valueOf(Color.CYAN));
+            } else {
+                isFavorite = false;
+            }
         }
 
+        // Buy the product
         btnComprar.setOnClickListener(v -> {
             openActivity(this, CartActivity.class);
             addCart(intent.getIntExtra("id", 0));
@@ -72,42 +97,41 @@ public class BuyProduct extends AppCompatActivity {
             finish();
         });
 
+        // Add to cart
         btnAdcCart.setOnClickListener(v -> {
             addCart(intent.getIntExtra("id", 0));
         });
 
-        btnFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isFavorite = !isFavorite;
-
-                // Muda o ícone com animação
-                if (isFavorite) {
-                    btnFavorite.setImageResource(R.drawable.heart_selected_icon);
-                    btnFavorite.setImageTintList(ColorStateList.valueOf(Color.CYAN));
-                    btnFavorite.setScaleX(1.2f);
-                    btnFavorite.setScaleY(1.2f);
-                } else {
-                    btnFavorite.setImageResource(R.drawable.heart_add_icon);
-                    btnFavorite.setImageTintList(ColorStateList.valueOf(Color.WHITE));
-                }
-
-                btnFavorite.animate()
-                        .scaleX(1.2f)
-                        .scaleY(1.2f)
-                        .setDuration(100)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                btnFavorite.animate()
-                                        .scaleX(1f)
-                                        .scaleY(1f)
-                                        .setDuration(100)
-                                        .start();
-                            }
-                        })
-                        .start();
+        btnFavorite.setOnClickListener(v -> {
+            // Muda o ícone com animação
+            if (!isFavorite) {
+                addFavorite();
+                btnFavorite.setImageResource(R.drawable.heart_selected_icon);
+                btnFavorite.setImageTintList(ColorStateList.valueOf(Color.CYAN));
+                btnFavorite.setScaleX(1.2f);
+                btnFavorite.setScaleY(1.2f);
+                isFavorite = true;
+            } else {
+                removeFavorite();
+                btnFavorite.setImageResource(R.drawable.heart_add_icon);
+                btnFavorite.setImageTintList(ColorStateList.valueOf(Color.WHITE));
             }
+
+            btnFavorite.animate()
+                    .scaleX(1.2f)
+                    .scaleY(1.2f)
+                    .setDuration(100)
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnFavorite.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(100)
+                                    .start();
+                        }
+                    })
+                    .start();
         });
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
@@ -140,6 +164,59 @@ public class BuyProduct extends AppCompatActivity {
                 Toast.makeText(BuyProduct.this, throwable.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void addFavorite() {
+        // TODO: Talvez fazer callback
+        UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
+        Call<UserResponse> call = userService.registerFavorite(new FavoriteRequest(currentUser.getId(), currentUser.getCartId()));
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    Log.d("FAVORITES", "inserido com sucesso");
+                    fetchFavorites();
+                } else {
+                    try {
+                        Log.d("FAVORITES", response.errorBody().string());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable throwable) {
+                Log.d("FAVORITES", throwable.getMessage());
+            }
+        });
+
+    }
+
+    private void removeFavorite() {
+        UserService userService = RetrofitClient.getClientWithToken().create(UserService.class);
+        Call<UserResponse> call = userService.deleteFavorite(new FavoriteRequest(currentUser.getId(), currentUser.getCartId()));
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if (response.isSuccessful()) {
+                    fetchFavorites();
+                    Log.d("FAVORITES", "removido com sucesso");
+                } else {
+                    try {
+                        Log.d("FAVORITES", response.errorBody().string());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable throwable) {
+                Log.d("FAVORITES", throwable.getMessage());
+            }
+        });
+
     }
 
     public void notificar() {

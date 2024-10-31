@@ -28,7 +28,7 @@
             android:textColorHint="@color/edenBlue" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+            android:id="@+id/swipeRefreshLayout_home"
             android:layout_below="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

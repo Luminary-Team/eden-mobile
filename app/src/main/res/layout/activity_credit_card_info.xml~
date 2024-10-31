@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".ui.activities.CreditCardInfo">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
+
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/back_icon" />
+
+        <!-- Seção de Informações do Cartão -->
+        <TextView
+            android:id="@+id/cartao_info_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/back_btn"
+            android:text="Informações do cartão"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/cartao_info_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cartao_info_title"
+            android:layout_marginTop="8dp"
+            android:text="Preencha as informações abaixo"
+            android:textSize="14sp"
+            android:textColor="#808080" />
+
+        <EditText
+            android:id="@+id/nome_completo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cartao_info_subtitle"
+            android:layout_marginTop="16dp"
+            android:hint="Nome completo"
+            android:textColorHint="@color/edenBlue"
+            android:inputType="textCapWords"
+            android:drawableStart="@drawable/profile_fulfilled_icon"
+            android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
+            android:background="@drawable/edit_text_default_background"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/numero_cartao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nome_completo"
+            android:layout_marginTop="16dp"
+            android:hint="Número do cartão"
+            android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="19"
+            android:background="@drawable/edit_text_default_background"
+            android:drawableStart="@drawable/credit_icon"
+            android:drawableTint="@color/edenBlue"
+            android:drawablePadding="10dp"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/cvv"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/numero_cartao"
+            android:layout_marginTop="16dp"
+            android:hint="CVV"
+            android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="3"
+            android:background="@drawable/edit_text_default_background"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/data_validade"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/numero_cartao"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:hint="Data de validade"
+            android:textColorHint="@color/edenBlue"
+            android:inputType="number"
+            android:maxLength="5"
+            android:background="@drawable/edit_text_default_background"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+        <!-- Endereço de entrega -->
+        <TextView
+            android:id="@+id/textView_delivery_adress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_below="@id/cvv"
+            android:text="Endereço de entrega"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/endereco_entrega_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_delivery_adress"
+            android:layout_marginTop="8dp"
+            android:text="Preencha as informações abaixo"
+            android:textSize="14sp"
+            android:textColor="#808080" />
+
+        <EditText
+            android:id="@+id/cep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/endereco_entrega_subtitle"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text_default_background"
+            android:drawableStart="@drawable/location_icon"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/edenBlue"
+            android:hint="CEP"
+            android:inputType="number"
+            android:maxLength="8"
+            android:padding="16dp"
+            android:textColorHint="@color/edenBlue"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        app:cardElevation="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            android:paddingHorizontal="40dp">
+
+            <TextView
+                android:id="@+id/textView_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Total: R$ 0,00"
+                android:textColor="@color/edenBlue"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/btn_prosseguir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_total"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/button_blue"
+                android:text="Prosseguir"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

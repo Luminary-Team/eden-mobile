@@ -1,6 +1,7 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.isImageFromCamera;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import android.app.Activity;
@@ -132,35 +133,40 @@ public class UserProfileEdit extends AppCompatActivity {
                         // Define que o usuário selecionou uma imagem
                         isProfilePicSelected = true;
 
-                        // Tentar salvar a imagem na galeria
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "perfil_" + System.currentTimeMillis());
-                        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                        contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
+                        // Verifica se a imagem foi tirada com a câmera
+                        if (isImageFromCamera(selectedImageUri)) {
+                            // Tentar salvar a imagem na galeria
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, "perfil_" + System.currentTimeMillis());
+                            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
 
-                        Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
-                        if (uri != null) {
-                            try {
-                                InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
-                                OutputStream outputStream = getContentResolver().openOutputStream(uri);
+                            if (uri != null) {
+                                try {
+                                    InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                                    OutputStream outputStream = getContentResolver().openOutputStream(uri);
 
-                                byte[] buffer = new byte[1024];
-                                int bytesRead;
-                                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                    outputStream.write(buffer, 0, bytesRead);
+                                    byte[] buffer = new byte[1024];
+                                    int bytesRead;
+                                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                        outputStream.write(buffer, 0, bytesRead);
+                                    }
+
+                                    inputStream.close();
+                                    outputStream.close();
+
+                                    Toast.makeText(UserProfileEdit.this, "Foto salva na galeria!", Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(UserProfileEdit.this, "Falha ao salvar a foto!", Toast.LENGTH_SHORT).show();
                                 }
-
-                                inputStream.close();
-                                outputStream.close();
-
-                                Toast.makeText(UserProfileEdit.this, "Foto salva na galeria!", Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(UserProfileEdit.this, "Falha ao salvar a foto!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(UserProfileEdit.this, "Falha ao inserir no MediaStore!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(UserProfileEdit.this, "Falha ao inserir no MediaStore!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserProfileEdit.this, "A imagem não foi tirada com a câmera, não será salva.", Toast.LENGTH_SHORT).show();
                         }
 
                         // Exibe a imagem no perfil
@@ -180,7 +186,6 @@ public class UserProfileEdit extends AppCompatActivity {
         });
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> {
-            openActivity(this, UserProfile.class);
             finish();
         });
 

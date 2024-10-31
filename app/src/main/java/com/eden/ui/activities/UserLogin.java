@@ -5,6 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,9 +38,19 @@ public class UserLogin extends AppCompatActivity {
         ImageView passwordToggle = findViewById(R.id.login_password_toggle);
         TextView btnCadastro = findViewById(R.id.textView_cadastro);
 
-        // Setting underline text
-        btnCadastro.setPaintFlags(btnCadastro.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        // Style of the text
+        String fullText = "Não tem uma conta? Cadastre-se";
+        SpannableString spannableString = new SpannableString(fullText);
 
+        int start = fullText.indexOf("Cadastre-se");
+        int end = start + "Cadastre-se".length();
+        spannableString.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edenVeryLightBlue)),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        btnCadastro.setText(spannableString);
+
+        // Login
         btnLogin.setOnClickListener(v -> db.login(email, password, errorMessage, this));
 
         // In case the user doesn't have an account, redirect to UserRegister

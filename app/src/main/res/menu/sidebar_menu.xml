@@ -2,10 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
         <item
             android:id="@+id/nav_favoritos"
-            android:title="Favorito"
+            android:title="Favoritos"
             android:iconTint="@color/edenBlue"
-            android:icon="@drawable/favorite_icon"
-            />
+            android:icon="@drawable/favorite_icon" />
         <item
             android:id="@+id/nav_pontos"
             android:title="Pontos de Coleta"
@@ -18,9 +17,15 @@
             android:title="Artigos Informativos" />
 
         <item
-                android:id="@+id/nav_comprados"
-                android:iconTint="@color/edenBlue"
-                android:icon="@drawable/cart_icon"
-                android:title="Produtos Comprados" />
+            android:id="@+id/nav_comprados"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/cart_fullfilled_icon"
+            android:title="Produtos Comprados" />
+
+        <item
+            android:id="@+id/nav_restricted_area"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/lock_fullfilled_icon"
+            android:title="Área Restrita" />
 
 </menu>

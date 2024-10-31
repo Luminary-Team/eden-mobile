@@ -8,60 +8,67 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
 import com.eden.model.Product;
 import com.eden.R;
-import com.eden.adapter.ProductPremiumAdapter;
 
 import java.util.Collections;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_NORMAL = 0;
-    private static final int TYPE_PREMIUM = 1;
+    private static final int TYPE_PREMIUM = 0;
+    private static final int TYPE_NORMAL = 1;
 
-    private final List<Product> listaProducts;
+    private final List<Product> normalProductList;
+    private final List<Product> premiumProductList;
 
-    public ProductAdapter(List<Product> arg) {
-        Collections.shuffle(arg);
-        this.listaProducts = arg;
+    public ProductAdapter(List<Product> normalProducts, List<Product> premiumProducts) {
+        Collections.shuffle(normalProducts);
+        this.normalProductList = normalProducts;
+        this.premiumProductList = premiumProducts;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position % 10 == 0) {
-            return TYPE_PREMIUM;
+        if (position == 0) {
+            return TYPE_PREMIUM; // Tipo para o carrossel
         }
-        return TYPE_NORMAL; 
+        return TYPE_NORMAL; // Tipo para produtos normais
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == TYPE_NORMAL) {
+        if (viewType == TYPE_PREMIUM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_premium_product, parent, false);
+            return new ViewHolderPremium(view);
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_layout, parent, false);
             return new ViewHolderProduct(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_premium_product, parent, false);
-            return new ProductPremiumAdapter.ViewHolderProductPremium(view);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // Normal Product
-        if (holder instanceof ViewHolderProduct) {
+        if (holder instanceof ViewHolderPremium) {
+            // Configurar o carrossel
+            RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
+            recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerView.post(() -> recyclerView.scrollToPosition(1));
+            recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList)); // Passar a lista de produtos premium
+        } else if (holder instanceof ViewHolderProduct) {
+            // Normal Product
             ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;
-            if (listaProducts != null) {
+            if (normalProductList != null) {
                 Log.d("ProductAdapter", "Position: " + position);
-                Product product = listaProducts.get(position);
+                Product product = normalProductList.get(position - 1); // Ajustar a posição para ignorar o carrossel
                 if (product.getTitle() != null) {
                     viewHolderProduct.title.setText(product.getTitle());
                 }
@@ -80,46 +87,30 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     v.getContext().startActivity(intent);
                 });
             }
-        // Premium Product
-        } else {
-            ProductPremiumAdapter.ViewHolderProductPremium viewHolderProductPremium = (ProductPremiumAdapter.ViewHolderProductPremium) holder;
-            if (listaProducts != null) {
-                Product product = listaProducts.get(position);
-
-//                viewHolderProductPremium.title.setText(product.getTitle());
-//                viewHolderProductPremium.price.setText(String.format("R$ %.2f", product.getPrice()));
-
-//                downloadImageFromFirebase(viewHolderProductPremium.itemView.getContext(), viewHolderProductPremium., "product_" + product.getId() + ".jpg");
-
-                viewHolderProductPremium.itemView.setOnClickListener(v -> {
-                    Intent intent = new Intent(v.getContext(), BuyProduct.class);
-                    intent.putExtra("id", product.getId());
-                    intent.putExtra("nome", product.getTitle());
-                    intent.putExtra("valor", product.getPrice());
-                    intent.putExtra("descricao", product.getDescription());
-                    v.getContext().startActivity(intent);
-                });
-            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return listaProducts.size();
+        return normalProductList.size() + 1; // Adiciona 1 para o carrossel
     }
 
     public static class ViewHolderProduct extends RecyclerView.ViewHolder {
-        private TextView usageTimeId, usageTime, conditionTypeId, user,
-                title, description, price, maxPrice, senderZipCode;
+        private TextView title, price;
         private ImageView imageView;
-        private RatingBar ratingBar;
-
 
         public ViewHolderProduct(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.product_title);
             price = itemView.findViewById(R.id.product_price);
             imageView = itemView.findViewById(R.id.product_image);
+        }
+    }
+
+    public static class ViewHolderPremium extends RecyclerView.ViewHolder {
+        public ViewHolderPremium(@NonNull View itemView) {
+            super(itemView);
+            // Inicialize outros componentes do layout do carrossel, se necessário
         }
     }
 }
