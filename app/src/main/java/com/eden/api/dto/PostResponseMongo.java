@@ -6,13 +6,13 @@ import java.util.List;
 
 public class PostResponseMongo {
 
-    private int id;
+    private String id;
     private int userId;
     private String content;
     private List<Comment> comments;
     private List<Integer> likeId;
 
-    public PostResponseMongo(int id, int userId, String content, List<Comment> comments, List<Integer> likeId) {
+    public PostResponseMongo(String id, int userId, String content, List<Comment> comments, List<Integer> likeId) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -20,11 +20,11 @@ public class PostResponseMongo {
         this.likeId = likeId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

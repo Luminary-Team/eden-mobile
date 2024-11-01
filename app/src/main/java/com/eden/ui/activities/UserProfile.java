@@ -15,7 +15,7 @@ import com.eden.R;
 import com.eden.adapter.ViewPagerAdapter;
 import com.eden.api.dto.UserSchema;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.UserCallback;
+import com.eden.utils.callbacks.UserCallback;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 

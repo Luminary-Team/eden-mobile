@@ -8,6 +8,7 @@ import static androidx.appcompat.content.res.AppCompatResources.getDrawable;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadProfilePicFromFirebase;
 import static com.eden.utils.AndroidUtil.isImageFromCamera;
+import static com.eden.utils.AndroidUtil.uploadImageToFirebase;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -209,12 +210,14 @@ public class FragmentForum extends Fragment {
 
             // Create a post
             ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
-            Call<Post> call = forumService.createPost(new Post(currentUser.getId(), content.getText().toString()));
-            call.enqueue(new Callback<Post>() {
+            Call<PostResponse> call = forumService.createPost(new Post(currentUser.getId(), content.getText().toString()));
+            call.enqueue(new Callback<PostResponse>() {
                 @Override
-                public void onResponse(Call<Post> call, Response<Post> response) {
+                public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
                     if(response.isSuccessful()) {
+                        PostResponse post = response.body();
                         Toast.makeText(getContext(), "Post criado com sucesso", Toast.LENGTH_SHORT).show();
+                        uploadImageToFirebase(finalSelectedImageUri, "post_" + post.getId() + ".jpg");
                         dialog.dismiss();
                     } else {
                         try {
@@ -226,7 +229,7 @@ public class FragmentForum extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<Post> call, Throwable throwable) {
+                public void onFailure(Call<PostResponse> call, Throwable throwable) {
                     Log.d("ERROR", throwable.getMessage());;
                 }
             });

@@ -1,7 +1,6 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
-import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eden.R;
-import com.eden.api.dto.UserSchema;
 import com.eden.ui.fragments.FragmentForum;
 import com.eden.ui.fragments.FragmentHome;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.UserCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;

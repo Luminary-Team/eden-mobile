@@ -1,14 +1,18 @@
 package com.eden.adapter;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 import static com.eden.utils.AndroidUtil.downloadOtherUserProfilePicFromFirebase;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,12 +22,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.api.RetrofitClient;
+import com.eden.api.dto.CommentRequest;
 import com.eden.api.dto.PostResponse;
+import com.eden.api.dto.PostResponseMongo;
+import com.eden.api.services.ForumService;
 import com.eden.model.Comment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Collections;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost> {
     private final List<PostResponse> postList;
@@ -47,20 +59,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         holder.name.setText(post.getUser().getName());
         holder.userName.setText(post.getUser().getUserName());
         downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, String.valueOf(post.getUser().getId()));
+        downloadImageFromFirebase(holder.content.getContext(), holder.imagePost, "post_" + post.getId() + ".jpg");
+
+        if (holder.imagePost != null)
+            holder.imagePost.setVisibility(View.VISIBLE);
 
         holder.itemView.setOnClickListener(v -> {
-            List<Comment> comments = post.getComments();
-
             // TODO: Isso vai ter que ser no callback de getCommentsForPost
-            openBottomSheet(holder.itemView.getContext(), comments);
+            openBottomSheet(holder.itemView.getContext(), post);
         });
     }
 
-    private void openBottomSheet(Context context, List<Comment> comments) {
+    private void openBottomSheet(Context context, PostResponse post) {
+        List<Comment> comments = post.getComments();
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_comments, null);
         ProgressBar progressBar = dialogView.findViewById(R.id.comments_progressBar);
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView_comments);
+        EditText editTextComments = dialogView.findViewById(R.id.editText_comments);
+        ImageView sendButton = dialogView.findViewById(R.id.imageView_send);
 
         // Set up the bottom sheet
         bottomSheetDialog.setContentView(dialogView);
@@ -85,6 +102,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             progressBar.setVisibility(View.GONE);
         }
 
+        sendButton.setOnClickListener(v -> {
+
+            ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
+            Call<PostResponseMongo> call = forumService.addComment(post.getId(),
+                    new CommentRequest(currentUser.getId(), editTextComments.getText().toString()));
+
+            call.enqueue(new Callback<PostResponseMongo>() {
+                @Override
+                public void onResponse(Call<PostResponseMongo> call, Response<PostResponseMongo> response) {
+                    Log.d("COMMENTS", response.body().toString());
+                    // TODO: Atualizar em tempo real
+                    bottomSheetDialog.dismiss();
+
+                }
+
+                @Override
+                public void onFailure(Call<PostResponseMongo> call, Throwable throwable) {
+                    Log.d("COMMENTS", throwable.getMessage());
+                }
+            });
+
+        });
+
 //        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 //            @Override
 //            public void onDismiss(DialogInterface dialogInterface) {
@@ -101,7 +141,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
     public static class ViewHolderPost extends RecyclerView.ViewHolder {
         private TextView content, name, userName;
-        private ImageView userPfp;
+        private ImageView userPfp, imagePost;
         // TODO: Colocar coisas do header
 
         public ViewHolderPost(@NonNull View itemView) {
@@ -110,7 +150,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             userPfp = itemView.findViewById(R.id.profile_pic);
             name = itemView.findViewById(R.id.profile_name);
             userName = itemView.findViewById(R.id.profile_username);
-
+            imagePost = itemView.findViewById(R.id.post_image);
         }
     }
 }

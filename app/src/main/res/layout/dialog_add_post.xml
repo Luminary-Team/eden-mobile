@@ -36,7 +36,7 @@
         <EditText
             android:id="@+id/editText_content"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:layout_below="@id/back_btn"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
@@ -46,17 +46,19 @@
             android:hint="O que está pensando..."
             android:inputType="text|textMultiLine|textCapSentences"
             android:maxLines="7"
-            android:minLines="1"
-            android:singleLine="false" />
+            android:minLines="1" />
 
         <ImageView
             android:id="@+id/image_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:layout_below="@id/editText_content"
             android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:scaleType="fitStart"
             tools:srcCompat="@tools:sample/avatars"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/button_add_image"

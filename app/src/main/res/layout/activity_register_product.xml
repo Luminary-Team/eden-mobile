@@ -90,9 +90,10 @@
                 android:drawablePadding="10dp"
                 android:drawableTint="@color/edenBlue"
                 android:hint="Descrição"
-                android:inputType="textCapSentences"
                 android:padding="10dp"
-                android:singleLine="false"
+                android:inputType="text|textMultiLine|textCapSentences"
+                android:maxLines="7"
+                android:minLines="1"
                 android:textSize="15sp" />
 
             <Spinner
@@ -118,6 +119,7 @@
                 android:layout_margin="12dp"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@id/editText_product_description"
+                android:buttonTint="@color/edenBlue"
                 android:text="Premium"
                 />
 

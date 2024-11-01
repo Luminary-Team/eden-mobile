@@ -27,12 +27,9 @@ import com.eden.api.dto.CartItemResponse;
 import com.eden.api.dto.CartResponse;
 import com.eden.api.dto.OrderRequest;
 import com.eden.api.dto.OrderResponse;
-import com.eden.api.dto.UserSchema;
 import com.eden.api.services.CardService;
 import com.eden.api.services.CartService;
 import com.eden.api.services.OrderService;
-import com.eden.model.Card;
-import com.eden.utils.UserCallback;
 
 import java.io.IOException;
 import java.util.List;
