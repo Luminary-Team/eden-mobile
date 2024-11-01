@@ -20,11 +20,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static String baseUrl = "http://107.20.132.70:8080/"; // SQL render - Willamy
+    private static String baseUrl = "http://107.20.132.70:8080/"; // SQL  AWS
     private static String baseUrlMongo = "http://3.94.25.250:8080/"; // MONGODB AWS
 
     private static final List<String> baseUrls = List.of(
-            "http://3.94.25.250:8080/", // SQL  AWS
+            "http://3.94.25.250:8080/", // SQL render - Willamy
             "https://eden-api-mongo-a2dh.onrender.com/", // MongoDB render - Willamy
             "https://eden-api-w9pm.onrender.com/", // SQL render - Willamy
             "https://eden-api-mongo.onrender.com/", // MongoDB render - Pedro

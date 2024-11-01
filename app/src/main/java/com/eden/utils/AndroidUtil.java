@@ -9,14 +9,11 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 
-import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.eden.adapter.UserProductAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.OrderGetAllResponse;
 import com.eden.api.dto.TokenRequest;
@@ -27,6 +24,7 @@ import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
 import com.eden.ui.activities.UserLogin;
+import com.eden.utils.callbacks.UserCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,7 +33,6 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 import retrofit2.Call;
 import retrofit2.Callback;

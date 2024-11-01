@@ -5,7 +5,6 @@ import static com.eden.utils.AndroidUtil.fetchBoughtProducts;
 import static com.eden.utils.AndroidUtil.fetchFavorites;
 import static com.eden.utils.AndroidUtil.getUser;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,16 +23,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.eden.R;
 import com.eden.adapter.ProductAdapter;
 import com.eden.api.RetrofitClient;
-import com.eden.api.dto.UserSchema;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
-import com.eden.utils.UserCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
