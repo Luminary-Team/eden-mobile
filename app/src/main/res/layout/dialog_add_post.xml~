@@ -50,7 +50,7 @@
             android:singleLine="false" />
 
         <ImageView
-            android:id="@+id/image_post"
+            android:id="    @+id/image_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/editText_content"

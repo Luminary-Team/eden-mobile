@@ -134,7 +134,7 @@ public class FragmentForum extends Fragment {
 //                        }
 
                         // Exibe a imagem no perfil
-                        Glide.with(this).load(selectedImageUri).into(imagePost);
+                        Glide.with(this).load(selectedImageUri).apply(RequestOptions.circleCropTransform()).into(imagePost);
                     }
                 }
         );

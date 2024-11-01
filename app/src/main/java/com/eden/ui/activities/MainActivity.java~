@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         // Setting the perfil photo
         FirebaseAuth.AuthStateListener authListener = firebaseAuth -> {
             // If the user is already logged in
-            if (auth.getCurrentUser() != null && currentUser != null) {
+            if (auth.getCurrentUser() != null) {
 
                 // Setting the perfil photo
                 AndroidUtil.downloadProfilePicFromFirebase(this, btnSidebar);
