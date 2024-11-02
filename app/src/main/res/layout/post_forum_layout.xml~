@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/post_content"
             android:scaleType="fitStart"
-
             android:layout_marginTop="1dp" />
 
     </RelativeLayout>

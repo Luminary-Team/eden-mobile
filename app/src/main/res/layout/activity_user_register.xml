@@ -169,16 +169,17 @@
                 android:textAlignment="center"
                 />
 
+            <ImageView
+                android:id="@+id/imageView_eden_robot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/eden_robot"
+                android:layout_below="@id/textView_login"
+                android:layout_alignParentEnd="true"
+                android:translationZ="100dp" />
+
         </RelativeLayout>
 
     </ScrollView>
-
-    <ImageView
-        android:id="@+id/imageView_eden_robot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/eden_robot"
-        android:layout_gravity="end|bottom"
-        android:translationZ="100dp" />
 
 </FrameLayout>

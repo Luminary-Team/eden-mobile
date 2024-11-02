@@ -30,7 +30,7 @@
             android:backgroundTint="@color/lightGrey"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/to_circle"
-            tools:srcCompat="@tools:sample/avatars"
+            tools:srcCompat="@drawable/pfp_placeholder_icon"
             />
 
         <EditText
@@ -56,9 +56,10 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
-            android:scaleType="fitStart"
-            tools:srcCompat="@tools:sample/avatars"
-            android:visibility="visible"/>
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/arredondar"
+            tools:srcCompat="@drawable/pfp_placeholder_icon"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/button_add_image"

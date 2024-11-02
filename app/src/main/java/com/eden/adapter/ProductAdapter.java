@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
@@ -62,7 +63,12 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
             recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
             recyclerView.post(() -> recyclerView.scrollToPosition(1));
+
+            LinearSnapHelper snapHelper = new LinearSnapHelper();
+            snapHelper.attachToRecyclerView(recyclerView);
+
             recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList)); // Passar a lista de produtos premium
+
         } else if (holder instanceof ViewHolderProduct) {
             // Normal Product
             ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;

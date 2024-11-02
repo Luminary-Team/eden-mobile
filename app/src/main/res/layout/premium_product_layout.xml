@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:scaleType="centerInside"
-            app:shapeAppearanceOverlay="@style/arrendar"
+            app:shapeAppearanceOverlay="@style/arredondar"
             android:src="@drawable/image_premium" />
 
         <TextView

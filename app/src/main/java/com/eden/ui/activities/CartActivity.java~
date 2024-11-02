@@ -78,7 +78,7 @@ public class CartActivity extends AppCompatActivity {
                         recyclerView.setAdapter(new CartAdapter(cartItemResponses));
 
                         cartBtn.setOnClickListener(v -> {
-                            openActivity(CartActivity.this, PaymentType.class);
+
                         });
 
                     } else {

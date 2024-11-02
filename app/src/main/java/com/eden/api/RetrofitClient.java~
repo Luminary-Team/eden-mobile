@@ -20,15 +20,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static String baseUrl = "https://desenvolvimento-ii.onrender.com/"; // SQL render - Luminary
-    private static String baseUrlMongo = "https://eden-api-mongo.onrender.com/"; // MongoDB render - Luminary
+    private static String baseUrl = "http://107.20.132.70:8080/"; // SQL  AWS
+    private static String baseUrlMongo = "http://3.94.25.250:8080/"; // MONGODB AWS
 
     private static final List<String> baseUrls = List.of(
-            "http://3.94.25.250:8080/", // MONGODB AWS - Pedro
-            "http://107.20.132.70:8080/", // SQL AWS - Pedro
+            "http://3.94.25.250:8080/", // SQL render - Willamy
             "https://eden-api-mongo-a2dh.onrender.com/", // MongoDB render - Willamy
-            "https://eden-api-w9pm.onrender.com/" // SQL render - Willamy
-    );
+            "https://eden-api-w9pm.onrender.com/", // SQL render - Willamy
+            "https://eden-api-mongo.onrender.com/", // MongoDB render - Pedro
+            "https://desenvolvimento-ii.onrender.com/" // SQL render - Pedro
+            );
 
     private static int currentUrlIndex = 0;
 

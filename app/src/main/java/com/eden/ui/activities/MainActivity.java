@@ -99,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 openActivity(this, BoughtProducts.class);
             if (menuItem.getItemId() == R.id.nav_restricted_area)
                 openActivity(this, RestrictedArea.class);
+            if (menuItem.getItemId() == R.id.nav_my_products)
+                openActivity(this, UserProfile.class);
+            if (menuItem.getItemId() == R.id.nav_my_posts)
+                openActivity(this, UserProfile.class);
 
             // Closes drawers after selection
             drawerLayout.closeDrawers();
@@ -110,12 +114,18 @@ public class MainActivity extends AppCompatActivity {
         footer.setOnItemSelectedListener(item -> {
             if(item.getItemId() == R.id.menu_add){
                 openActivity(this, RegisterProduct.class);
+                footer.getMenu().findItem(R.id.menu_home).setIcon(R.drawable.home_outlined_icon);
+                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.forum_outlined_icon);
             }
             if(item.getItemId() == R.id.menu_home){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
+                item.setIcon(R.drawable.home_icon);
+                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.forum_outlined_icon);
             }
             if(item.getItemId() == R.id.menu_forum){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentForum()).commit();
+                item.setIcon(R.drawable.forum_icon);
+                footer.getMenu().findItem(R.id.menu_home).setIcon(R.drawable.home_outlined_icon);
             }
             return false;
         });

@@ -1,7 +1,6 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
-import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.eden.R;
-import com.eden.api.dto.UserSchema;
 import com.eden.ui.fragments.FragmentForum;
 import com.eden.ui.fragments.FragmentHome;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.UserCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         // Setting the perfil photo
         FirebaseAuth.AuthStateListener authListener = firebaseAuth -> {
             // If the user is already logged in
-            if (auth.getCurrentUser() != null) {
+            if (auth.getCurrentUser() != null && currentUser != null) {
 
                 // Setting the perfil photo
                 AndroidUtil.downloadProfilePicFromFirebase(this, btnSidebar);
@@ -102,6 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 openActivity(this, BoughtProducts.class);
             if (menuItem.getItemId() == R.id.nav_restricted_area)
                 openActivity(this, RestrictedArea.class);
+            if (menuItem.getItemId() == R.id.nav_my_products)
+                openActivity(this, UserProfile.class);
+            if (menuItem.getItemId() == R.id.nav_my_posts)
+                openActivity(this, UserProfile.class);
 
             // Closes drawers after selection
             drawerLayout.closeDrawers();
@@ -116,9 +117,13 @@ public class MainActivity extends AppCompatActivity {
             }
             if(item.getItemId() == R.id.menu_home){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
+                item.setIcon(R.drawable.home_icon);
+                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.forum_outlined_icon);
             }
             if(item.getItemId() == R.id.menu_forum){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentForum()).commit();
+                item.setIcon(R.drawable.forum_icon);
+                footer.getMenu().findItem(R.id.home).setIcon(R.drawable.forum_outlined_icon);
             }
             return false;
         });
