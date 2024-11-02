@@ -17,6 +17,7 @@ import com.eden.R;
 import com.eden.ui.fragments.FragmentForum;
 import com.eden.ui.fragments.FragmentHome;
 import com.eden.utils.AndroidUtil;
+import com.eden.utils.NotificationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -67,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
         btnSidebar = findViewById(R.id.btnSidebar);
         name = headerView.findViewById(R.id.profile_name);
         username = headerView.findViewById(R.id.profile_username);
+
+
+        // Cria o canal de notificação
+        NotificationHelper.createNotificationChannel(this);
+        NotificationHelper.sendRandomNotification(this);
 
         if (currentUser != null) {
             // Fragmento inicial

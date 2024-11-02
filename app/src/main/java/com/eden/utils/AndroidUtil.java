@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -43,7 +44,6 @@ public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
     public static List<Product> favorites, boughtProducts;
-    private static int loginTries = 0;
 
     // Open intent
     public static void openActivity(Context context, Class<?> className) {
@@ -113,6 +113,7 @@ public class AndroidUtil {
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
         // Create "images" folder reference in Firebase Storage
+        storageRef.child(imagePath);
         StorageReference imageRef = storageRef.child(imagePath);
 
         // Upload image to Firebase Storage
@@ -282,7 +283,7 @@ public class AndroidUtil {
                     });
 
                 } else if (response.code() == 503) {
-                    RetrofitClient.changeService();
+                    Toast.makeText(context, "A api ainda nn acordou", Toast.LENGTH_SHORT).show();
                     authenticate(context);
                 } else {
                     Log.d("TOKEN", "Error getting token");
@@ -291,13 +292,7 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
                 Log.d("TOKEN", throwable.getMessage());
-                loginTries++;
-                if (loginTries < 3) {
-                    authenticate(context);
-                } else {
-                    openActivity(context, UserLogin.class);
-                    loginTries = 0;
-                }
+                authenticate(context);
             }
         });
 
