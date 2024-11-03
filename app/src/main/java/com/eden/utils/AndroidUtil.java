@@ -1,16 +1,12 @@
 package com.eden.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -24,8 +20,7 @@ import com.eden.api.services.UserService;
 import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
-import com.eden.ui.activities.UserLogin;
-import com.eden.utils.callbacks.UserCallback;
+import com.eden.callbacks.UserCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -297,48 +292,5 @@ public class AndroidUtil {
         });
 
     }
-
-    private static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
-    };
-
-    private boolean allPermissionsGranted(Context context) {
-        for (String permission : REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-//    public static void notify(Context context, Context localContext) {
-//
-//        // Create Notification
-//        Intent intent = new Intent(context, NotificationReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-//
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
-//                .setSmallIcon(R.drawable.eden_logotipo_2)
-//                .setContentTitle("Notification Title")
-//                .setContentText("CLICK AND RECEIVE!")
-//                .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent);
-//
-//        // Create Notification Channel
-//        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
-//                NotificationManager.IMPORTANCE_HIGH);
-//        NotificationManager manager = getSystemService(NotificationManager.class);
-//        manager.createNotificationChannel(channel);
-//
-//        // Show notification
-//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
-//        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Handle missing permission
-//            return;
-//        }
-//        notificationManagerCompat.notify(1, builder.build());
-//    }
 
 }

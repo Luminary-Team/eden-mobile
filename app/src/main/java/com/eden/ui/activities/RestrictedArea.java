@@ -27,6 +27,9 @@ public class RestrictedArea extends AppCompatActivity {
 
         webView.loadUrl("https://eden-restrict-area.onrender.com/");
 
+        // Setting up back button
+        (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
+
     }
 
     @Override

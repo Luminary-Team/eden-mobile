@@ -3,6 +3,7 @@ package com.eden.adapter;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private Handler handler;
+    private Runnable runnable;
+    private int currentPosition = 0;
 
     private static final int TYPE_PREMIUM = 0;
     private static final int TYPE_NORMAL = 1;
@@ -59,15 +64,16 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderPremium) {
-            // Configurar o carrossel
+            // Premium Product
             RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
             recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerView.post(() -> recyclerView.scrollToPosition(1));
 
             LinearSnapHelper snapHelper = new LinearSnapHelper();
             snapHelper.attachToRecyclerView(recyclerView);
 
             recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList)); // Passar a lista de produtos premium
+
+            startAutoScroll(premiumProductList.size(), recyclerView);
 
         } else if (holder instanceof ViewHolderProduct) {
             // Normal Product
@@ -99,6 +105,28 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         return normalProductList.size() + 1; // Adiciona 1 para o carrossel
+    }
+
+
+    private void startAutoScroll(int itemCount, RecyclerView recyclerView) {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (itemCount > 0) {
+                    currentPosition = (currentPosition + 1) % itemCount;
+                    recyclerView.smoothScrollToPosition(currentPosition);
+                }
+                handler.postDelayed(this, 3000);
+            }
+        };
+        handler.postDelayed(runnable, 3000);
+    }
+
+    public void stopAutoScroll() {
+        if (handler != null) {
+            handler.removeCallbacks(runnable); // Remove callbacks para evitar vazamentos de memória
+        }
     }
 
     public static class ViewHolderProduct extends RecyclerView.ViewHolder {

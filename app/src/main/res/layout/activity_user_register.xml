@@ -13,7 +13,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <RelativeLayout
@@ -154,6 +154,17 @@
                 android:textSize="20sp"
                 android:textAlignment="center"
                 app:cornerRadius="5dp"
+                />
+
+            <ProgressBar
+                android:id="@+id/user_register_progressBar"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_senha"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:indeterminateTint="@color/white"
+                android:translationZ="2dp"
                 />
 
             <TextView

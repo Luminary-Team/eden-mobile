@@ -18,6 +18,7 @@ import com.eden.api.dto.CartResponse;
 import com.eden.model.Product;
 import com.eden.ui.activities.BuyProduct;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,6 +64,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
     @Override
     public int getItemCount() {
         return cartItems.size();
+    }
+
+    public List<CartItemResponse> getData() {
+        return cartItems;
     }
 
     public class ViewHolderItem extends RecyclerView.ViewHolder {

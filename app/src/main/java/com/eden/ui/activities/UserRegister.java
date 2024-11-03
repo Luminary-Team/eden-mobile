@@ -4,7 +4,6 @@ import static com.eden.utils.AndroidUtil.authenticate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -18,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +43,8 @@ public class UserRegister extends AppCompatActivity {
 
     FirebaseUserUtil db = new FirebaseUserUtil();
     private String unformattedPhoneNumber, unformattedCpf;
+    private ProgressBar progressBar;
+    private Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,11 @@ public class UserRegister extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.textInput_email);
         EditText passwordEditText = findViewById(R.id.textInput_senha);
         ImageView passwordToggle = findViewById(R.id.register_password_toggle);
-        Button btnRegister = findViewById(R.id.btn_cadastro);
         TextView btnLogin = findViewById(R.id.textView_login);
+        btnRegister = findViewById(R.id.btn_cadastro);
+        progressBar = findViewById(R.id.user_register_progressBar);
+
+        progressBar.setVisibility(View.GONE);
 
         String fullText = "Já tem uma conta? Faça Login";
         SpannableString spannableString = new SpannableString(fullText);
@@ -74,9 +79,13 @@ public class UserRegister extends AppCompatActivity {
             // Verifies if none of the values are null
             if (!name.isEmpty() && !unformattedPhoneNumber.isEmpty()
                     && !unformattedCpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+//                progressBar.setVisibility(View.GONE);
+                btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
+//                progressBar.setVisibility(View.GONE);
+                btnRegister.setText("Cadastrar");
             }
         });
 
@@ -120,13 +129,13 @@ public class UserRegister extends AppCompatActivity {
 
     // Saves user on database
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
+        progressBar.setVisibility(View.VISIBLE);
+        btnRegister.setText("");
 
         UserService api = RetrofitClient.getClient().create(UserService.class);
 
-        // Creating User
-        User user = new User(cpf, name, name,
-                password, 0, email, phoneNumber);
-        Call<ResponseBody> userCall = api.userRegister(user);
+        Call<ResponseBody> userCall = api.userRegister(new User(cpf, name, name,
+                password, 0, email, phoneNumber));
 
         userCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -143,6 +152,9 @@ public class UserRegister extends AppCompatActivity {
                         Log.d("CHECKPOINT", response.message());
 
                     } else if (response.errorBody() != null) {
+                        progressBar.setVisibility(View.GONE);
+                        btnRegister.setText("Cadastrar");
+
                         // Tratando erros
                         String errorResponse = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorResponse);

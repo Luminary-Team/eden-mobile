@@ -112,7 +112,8 @@ public class EcoPoint extends AppCompatActivity implements OnMapReadyCallback {
 //
         final List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
 
-        final SearchByTextRequest searchByTextRequest = SearchByTextRequest.builder("Ecopontos", placeFields)
+        final SearchByTextRequest searchByTextRequest = SearchByTextRequest
+                .builder("ecopontos | ecoponto | ponto de coleta | ecopoints | descarte de lixo eletrônico", placeFields)
 //                .setMaxResultCount()
 //                .setLocationRestriction(bounds) // Adiciona a restrição de localização retangular
                 .build();
@@ -139,7 +140,6 @@ public class EcoPoint extends AppCompatActivity implements OnMapReadyCallback {
                     Log.e("Error", "O chamado da API foi cancelado.");
                 });
     }
-
     private FusedLocationProviderClient fusedLocationClient;
 
     // Get user permission for location

@@ -6,6 +6,7 @@ import static com.eden.utils.AndroidUtil.openActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -15,9 +16,10 @@ import com.eden.R;
 import com.eden.adapter.ViewPagerAdapter;
 import com.eden.api.dto.UserSchema;
 import com.eden.utils.AndroidUtil;
-import com.eden.utils.callbacks.UserCallback;
+import com.eden.callbacks.UserCallback;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class UserProfile extends AppCompatActivity {
 
@@ -62,6 +64,15 @@ public class UserProfile extends AppCompatActivity {
         });
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
+
+        // Logout
+        (findViewById(R.id.button_logout)).setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(UserProfile.this, SplashScreen.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
 
 //        navView.setNavigationItemSelectedListener(item -> {
 //            if (item.getItemId() == R.id.menu_product) {

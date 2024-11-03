@@ -16,8 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.adapter.CartAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.CardResponse;
 import com.eden.api.dto.OrderRequest;
@@ -34,6 +36,8 @@ import retrofit2.Response;
 
 public class PaymentType extends AppCompatActivity {
 
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,10 @@ public class PaymentType extends AppCompatActivity {
         setContentView(R.layout.activity_payment_type);
 
         Button btnFinishOrder = findViewById(R.id.btn_finish_order);
+        recyclerView = findViewById(R.id.recyclerView_products_chosen);
 //        RadioGroup radioButton = findViewById(R.id.paymentMethodRadioGroup);
+
+        // TODO: Fazer recyclerview do orderservice
 
         btnFinishOrder.setOnClickListener(v -> {
 

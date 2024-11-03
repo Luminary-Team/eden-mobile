@@ -3,10 +3,23 @@ package com.eden.ui.activities;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -75,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         NotificationHelper.createNotificationChannel(this);
         NotificationHelper.sendRandomNotification(this);
 
+        sendNotification(getApplicationContext(), this);
+
         if (currentUser != null) {
             // Fragmento inicial
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
@@ -122,16 +137,16 @@ public class MainActivity extends AppCompatActivity {
             if(item.getItemId() == R.id.menu_add){
                 openActivity(this, RegisterProduct.class);
                 footer.getMenu().findItem(R.id.menu_home).setIcon(R.drawable.home_outlined_icon);
-                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.forum_outlined_icon);
+                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.people_outline_icon);
             }
             if(item.getItemId() == R.id.menu_home){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
                 item.setIcon(R.drawable.home_icon);
-                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.forum_outlined_icon);
+                footer.getMenu().findItem(R.id.menu_forum).setIcon(R.drawable.people_outline_icon);
             }
             if(item.getItemId() == R.id.menu_forum){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentForum()).commit();
-                item.setIcon(R.drawable.forum_icon);
+                item.setIcon(R.drawable.people_icon);
                 footer.getMenu().findItem(R.id.menu_home).setIcon(R.drawable.home_outlined_icon);
             }
             return false;
@@ -149,5 +164,63 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();
         });
 
+    }
+
+
+    private static final String[] REQUIRED_PERMISSIONS = {
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+    };
+
+    private boolean allPermissionsGranted(Context context) {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // feature requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                }
+            });
+
+    public void sendNotification(Context context, Context localContext) {
+
+        // Create Notification
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
+                .setSmallIcon(R.drawable.eden_logotipo_2)
+                .setContentTitle("Notification Title")
+                .setContentText("CLICK AND RECEIVE!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
+        // Create Notification Channel
+        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
+                NotificationManager.IMPORTANCE_HIGH);
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
+
+        // Show notification
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Handle missing permission
+            return;
+        }
+        notificationManagerCompat.notify(1, builder.build());
     }
 }

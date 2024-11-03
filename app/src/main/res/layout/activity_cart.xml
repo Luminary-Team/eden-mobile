@@ -23,7 +23,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="22dp"
       android:layout_marginStart="12dp"
-      android:layout_toRightOf="@id/back_btn"
+      android:layout_toEndOf="@id/back_btn"
       android:text="Carrinho"
       android:textSize="24sp"
       />
@@ -59,19 +59,18 @@
       android:id="@+id/cart_recyclerView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_below="@id/textView_cart"
       android:layout_above="@id/card_total"
-      android:layout_marginHorizontal="20dp"
+      android:layout_below="@id/textView_cart"
       android:layout_marginTop="20dp"
-      tools:listitem="@layout/product_view_layout"/>
+      tools:listitem="@layout/product_view_layout" />
 
   <androidx.cardview.widget.CardView
       android:id="@+id/card_total"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:background="@color/white"
-      app:cardElevation="20dp"
-      android:layout_alignParentBottom="true">
+      android:layout_alignParentBottom="true"
+      android:background="@drawable/cardview_rounded_top_shape"
+      app:cardElevation="20dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

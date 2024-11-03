@@ -45,6 +45,7 @@ public class FragmentHome extends Fragment {
     List<Product> premiumProducts = new ArrayList<>();
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    ProductAdapter productAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -117,9 +118,10 @@ public class FragmentHome extends Fragment {
                             @Override
                             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                                 if (response.isSuccessful()) {
-                                    premiumProducts = response.body();
 
-                                    recyclerView.setAdapter(new ProductAdapter(products, premiumProducts));
+                                    premiumProducts = response.body();
+                                    productAdapter = new ProductAdapter(products, premiumProducts);
+                                    recyclerView.setAdapter(productAdapter);
 
                                 }
                             }
@@ -178,7 +180,8 @@ public class FragmentHome extends Fragment {
                                     if (response.isSuccessful()) {
                                         if (response.body() != null) {
                                             products = response.body(); // Atualize a lista de produtos com os resultados da busca
-                                            recyclerView.setAdapter(new ProductAdapter(products, premiumProducts)); // Notifique o adapter sobre a atualização da lista de produtos
+                                            productAdapter = new ProductAdapter(products, premiumProducts);
+                                            recyclerView.setAdapter(productAdapter); // Notifique o adapter sobre a atualização da lista de produtos
                                             progressBar.setVisibility(View.GONE);
                                         } else {
                                             Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
@@ -213,4 +216,11 @@ public class FragmentHome extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (productAdapter != null) {
+            productAdapter.stopAutoScroll();
+        }
+    }
 }
