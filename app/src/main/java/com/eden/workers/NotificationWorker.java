@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -39,12 +38,10 @@ public class NotificationWorker {
             }
         }
 
-        // Gera um horário aleatório entre 10h e 22h
         Random random = new Random();
         int hour = 10 + random.nextInt(13); // Gera um número entre 10 e 22
         int minute = random.nextInt(60); // Gera um número entre 0 e 59
 
-        // Define o calendário para o horário aleatório
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);

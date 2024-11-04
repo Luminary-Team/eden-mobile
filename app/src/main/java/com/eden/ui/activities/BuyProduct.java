@@ -34,6 +34,7 @@ import com.eden.api.services.CartService;
 import com.eden.api.services.UserService;
 import com.eden.model.Cart;
 import com.eden.model.Product;
+import com.eden.utils.NotificationReceiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;

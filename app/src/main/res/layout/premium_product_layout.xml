@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="150dp"
     android:layout_margin="8dp"
     android:layout_marginHorizontal="20dp"
     android:backgroundTint="#E3E8FD"
@@ -19,9 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:scaleType="centerInside"
-            app:shapeAppearanceOverlay="@style/arredondar"
-            android:src="@drawable/image_premium" />
+            android:layout_marginTop="1dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_premium"
+            app:shapeAppearanceOverlay="@style/arredondar" />
 
         <TextView
             android:id="@+id/product_title"

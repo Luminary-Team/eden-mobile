@@ -1,17 +1,19 @@
 package com.eden.utils;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
 import com.eden.R;
 import com.eden.ui.activities.MainActivity;
+
+import java.util.Calendar;
 
 public class NotificationHelper {
 
@@ -31,7 +33,6 @@ public class NotificationHelper {
     }
 
     public static void sendRandomNotification(Context context) {
-        // Generates an ID for the notification
         int notificationId = (int) System.currentTimeMillis();
 
         String[] actions = {
@@ -51,7 +52,7 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.eden_logotipo_2)
                 .setContentTitle("Eden")
-                .setContentText("No sabe o que fazer com o celular usado? " + action)
+                .setContentText(action)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -61,6 +62,55 @@ public class NotificationHelper {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             notificationManager.notify(notificationId, builder.build());
+        }
+    }
+
+    public void agendarNotificacaoDiaria(Context context) {
+        // Defina a hora para exibir a notificação
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        // Se a hora definida já passou no dia atual, agendar para o próximo dia
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        // Intent para o BroadcastReceiver
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // Agendar o alarme
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            // Repetir o alarme uma vez por dia
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
+    }
+
+    public void agendarNotificacaoHoraEmHora(Context context) {
+        // Defina o horário inicial para o próximo início de hora
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        // Se a hora já passou, configurar para o próximo início de hora
+        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+            calendar.add(Calendar.HOUR_OF_DAY, 1);
+        }
+
+        // Intent para o BroadcastReceiver
+        Intent intent = new Intent(context, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // Agendar o alarme
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            // Agendar alarme exato para o próximo início de hora
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
     }
 }

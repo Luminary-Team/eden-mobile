@@ -31,9 +31,8 @@
         android:id="@+id/recyclerView_favorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
         android:layout_below="@id/back_btn"
-        tools:listitem="@layout/product_view_layout"
-        />
+        android:layout_marginTop="1dp"
+        tools:listitem="@layout/product_view_layout" />
 
 </RelativeLayout>
