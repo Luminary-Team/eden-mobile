@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem> {
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItemCart> {
 
     private final List<CartItemResponse> cartItems;
 
@@ -33,13 +33,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
 
     @NonNull
     @Override
-    public CartAdapter.ViewHolderItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CartAdapter.ViewHolderItemCart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_view_layout, parent, false);
-        return new CartAdapter.ViewHolderItem(view);
+        return new CartAdapter.ViewHolderItemCart(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CartAdapter.ViewHolderItem holder, int position) {
+    public void onBindViewHolder(@NonNull CartAdapter.ViewHolderItemCart holder, int position) {
         Product item = cartItems.get(position).getProduct();
         if (!cartItems.isEmpty()) {
             holder.title.setText(item.getTitle() != null ? item.getTitle() : "");
@@ -70,14 +70,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
         return cartItems;
     }
 
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
+    public class ViewHolderItemCart extends RecyclerView.ViewHolder {
         private TextView title, description, price, maxPrice;
         private ImageView imageView;
 
-        public ViewHolderItem(@NonNull View itemView) {
+        public ViewHolderItemCart(@NonNull View itemView) {
             super(itemView);
-            ImageView overflowMenu = itemView.findViewById(R.id.overflow_menu);
-            overflowMenu.setVisibility(View.GONE);
+            itemView.findViewById(R.id.overflow_menu).setVisibility(View.GONE);
             imageView = itemView.findViewById(R.id.cart_product_image);
             title = itemView.findViewById(R.id.cart_product_title);
             description = itemView.findViewById(R.id.cart_product_description);

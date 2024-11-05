@@ -20,8 +20,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_marginTop="1dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_premium"
             app:shapeAppearanceOverlay="@style/arredondar" />
 
         <TextView

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.eden.R;
 import com.eden.adapter.ProductAdapter;
+import com.eden.adapter.ProductPremiumAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
@@ -46,6 +48,7 @@ public class FragmentHome extends Fragment {
     ProgressBar progressBar;
     RecyclerView recyclerView;
     ProductAdapter productAdapter;
+    ProductPremiumAdapter productPremiumAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -65,11 +68,10 @@ public class FragmentHome extends Fragment {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                // Se for a posição 0 (carrossel), ocupa 2 colunas
                 if (position == 0) {
-                    return 2; // Ocupa 2 colunas
+                    return 2;
                 }
-                return 1; // Os outros itens ocupam 1 coluna
+                return 1;
             }
         });
 
@@ -123,6 +125,11 @@ public class FragmentHome extends Fragment {
                                     productAdapter = new ProductAdapter(products, premiumProducts);
                                     recyclerView.setAdapter(productAdapter);
 
+                                    // Anexar o SnapHelper aqui
+                                    RecyclerView premiumRecyclerView = recyclerView.findViewById(R.id.recyclerView_premium_product);
+                                    LinearSnapHelper snapHelper = new LinearSnapHelper();
+                                    snapHelper.attachToRecyclerView(premiumRecyclerView);
+
                                 }
                             }
 
@@ -173,7 +180,7 @@ public class FragmentHome extends Fragment {
                         String query = "%" + s.toString() + "%"; // Atualize a query de busca com a string digitada pelo usuário
                         if (!query.contentEquals("%%")) {
                             ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-                            Call<List<Product>> call = productService.getProductByTitle(query); // Atualize a chamada da API com a query de busca
+                            Call<List<Product>> call = productService.getProductByTitle(query, currentUser.getId()); // Atualize a chamada da API com a query de busca
                             call.enqueue(new Callback<List<Product>>() {
                                 @Override
                                 public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {

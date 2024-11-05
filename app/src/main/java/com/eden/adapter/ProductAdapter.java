@@ -68,10 +68,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
             recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-            LinearSnapHelper snapHelper = new LinearSnapHelper();
-            snapHelper.attachToRecyclerView(recyclerView);
-
-            recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList)); // Passar a lista de produtos premium
+            recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList));
 
             startAutoScroll(premiumProductList.size(), recyclerView);
 
@@ -116,6 +113,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if (itemCount > 0) {
                     currentPosition = (currentPosition + 1) % itemCount;
                     recyclerView.smoothScrollToPosition(currentPosition);
+                    Log.i("AutoScroll", "Scrolling to position: " + currentPosition);
                 }
                 handler.postDelayed(this, 3000);
             }

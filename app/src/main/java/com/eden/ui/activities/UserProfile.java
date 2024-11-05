@@ -1,7 +1,9 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.favorites;
 import static com.eden.utils.AndroidUtil.openActivity;
+import static com.eden.utils.AndroidUtil.token;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -71,6 +73,9 @@ public class UserProfile extends AppCompatActivity {
             Intent intent = new Intent(UserProfile.this, SplashScreen.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
+            currentUser = null;
+            favorites = null;
+            token = null;
         });
 
 

@@ -36,11 +36,16 @@ public class NotificationHelper {
         int notificationId = (int) System.currentTimeMillis();
 
         String[] actions = {
-                "Anuncie agora!",
-                "Descubra como anunciar!",
-                "Veja como anunciar!",
-                "Aprenda a anunciar!",
-                "Anuncie agora!"
+                "Encontre eletrônicos como novos, com preços incríveis!",
+                "Economize com produtos de qualidade e garantia, sem pesar no bolso!",
+                "Precisa de um upgrade? Veja nossos eletrônicos mais vendidos e encontre o seu próximo gadget com desconto!",
+                "Descubra as últimas novidades em tecnologia!",
+                "Encontre o gadget perfeito para você!",
+                "A tecnologia que você merece, agora ao seu alcance!",
+                "Saiba tudo sobre o futuro da tecnologia!",
+                "Notícias em tempo real! Fique por dentro do mundo tech.",
+                "Análises exclusivas! Entenda o impacto da tecnologia em sua vida.",
+                "Tendências em tecnologia! O que você precisa saber."
         };
 
         String action = actions[(int) (Math.random() * actions.length)];
@@ -110,7 +115,7 @@ public class NotificationHelper {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             // Agendar alarme exato para o próximo início de hora
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
     }
 }

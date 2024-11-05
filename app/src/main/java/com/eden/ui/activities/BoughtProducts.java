@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.adapter.ProductAdapterNoMenu;
 import com.eden.adapter.UserProductAdapter;
 
 public class BoughtProducts extends AppCompatActivity {
@@ -19,12 +20,11 @@ public class BoughtProducts extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_bought_products);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView_bought_products);
 
-        recyclerView.setAdapter(new UserProductAdapter(boughtProducts));
+        recyclerView.setAdapter(new ProductAdapterNoMenu(boughtProducts));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

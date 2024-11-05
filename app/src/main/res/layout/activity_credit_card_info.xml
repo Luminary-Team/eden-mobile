@@ -142,7 +142,7 @@
             android:drawableTint="@color/edenBlue"
             android:hint="CEP"
             android:inputType="number"
-            android:maxLength="8"
+            android:maxLength="9"
             android:padding="16dp"
             android:textColorHint="@color/edenBlue"
             android:textSize="16sp" />

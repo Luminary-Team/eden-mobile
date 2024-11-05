@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
+import com.eden.adapter.ProductAdapter;
+import com.eden.adapter.ProductAdapterNoMenu;
 import com.eden.adapter.UserProductAdapter;
 
 public class FavoritesActivity extends AppCompatActivity {
@@ -20,12 +22,11 @@ public class FavoritesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_favorites);
 
         recyclerView = findViewById(R.id.recyclerView_favorites);
 
-        recyclerView.setAdapter(new UserProductAdapter(favorites));
+        recyclerView.setAdapter(new ProductAdapterNoMenu(favorites));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

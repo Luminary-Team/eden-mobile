@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
         <item
+            android:id="@+id/nav_profile"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/profile_fulfilled_icon"
+            android:title="Meu Perfil" />
+        <item
             android:id="@+id/nav_favoritos"
             android:title="Favoritos"
             android:iconTint="@color/edenBlue"
@@ -15,16 +20,11 @@
             android:iconTint="@color/edenBlue"
             android:icon="@drawable/article_icon"
             android:title="Artigos Informativos" />
-        <item
-            android:id="@+id/nav_my_products"
-            android:iconTint="@color/edenBlue"
-            android:icon="@drawable/lock_fullfilled_icon"
-            android:title="Meu produtos" />
-        <item
-            android:id="@+id/nav_my_posts"
-            android:iconTint="@color/edenBlue"
-            android:icon="@drawable/lock_fullfilled_icon"
-            android:title="Meus posts" />
+<!--        <item-->
+<!--            android:id="@+id/nav_my_posts"-->
+<!--            android:iconTint="@color/edenBlue"-->
+<!--            android:icon="@drawable/lock_fullfilled_icon"-->
+<!--            android:title="Meus posts" />-->
         <item
             android:id="@+id/nav_comprados"
             android:iconTint="@color/edenBlue"

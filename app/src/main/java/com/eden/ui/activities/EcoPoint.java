@@ -50,7 +50,6 @@ import java.util.List;
 public class EcoPoint extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private EditText cep;
     private PlacesClient placesClient;
 
     @Override

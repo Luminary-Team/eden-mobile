@@ -2,23 +2,17 @@ package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.openActivity;
+import static com.eden.utils.NotificationHelper.sendRandomNotification;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,11 +25,15 @@ import com.eden.ui.fragments.FragmentForum;
 import com.eden.ui.fragments.FragmentHome;
 import com.eden.utils.AndroidUtil;
 import com.eden.utils.NotificationHelper;
-import com.eden.utils.NotificationReceiver;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView btnSidebar;
     private TextView name, username;
 
+    private ScheduledExecutorService scheduler;
+
     @Override
     protected void onResume() {
         super.onResume();
-
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -84,20 +83,18 @@ public class MainActivity extends AppCompatActivity {
         name = headerView.findViewById(R.id.profile_name);
         username = headerView.findViewById(R.id.profile_username);
 
+        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
 
-        // Cria o canal de notificação
-        NotificationHelper.createNotificationChannel(this);
-        NotificationHelper.sendRandomNotification(this);
+        // Sets a timer for the notification
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -> sendRandomNotification(this), 10, TimeUnit.SECONDS);
 
-        sendNotification(getApplicationContext(), this);
+//        sendNotification(getApplicationContext(), this);
 
         if (currentUser != null) {
-            // Fragmento inicial
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
 
-            // Botão do sidebar
             btnSidebar.setOnClickListener(v -> {
-                // Setting name and username on the sidebar header
                 name.setText(currentUser.getName());
                 username.setText(currentUser.getUserName());
 
@@ -112,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         // Sidebar configuration
         navView.setNavigationItemSelectedListener(menuItem -> {
 
+            if (menuItem.getItemId() == R.id.nav_profile)
+                openActivity(this, UserProfile.class);
             if (menuItem.getItemId() == R.id.nav_favoritos)
                 openActivity(this, FavoritesActivity.class);
             if (menuItem.getItemId() == R.id.nav_pontos)
@@ -122,10 +121,8 @@ public class MainActivity extends AppCompatActivity {
                 openActivity(this, BoughtProducts.class);
             if (menuItem.getItemId() == R.id.nav_restricted_area)
                 openActivity(this, RestrictedArea.class);
-            if (menuItem.getItemId() == R.id.nav_my_products)
-                openActivity(this, UserProfile.class);
-            if (menuItem.getItemId() == R.id.nav_my_posts)
-                openActivity(this, UserProfile.class);
+//            if (menuItem.getItemId() == R.id.nav_my_posts)
+//                openActivity(this, UserProfile.class);
 
             // Closes drawers after selection
             drawerLayout.closeDrawers();
@@ -167,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private static final String[] REQUIRED_PERMISSIONS = {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
@@ -182,46 +178,56 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private ActivityResultLauncher<String> requestPermissionLauncher =
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    // Permission is granted. Continue the action or workflow in your
-                    // app.
+                    NotificationHelper.createNotificationChannel(this);
+                    scheduleRandomNotification(3);
                 } else {
                     // Explain to the user that the feature is unavailable because the
                     // feature requires a permission that the user has denied. At the
                     // same time, respect the user's decision. Don't link to system
                     // settings in an effort to convince the user to change their
                     // decision.
+                    Log.e("Notification", "PERMISSÃO NEGADA");
                 }
             });
 
-    public void sendNotification(Context context, Context localContext) {
-
-        // Create Notification
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
-                .setSmallIcon(R.drawable.eden_logotipo_2)
-                .setContentTitle("Notification Title")
-                .setContentText("CLICK AND RECEIVE!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        // Create Notification Channel
-        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
-                NotificationManager.IMPORTANCE_HIGH);
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(channel);
-
-        // Show notification
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
-        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Handle missing permission
-            return;
+    private void scheduleRandomNotification(int count) {
+        Random random = new Random();
+        for (int i = 0; i < count; i++) {
+            // Generate a random time between 10:00 and 21:00
+            int randomTime = random.nextInt( 10);
+            scheduler.schedule(() -> sendRandomNotification(this), randomTime, TimeUnit.HOURS);
         }
-        notificationManagerCompat.notify(1, builder.build());
     }
+
+//    public void sendNotification(Context context, Context localContext) {
+//
+//        // Create Notification
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+//
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
+//                .setSmallIcon(R.drawable.eden_logotipo_2)
+//                .setContentTitle("Notification Title")
+//                .setContentText("CLICK AND RECEIVE!")
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                .setAutoCancel(true)
+//                .setContentIntent(pendingIntent);
+//
+//        // Create Notification Channel
+//        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
+//                NotificationManager.IMPORTANCE_HIGH);
+//        NotificationManager manager = getSystemService(NotificationManager.class);
+//        manager.createNotificationChannel(channel);
+//
+//        // Show notification
+//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
+//        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Handle missing permission
+//            return;
+//        }
+//        notificationManagerCompat.notify(1, builder.build());
+//    }
 }

@@ -64,11 +64,14 @@ public class UserRegister extends AppCompatActivity {
 
         String fullText = "Já tem uma conta? Faça Login";
         SpannableString spannableString = new SpannableString(fullText);
+
         int start = fullText.indexOf("Faça Login");
         int end = start + "Faça Login".length();
         spannableString.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edenVeryLightBlue)),
                 start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        btnLogin.setText(spannableString);
 
         // Register the user
         btnRegister.setOnClickListener(v -> {
