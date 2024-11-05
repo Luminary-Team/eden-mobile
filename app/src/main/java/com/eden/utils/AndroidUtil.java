@@ -8,9 +8,12 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.OrderGetAllResponse;
 import com.eden.api.dto.TokenRequest;
@@ -21,6 +24,8 @@ import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
 import com.eden.callbacks.UserCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -126,6 +131,7 @@ public class AndroidUtil {
     public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
         // Create reference to the image:
         StorageReference imageRef = storageRef.child(imagePath);
+        Log.d("CHECKPOINT", imageRef.getDownloadUrl().toString());
 
         // Download image from Firebase Storage
         imageRef.getDownloadUrl()
@@ -135,14 +141,27 @@ public class AndroidUtil {
                         // Use the download URL to display the image
                         Glide.with(context)
                                 .load(uri)
-                                .override(500, 500) // Resize the image to 300x300 pixels
+                                .override(700, 700) // Resize the image to 500x500 pixels
                                 .into(imageView);
                     } else {
                         Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
                     }
                 }).addOnFailureListener(e -> {
-                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                    Log.d("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                    if (imagePath.contains("ProfilePic")) {
+                        imageView.setImageResource(R.drawable.pfp_placeholder_icon);
+                    } else {
+                        imageView.setImageResource(R.drawable.eden_logotipo_3);
+                    }
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i("TAG", "downloadImageFromFirebase: Deu bom");
+                    } else {
+                        Log.i("TAG", "downloadImageFromFirebase: Q porra ta acontecendo");
+
+                    }
                 });
+        Log.d("CHECKPOINT", "where da fuck is the error starting?");
     }
 
     public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
@@ -208,7 +227,7 @@ public class AndroidUtil {
     public static void getUser(UserCallback callback) {
         // TODO: Implementar callback no resto :cry:
         UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         Call<UserSchema> call = service.getParam(email);
 
         call.enqueue(new Callback<UserSchema>() {

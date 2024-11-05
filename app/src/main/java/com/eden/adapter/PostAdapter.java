@@ -5,6 +5,7 @@ import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 import static com.eden.utils.AndroidUtil.downloadOtherUserProfilePicFromFirebase;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,7 @@ import com.eden.api.dto.PostResponse;
 import com.eden.api.dto.PostResponseMongo;
 import com.eden.api.services.ForumService;
 import com.eden.model.Comment;
+import com.eden.ui.fragments.FragmentForum;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Collections;
@@ -52,12 +54,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         return new PostAdapter.ViewHolderPost(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.ViewHolderPost holder, int position) {
+        // Set marginTop
+        if (position == 0) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
+            params.topMargin = 20;
+            holder.itemView.setLayoutParams(params);
+        }
+
         PostResponse post = postList.get(position);
         holder.content.setText(post.getContent());
         holder.name.setText(post.getUser().getName());
-        holder.userName.setText(post.getUser().getUserName());
+        holder.userName.setText("@" + post.getUser().getUserName());
         downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, String.valueOf(post.getUser().getId()));
         downloadImageFromFirebase(holder.content.getContext(), holder.imagePost, "post_" + post.getId() + ".jpg");
 
@@ -81,7 +91,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
 
         // Set up the bottom sheet
         bottomSheetDialog.setContentView(dialogView);
-        bottomSheetDialog.getWindow().setLayout(WRAP_CONTENT, WRAP_CONTENT);
         bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // Show the bottom sheet
@@ -103,18 +112,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         }
 
         sendButton.setOnClickListener(v -> {
-
             ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
             Call<PostResponseMongo> call = forumService.addComment(post.getId(),
-                    new CommentRequest(currentUser.getId(), editTextComments.getText().toString()));
+                    new CommentRequest(currentUser .getId(), editTextComments.getText().toString()));
 
             call.enqueue(new Callback<PostResponseMongo>() {
                 @Override
                 public void onResponse(Call<PostResponseMongo> call, Response<PostResponseMongo> response) {
-                    Log.d("COMMENTS", response.body().toString());
-                    // TODO: Atualizar em tempo real
-                    bottomSheetDialog.dismiss();
+                    if (response.isSuccessful() && response.body() != null) {
+                        Log.d("COMMENTS", response.body().toString());
 
+                        FragmentForum.loadPosts();
+
+                        // TODO: Atualizar em tempo real
+                        bottomSheetDialog.dismiss();
+                    } else {
+                        Log.d("COMMENTS", "Response not successful: " + response.message());
+                    }
                 }
 
                 @Override
@@ -122,7 +136,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     Log.d("COMMENTS", throwable.getMessage());
                 }
             });
-
         });
 
 //        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

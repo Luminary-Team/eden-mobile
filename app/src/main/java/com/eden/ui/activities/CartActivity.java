@@ -75,8 +75,13 @@ public class CartActivity extends AppCompatActivity {
         getUser(response -> {
 
             Button cartBtn = findViewById(R.id.btn_cart);
+            TextView changeBtn = findViewById(R.id.textView_payment_type);
             TextView totalPrice = findViewById(R.id.textView_total);
             RecyclerView recyclerView = findViewById(R.id.cart_recyclerView);
+
+            changeBtn.setOnClickListener(v -> {
+                changePaymentType();
+            });
 
             // Getting cart items and display them
             CartService cartService = RetrofitClient.getClient().create(CartService.class);
@@ -122,6 +127,13 @@ public class CartActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
 
         });
+    }
+
+    private void changePaymentType() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_change_payment_type);
+
     }
 
     private void finishOrder() {

@@ -10,6 +10,7 @@ import static com.eden.utils.AndroidUtil.downloadProfilePicFromFirebase;
 import static com.eden.utils.AndroidUtil.isImageFromCamera;
 import static com.eden.utils.AndroidUtil.uploadImageToFirebase;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -56,8 +57,10 @@ import retrofit2.Response;
 public class FragmentForum extends Fragment {
 
     ImageView imagePost;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
+
+    @SuppressLint("StaticFieldLeak")
+    static ProgressBar progressBar;
+    static RecyclerView recyclerView;
 
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri finalSelectedImageUri;
@@ -76,12 +79,12 @@ public class FragmentForum extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadPosts(recyclerView, progressBar);
+        loadPosts();
 
         // Reload posts on refresh
         swipeRefreshLayout.setOnRefreshListener(() -> {
             recyclerView.setAdapter(null);
-            loadPosts(recyclerView, progressBar);
+            loadPosts();
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -145,7 +148,7 @@ public class FragmentForum extends Fragment {
         return view;
     }
 
-    private void loadPosts(RecyclerView recyclerView, ProgressBar progressBar) {
+    public static void loadPosts() {
         // Get all posts
         progressBar.setVisibility(View.VISIBLE);
         ForumService forumService = RetrofitClient.getClient().create(ForumService.class);
@@ -156,7 +159,11 @@ public class FragmentForum extends Fragment {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
                     List<PostResponse> posts = response.body();
-                    recyclerView.setAdapter(new PostAdapter(posts));
+                    if (posts != null) {
+                        recyclerView.setAdapter(new PostAdapter(posts));
+                    } else {
+                        // Fazer imagenzinha de vazio
+                    }
                 } else {
                     try {
                         progressBar.setVisibility(View.GONE);
@@ -222,7 +229,7 @@ public class FragmentForum extends Fragment {
                         Toast.makeText(getContext(), "Post criado com sucesso", Toast.LENGTH_SHORT).show();
                         if (finalSelectedImageUri != null)
                             uploadImageToFirebase(finalSelectedImageUri, "post_" + post.getId() + ".jpg");
-                        loadPosts(recyclerView, progressBar);
+                        loadPosts();
                         dialog.dismiss();
                     } else {
                         try {

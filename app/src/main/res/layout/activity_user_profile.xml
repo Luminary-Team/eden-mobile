@@ -27,17 +27,6 @@
         android:textSize="24sp"
         />
 
-    <ImageView
-        android:id="@+id/button_logout"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_below="@id/textView_profile"
-        android:src="@drawable/logout_icon"
-        app:tint="@color/edenBlue" />
-
     <RelativeLayout
         android:id="@+id/header_profile"
         android:layout_width="wrap_content"
@@ -70,6 +59,7 @@
             />
 
         <ImageView
+            android:id="@+id/edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/profile_name"

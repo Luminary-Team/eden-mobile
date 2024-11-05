@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +66,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderPremium) {
             // Premium Product
+
             RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
             recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -140,9 +142,16 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class ViewHolderPremium extends RecyclerView.ViewHolder {
-        public ViewHolderPremium(@NonNull View itemView) {
-            super(itemView);
-            // Inicialize outros componentes do layout do carrossel, se necessário
+        public TextView premiumTitle, premiumPrice;
+        public ImageView premiumImageView;
+        public ImageButton premiumOverflowMenu;
+
+        public ViewHolderPremium(@NonNull View premiumItemView) {
+            super(premiumItemView);
+            premiumOverflowMenu = premiumItemView.findViewById(R.id.premium_overflow_menu);
+            premiumTitle = premiumItemView.findViewById(R.id.premium_product_title);
+            premiumPrice = premiumItemView.findViewById(R.id.premium_product_price);
+            premiumImageView = premiumItemView.findViewById(R.id.premium_product_image);
         }
     }
 }

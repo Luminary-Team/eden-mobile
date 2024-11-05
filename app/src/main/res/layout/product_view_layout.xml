@@ -52,6 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cart_product_description"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
                 android:backgroundTint="@color/edenProductBlue"
                 android:maxLines="1"
                 android:textColor="@color/edenBlue"
@@ -59,17 +61,17 @@
                 android:textSize="16sp"
                 />
 
-            <TextView
-                android:id="@+id/cart_max_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cart_product_price"
-                android:visibility="invisible"
-                android:backgroundTint="@color/edenProductBlue"
-                android:text="R$"
-                android:textColor="#FC9F35"
-                android:textSize="12sp"
-                />
+<!--            <TextView-->
+<!--                android:id="@+id/cart_max_price"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/cart_product_price"-->
+<!--                android:visibility="invisible"-->
+<!--                android:backgroundTint="@color/edenProductBlue"-->
+<!--                android:text="R$"-->
+<!--                android:textColor="#FC9F35"-->
+<!--                android:textSize="12sp"-->
+<!--                />-->
 
         </RelativeLayout>
 

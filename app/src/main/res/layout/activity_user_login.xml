@@ -22,34 +22,34 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <RelativeLayout
                 android:id="@+id/header_layout"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 >
 
                 <ImageView
                     android:id="@+id/imagem_eden_component"
-                    android:layout_width="135dp"
+                    android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:scaleType="centerCrop"
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/eden_logotipo_3" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toRightOf="@id/imagem_eden_component"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/imagem_eden_component"
+                    android:layout_marginTop="-10dp"
                     android:text="Eden"
                     android:textColor="@color/edenBlue"
-                    android:textSize="40dp" />
+                    android:textStyle="bold"
+                    android:textSize="50sp"
+                    android:fontFamily=""/>
 
             </RelativeLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header_layout"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/rounded_corner_shape"
                 android:drawableStart="@drawable/email_icon"
                 android:drawablePadding="10dp"

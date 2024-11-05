@@ -29,7 +29,7 @@
             android:id="@+id/nav_comprados"
             android:iconTint="@color/edenBlue"
             android:icon="@drawable/cart_fullfilled_icon"
-            android:title="Produtos Comprados" />
+            android:title="Histórico de Compras" />
         <item
             android:id="@+id/nav_restricted_area"
             android:iconTint="@color/edenBlue"

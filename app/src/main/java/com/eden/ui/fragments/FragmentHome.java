@@ -92,11 +92,13 @@ public class FragmentHome extends Fragment {
         });
 
         // Reload posts on refresh
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            recyclerView.setAdapter(null);
-            loadProducts(recyclerView, progressBar);
-            swipeRefreshLayout.setRefreshing(false);
-        });
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                recyclerView.setAdapter(null);
+                loadProducts(recyclerView, progressBar);
+                swipeRefreshLayout.setRefreshing(false);
+            });
+        }
 
         return view;
     }
@@ -118,10 +120,10 @@ public class FragmentHome extends Fragment {
                         Call<List<Product>> callPremium = productService.getPremiumProducts(currentUser.getId());
                         callPremium.enqueue(new Callback<List<Product>>() {
                             @Override
-                            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                                if (response.isSuccessful()) {
+                            public void onResponse(Call<List<Product>> call, Response<List<Product>> responsePremium) {
+                                if (responsePremium.isSuccessful()) {
 
-                                    premiumProducts = response.body();
+                                    premiumProducts = responsePremium.body();
                                     productAdapter = new ProductAdapter(products, premiumProducts);
                                     recyclerView.setAdapter(productAdapter);
 

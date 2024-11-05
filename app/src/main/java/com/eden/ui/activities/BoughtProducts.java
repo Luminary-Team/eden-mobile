@@ -24,7 +24,11 @@ public class BoughtProducts extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView_bought_products);
 
-        recyclerView.setAdapter(new ProductAdapterNoMenu(boughtProducts));
+        if (!boughtProducts.isEmpty()) {
+            recyclerView.setAdapter(new ProductAdapterNoMenu(boughtProducts));
+        } else {
+            // Todo: Imagem bonitinha de vazio
+        }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

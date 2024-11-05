@@ -54,6 +54,7 @@ public class RegisterProduct extends AppCompatActivity {
         description = findViewById(R.id.editText_product_description);
         condition = findViewById(R.id.spinner_condicao);
         CheckBox premium = findViewById(R.id.checkBox_premium);
+        Spinner condition = findViewById(R.id.spinner_condicao);
 
         // Selecionando imagem
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -85,45 +86,55 @@ public class RegisterProduct extends AppCompatActivity {
         // Saving data on database
         btnAvancar.setOnClickListener(v -> {
 
-            ProductRequest product = new ProductRequest(
-                    1,
-                    1,
-                    FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                    title.getText().toString(),
-                    description.getText().toString(),
-                    Float.parseFloat(price.getText().toString()),
-                    "12345678",
-                    premium.isChecked()
-            );
+            if (condition.getSelectedItemId() != 0 && !title.getText().toString().isEmpty() &&
+                    !price.getText().toString().isEmpty() && selectedImageUri != null && !description.getText().toString().isEmpty()) {
 
-            // Calling API
-            ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-            Call<Product> call = productService.registerProduct(product);
-            Bundle bundle = getIntent().getExtras();
-            call.enqueue(new Callback<Product>() {
-                @Override
-                public void onResponse(Call<Product> call, Response<Product> response) {
-                    if (response.isSuccessful()) {
-                        Product product = response.body();
+                ProductRequest product = new ProductRequest(
+                        1,
+                        condition.getSelectedItemId(),
+                        FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                        title.getText().toString(),
+                        description.getText().toString(),
+                        Float.parseFloat(price.getText().toString()),
+                        "12345678",
+                        premium.isChecked()
+                );
 
-                        AndroidUtil.uploadImageToFirebase(selectedImageUri,
-                                "product_" + product.getId() + ".jpg");
 
-                        Log.d("Product", product.toString());
-                        Toast.makeText(RegisterProduct.this, "Produto criado com sucesso!", Toast.LENGTH_SHORT).show();
-                    } else  {
-                        Log.d("Product", response.errorBody().toString());
+                Log.i("Selected Item id", String.valueOf(condition.getSelectedItemId()));
+
+                // Calling API
+                ProductService productService = RetrofitClient.getClient().create(ProductService.class);
+                Call<Product> call = productService.registerProduct(product);
+                call.enqueue(new Callback<Product>() {
+                    @Override
+                    public void onResponse(Call<Product> call, Response<Product> response) {
+                        if (response.isSuccessful()) {
+                            Product product = response.body();
+
+                            AndroidUtil.uploadImageToFirebase(selectedImageUri,
+                                    "product_" + product.getId() + ".jpg");
+
+                            Log.d("Product", product.toString());
+                            Toast.makeText(RegisterProduct.this, "Produto criado com sucesso!", Toast.LENGTH_SHORT).show();
+                        } else  {
+                            Log.d("Product", response.errorBody().toString());
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Product> call, Throwable throwable) {
-                    // TODO: handle failure
-                    Log.d("Product", throwable.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Product> call, Throwable throwable) {
+                        // TODO: handle failure
+                        Log.d("Product", throwable.getMessage());
+                    }
+                });
 
-            finish();
+                finish();
+
+            } else {
+                Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         productImage = findViewById(R.id.register_product_image);

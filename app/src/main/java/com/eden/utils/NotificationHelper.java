@@ -20,6 +20,20 @@ public class NotificationHelper {
     public static final String CHANNEL_ID = "my_channel_id";
     public static final String CHANNEL_NAME = "My Channel";
 
+    public static final String[] actions = {
+            "Encontre eletrônicos como novos, com preços incríveis!",
+            "Economize com produtos de qualidade e garantia, sem pesar no bolso!",
+            "Precisa de um upgrade? Veja nossos eletrônicos mais vendidos e encontre o seu próximo gadget com desconto!",
+            "Descubra as últimas novidades em tecnologia!",
+            "Encontre o gadget perfeito para você!",
+            "A tecnologia que você merece, agora ao seu alcance!",
+            "Saiba tudo sobre o futuro da tecnologia!",
+            "Notícias em tempo real! Fique por dentro do mundo tech.",
+            "Análises exclusivas! Entenda o impacto da tecnologia em sua vida.",
+            "Tendências em tecnologia! O que você precisa saber."
+    };
+
+
     public static void createNotificationChannel(Context context) {
         NotificationChannel channel = new NotificationChannel(
                 CHANNEL_ID,
@@ -35,19 +49,6 @@ public class NotificationHelper {
     public static void sendRandomNotification(Context context) {
         int notificationId = (int) System.currentTimeMillis();
 
-        String[] actions = {
-                "Encontre eletrônicos como novos, com preços incríveis!",
-                "Economize com produtos de qualidade e garantia, sem pesar no bolso!",
-                "Precisa de um upgrade? Veja nossos eletrônicos mais vendidos e encontre o seu próximo gadget com desconto!",
-                "Descubra as últimas novidades em tecnologia!",
-                "Encontre o gadget perfeito para você!",
-                "A tecnologia que você merece, agora ao seu alcance!",
-                "Saiba tudo sobre o futuro da tecnologia!",
-                "Notícias em tempo real! Fique por dentro do mundo tech.",
-                "Análises exclusivas! Entenda o impacto da tecnologia em sua vida.",
-                "Tendências em tecnologia! O que você precisa saber."
-        };
-
         String action = actions[(int) (Math.random() * actions.length)];
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -55,7 +56,7 @@ public class NotificationHelper {
 
         // Builds the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.eden_logotipo_2)
+                .setSmallIcon(R.drawable.eden_logotipo_3)
                 .setContentTitle("Eden")
                 .setContentText(action)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -95,27 +96,27 @@ public class NotificationHelper {
         }
     }
 
-    public void agendarNotificacaoHoraEmHora(Context context) {
-        // Defina o horário inicial para o próximo início de hora
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        // Se a hora já passou, configurar para o próximo início de hora
-        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
-            calendar.add(Calendar.HOUR_OF_DAY, 1);
-        }
-
-        // Intent para o BroadcastReceiver
-        Intent intent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        // Agendar o alarme
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            // Agendar alarme exato para o próximo início de hora
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        }
-    }
+//    public void agendarNotificacaoHoraEmHora(Context context) {
+//        // Defina o horário inicial para o próximo início de hora
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        calendar.set(Calendar.MILLISECOND, 0);
+//
+//        // Se a hora já passou, configurar para o próximo início de hora
+//        if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+//            calendar.add(Calendar.HOUR_OF_DAY, 1);
+//        }
+//
+//        // Intent para o BroadcastReceiver
+//        Intent intent = new Intent(context, NotificationReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//
+//        // Agendar o alarme
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        if (alarmManager != null) {
+//            // Agendar alarme exato para o próximo início de hora
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//        }
+//    }
 }

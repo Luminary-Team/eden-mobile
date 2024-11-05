@@ -1,7 +1,9 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.favorites;
 import static com.eden.utils.AndroidUtil.openActivity;
+import static com.eden.utils.AndroidUtil.token;
 import static com.eden.utils.NotificationHelper.sendRandomNotification;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -12,7 +14,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Sets a timer for the notification
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.schedule(() -> sendRandomNotification(this), 10, TimeUnit.SECONDS);
+//        scheduler.schedule(() -> sendRandomNotification(this), 10, TimeUnit.SECONDS);
 
 //        sendNotification(getApplicationContext(), this);
 
@@ -96,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             btnSidebar.setOnClickListener(v -> {
                 name.setText(currentUser.getName());
-                username.setText(currentUser.getUserName());
+                username.setText("@" + currentUser.getUserName());
 
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
@@ -160,6 +165,17 @@ public class MainActivity extends AppCompatActivity {
             openActivity(this, UserProfile.class);
             // Closes drawers after selection
             drawerLayout.closeDrawers();
+        });
+
+        // Logout
+        (findViewById(R.id.button_logout)).setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            currentUser = null;
+            favorites = null;
+            token = null;
+            Intent intent = new Intent(MainActivity.this, SplashScreen.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
 
     }
