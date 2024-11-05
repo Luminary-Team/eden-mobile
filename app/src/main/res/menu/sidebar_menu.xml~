@@ -15,17 +15,11 @@
             android:iconTint="@color/edenBlue"
             android:icon="@drawable/article_icon"
             android:title="Artigos Informativos" />
-        <item
-            android:id="@+id/nav_my_products"
-            android:iconTint="@color/edenBlue"
-            android:icon="@drawable/lock_fullfilled_icon"
-            android:title="Meu produtos" />
-
-        <item
-            android:id="@+id/nav_my_posts"
-            android:iconTint="@color/edenBlue"
-            android:icon="@drawable/lock_fullfilled_icon"
-            android:title="Meus posts" />
+<!--        <item-->
+<!--            android:id="@+id/nav_my_posts"-->
+<!--            android:iconTint="@color/edenBlue"-->
+<!--            android:icon="@drawable/lock_fullfilled_icon"-->
+<!--            android:title="Meus posts" />-->
         <item
             android:id="@+id/nav_comprados"
             android:iconTint="@color/edenBlue"

@@ -4,8 +4,10 @@ import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +33,8 @@ import com.eden.api.dto.OrderResponse;
 import com.eden.api.services.CardService;
 import com.eden.api.services.CartService;
 import com.eden.api.services.OrderService;
+import com.eden.callbacks.SwipeToDeleteCallback;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,6 +48,25 @@ public class CartActivity extends AppCompatActivity {
     ImageButton backBtn;
     ProgressBar progressBar;
     RelativeLayout emptyCart;
+    CartAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cart);
+
+        backBtn = findViewById(R.id.back_btn);
+        progressBar = findViewById(R.id.products_progressBar);
+        emptyCart = findViewById(R.id.empty_cart);
+
+        progressBar.setVisibility(View.VISIBLE);
+        emptyCart.setVisibility(View.GONE);
+
+        // Setting up back button
+        backBtn.setOnClickListener(v -> {
+            finish();
+        });
+    }
 
     @Override
     protected void onResume() {
@@ -52,9 +75,7 @@ public class CartActivity extends AppCompatActivity {
         getUser(response -> {
 
             Button cartBtn = findViewById(R.id.btn_cart);
-
             TextView totalPrice = findViewById(R.id.textView_total);
-
             RecyclerView recyclerView = findViewById(R.id.cart_recyclerView);
 
             // Getting cart items and display them
@@ -75,10 +96,14 @@ public class CartActivity extends AppCompatActivity {
 
                         // Find Cart Items
                         List<CartItemResponse> cartItemResponses = cartResponse.getCartItems();
-                        recyclerView.setAdapter(new CartAdapter(cartItemResponses));
+                        adapter = new CartAdapter(cartItemResponses);
+
+                        recyclerView.setAdapter(adapter);
+
+                        enableSwipeToDelete(adapter, recyclerView);
 
                         cartBtn.setOnClickListener(v -> {
-
+                            finishOrder();
                         });
 
                     } else {
@@ -99,22 +124,65 @@ public class CartActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cart);
+    private void finishOrder() {
 
-        backBtn = findViewById(R.id.back_btn);
-        progressBar = findViewById(R.id.products_progressBar);
-        emptyCart = findViewById(R.id.empty_cart);
+        // Finish the order
+        OrderRequest orderRequest = new OrderRequest(currentUser.getCartId(), 1, "address");
 
-        progressBar.setVisibility(View.VISIBLE);
-        emptyCart.setVisibility(View.GONE);
+        OrderService orderService = RetrofitClient.getClient().create(OrderService.class);
+        Call<OrderResponse> orderServiceCall = orderService.registerOrder(orderRequest);
+        orderServiceCall.enqueue(new Callback<OrderResponse>() {
+            @Override
+            public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
+                if (response.isSuccessful() ) {
+                    // TODO: Card to confirm purchase
+                    openActivity(CartActivity.this, MainActivity.class);
+                } else {
+                    // TODO: Handle exception
+                    try {
+                        Toast.makeText(CartActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (
+                            IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
 
-        // Setting up back button
-        backBtn.setOnClickListener(v -> {
-            finish();
+            @Override
+            public void onFailure(Call<OrderResponse> call, Throwable throwable) {
+
+            }
         });
     }
 
+    private void enableSwipeToDelete(CartAdapter adapter, RecyclerView recyclerView) {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                final CartItemResponse item = adapter.getData().get(position);
+
+                // TODO: Remover do orderService
+                CartService cartService = RetrofitClient.getClient().create(CartService.class);
+                Call<Void> call = cartService.deleteCartItem(item.getCartItemId(), currentUser.getCartId());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(CartActivity.this, "Produto removido", Toast.LENGTH_SHORT).show();
+                        Log.d("DELETE", response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable throwable) {
+                        Toast.makeText(CartActivity.this, "Produto não removido", Toast.LENGTH_SHORT).show();
+                        Log.d("DELETE", throwable.getMessage().toString());
+                    }
+                });
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+
+    }
 }
