@@ -47,7 +47,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/camera_placeholder"
-                android:scaleType="centerCrop"
+                android:scaleType="center"
                 android:orientation="horizontal"
                 />
 
@@ -76,6 +76,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_corner_shape"
                 android:hint="Preço"
+                android:maxLength="7"
                 android:inputType="numberDecimal"
                 android:padding="10dp"
                 android:textSize="15sp" />

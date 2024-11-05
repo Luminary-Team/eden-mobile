@@ -106,7 +106,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return normalProductList.size() + 1; // Adiciona 1 para o carrossel
     }
 
-
     private void startAutoScroll(int itemCount, RecyclerView recyclerView) {
         handler = new Handler();
         runnable = new Runnable() {

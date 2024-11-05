@@ -161,42 +161,31 @@ public class UserRegister extends AppCompatActivity {
                         // Tratando erros
                         String errorResponse = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorResponse);
+                        String errorMessage = jsonObject.getString("message");
 
+                        // TODO: Verify null
                         if (jsonObject.has("message")) {
                             String messageError = jsonObject.getString("message");
                             if (messageError.trim().toLowerCase().contains("cpf")) {
                                 EditText cpfEditText = findViewById(R.id.textInput_cpf);
                                 cpfEditText.setError(messageError);
+                            } else if (messageError.trim().toLowerCase().contains("email")) {
+                                EditText emailEditText = findViewById(R.id.textInput_email);
+                                emailEditText.setError(messageError);
+                            } else if (messageError.trim().toLowerCase().contains("password")) {
+                                EditText passwordEditText = findViewById(R.id.textInput_senha);
+                                passwordEditText.setError(messageError);
+                            } else if (messageError.trim().toLowerCase().contains("phone")) {
+                                EditText phoneEditText = findViewById(R.id.textInput_numero);
+                                phoneEditText.setError(messageError);
+                            } else if (messageError.trim().toLowerCase().contains("name")) {
+                                EditText nameEditText = findViewById(R.id.textInput_nome);
+                                nameEditText.setError(messageError);
                             }
                         }
 
-                        // Verifica os campos que contêm erros e define mensagens de erro nos EditTexts
-                        if (jsonObject.has("cpf")) {
-                            String cpfError = jsonObject.getString("cpf");
-                            EditText cpfEditText = findViewById(R.id.textInput_cpf);
-                            cpfEditText.setError(cpfError);
-                        }
-
-                        if (jsonObject.has("cellphone")) {
-                            String phoneError = jsonObject.getString("cellphone");
-                            EditText phoneEditText = findViewById(R.id.textInput_numero);
-                            phoneEditText.setError(phoneError);
-                        }
-
-                        if (jsonObject.has("email")) {
-                            String emailError = jsonObject.getString("email");
-                            EditText emailEditText = findViewById(R.id.textInput_email);
-                            emailEditText.setError(emailError);
-                        }
-
-                        if (jsonObject.has("password")) {
-                            String passwordError = jsonObject.getString("password");
-                            EditText passwordEditText = findViewById(R.id.textInput_senha);
-                            passwordEditText.setError(passwordError);
-                        }
-
                         // Exibe os erros no log
-                        Log.d("CHECKPOINT", "Erros recebidos: " + jsonObject.toString());
+                        Log.d("CHECKPOINT", "Erros recebidos: " + jsonObject );
 
                     }
                 } catch (JSONException e) {

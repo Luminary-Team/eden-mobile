@@ -45,7 +45,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
             holder.title.setText(item.getTitle() != null ? item.getTitle() : "");
             holder.price.setText(item.getPrice() != 0 ? String.format("R$ %.2f", item.getPrice()) : "");
             holder.description.setText(item.getDescription() != null ? item.getDescription() : "");
-            holder.maxPrice.setText(item.getMaxPrice() != 0 ? String.format("R$ %.2f", item.getMaxPrice()) : "");
+//            holder.maxPrice.setText(item.getMaxPrice() != 0 ? String.format("R$ %.2f", item.getMaxPrice()) : "");
 
             downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "product_" + item.getId() + ".jpg");
 

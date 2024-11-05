@@ -32,8 +32,6 @@ public class FavoritesActivity extends AppCompatActivity {
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
-
-
     }
 
 }

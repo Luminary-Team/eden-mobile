@@ -44,6 +44,7 @@ import com.eden.api.RetrofitClient;
 import com.eden.api.dto.PostResponse;
 import com.eden.api.services.ForumService;
 import com.eden.model.Post;
+import com.eden.model.PostRequest;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -219,7 +220,7 @@ public class FragmentForum extends Fragment {
 
             // Create a post
             ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
-            Call<PostResponse> call = forumService.createPost(new Post(currentUser.getId(), content.getText().toString()));
+            Call<PostResponse> call = forumService.createPost(new PostRequest(currentUser.getId(), content.getText().toString()));
 
             call.enqueue(new Callback<PostResponse>() {
                 @Override

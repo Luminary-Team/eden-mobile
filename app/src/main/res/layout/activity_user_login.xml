@@ -39,16 +39,13 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/eden_logotipo_3" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/imagem_eden_component"
                     android:layout_marginTop="-10dp"
-                    android:text="Eden"
-                    android:textColor="@color/edenBlue"
-                    android:textStyle="bold"
-                    android:textSize="50sp"
+                    android:src="@drawable/eden"
                     android:fontFamily=""/>
 
             </RelativeLayout>
@@ -96,7 +93,19 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/errorRed"
                 android:textSize="15sp"
-                android:visibility="invisible"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/textView_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/error_message"
+                android:text="Esqueci a senha"
+                android:textStyle="bold"
+                android:textAlignment="center"
                 />
 
             <ImageView
@@ -110,14 +119,13 @@
                 android:layout_marginTop="10dp"
                 app:tint="@color/edenBlue" />
 
-
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textInput_senha_login"
+                android:layout_below="@id/textView_forgot_password"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/button_blue"
                 android:text="Login"
                 android:textColor="@color/white"

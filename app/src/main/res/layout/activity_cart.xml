@@ -105,36 +105,37 @@
 
   </androidx.cardview.widget.CardView>
 
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_above="@id/card_total"
-      android:backgroundTint="@color/white"
-      android:background="@drawable/cardview_rounded_top_shape"
-      android:gravity="bottom"
-      android:paddingHorizontal="120dp"
-      android:paddingVertical="10dp"
-      >
+<!--  <RelativeLayout-->
+<!--      android:id="@+id/relativeLayout_payment_type"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="wrap_content"-->
+<!--      android:layout_above="@id/card_total"-->
+<!--      android:backgroundTint="@color/white"-->
+<!--      android:background="@drawable/cardview_rounded_top_shape"-->
+<!--      android:gravity="bottom"-->
+<!--      android:paddingHorizontal="120dp"-->
+<!--      android:paddingVertical="10dp"-->
+<!--      >-->
 
-    <ImageView
-        android:id="@+id/imageView_payment_type"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:textColor="@color/edenBlue"
-        android:textStyle="bold"
-        />
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView_payment_type"-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:textColor="@color/edenBlue"-->
+<!--        android:textStyle="bold"-->
+<!--        />-->
 
-    <TextView
-        android:id="@+id/textView_payment_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true"
-        android:text="Alterar"
-        android:textSize="18sp"
-      />
+<!--    <TextView-->
+<!--        android:id="@+id/textView_payment_type"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:text="Alterar"-->
+<!--        android:textSize="18sp"-->
+<!--      />-->
 
-  </RelativeLayout>
+<!--  </RelativeLayout>-->
 
 
   <ProgressBar

@@ -30,16 +30,13 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/eden_logotipo_3" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/imagem_eden_component"
                     android:layout_marginTop="-10dp"
-                    android:text="Eden"
-                    android:textColor="@color/edenBlue"
-                    android:textStyle="bold"
-                    android:textSize="50sp"
+                    android:src="@drawable/eden"
                     android:fontFamily=""/>
 
             </RelativeLayout>

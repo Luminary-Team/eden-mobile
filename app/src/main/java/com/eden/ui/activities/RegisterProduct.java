@@ -86,7 +86,7 @@ public class RegisterProduct extends AppCompatActivity {
         // Saving data on database
         btnAvancar.setOnClickListener(v -> {
 
-            if (condition.getSelectedItemId() != 0 && !title.getText().toString().isEmpty() &&
+            if (!title.getText().toString().isEmpty() &&
                     !price.getText().toString().isEmpty() && selectedImageUri != null && !description.getText().toString().isEmpty()) {
 
                 ProductRequest product = new ProductRequest(

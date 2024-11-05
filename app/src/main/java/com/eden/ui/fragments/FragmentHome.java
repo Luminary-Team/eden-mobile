@@ -48,7 +48,6 @@ public class FragmentHome extends Fragment {
     ProgressBar progressBar;
     RecyclerView recyclerView;
     ProductAdapter productAdapter;
-    ProductPremiumAdapter productPremiumAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

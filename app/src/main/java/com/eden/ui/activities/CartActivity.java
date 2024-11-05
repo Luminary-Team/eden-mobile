@@ -1,5 +1,6 @@
 package com.eden.ui.activities;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
@@ -16,7 +17,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +37,7 @@ import com.eden.api.services.CardService;
 import com.eden.api.services.CartService;
 import com.eden.api.services.OrderService;
 import com.eden.callbacks.SwipeToDeleteCallback;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
@@ -75,13 +79,13 @@ public class CartActivity extends AppCompatActivity {
         getUser(response -> {
 
             Button cartBtn = findViewById(R.id.btn_cart);
-            TextView changeBtn = findViewById(R.id.textView_payment_type);
+//            TextView changeBtn = findViewById(R.id.textView_payment_type);
             TextView totalPrice = findViewById(R.id.textView_total);
             RecyclerView recyclerView = findViewById(R.id.cart_recyclerView);
 
-            changeBtn.setOnClickListener(v -> {
-                changePaymentType();
-            });
+//            changeBtn.setOnClickListener(v -> {
+//                changePaymentType();
+//            });
 
             // Getting cart items and display them
             CartService cartService = RetrofitClient.getClient().create(CartService.class);
@@ -133,6 +137,9 @@ public class CartActivity extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_change_payment_type);
+        dialog.getWindow().setLayout(WRAP_CONTENT, WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+
 
     }
 
@@ -174,7 +181,6 @@ public class CartActivity extends AppCompatActivity {
                 final int position = viewHolder.getAdapterPosition();
                 final CartItemResponse item = adapter.getData().get(position);
 
-                // TODO: Remover do orderService
                 CartService cartService = RetrofitClient.getClient().create(CartService.class);
                 Call<Void> call = cartService.deleteCartItem(item.getCartItemId(), currentUser.getCartId());
                 call.enqueue(new Callback<Void>() {

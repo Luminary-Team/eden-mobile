@@ -37,6 +37,7 @@ public class UserLogin extends AppCompatActivity {
         Button btnLogin = findViewById(R.id.btn_login);
         ImageView passwordToggle = findViewById(R.id.login_password_toggle);
         TextView btnCadastro = findViewById(R.id.textView_cadastro);
+        TextView btnForgotPassword = findViewById(R.id.textView_forgot_password);
 
         // Style of the text
         String fullText = "Não tem uma conta? Cadastre-se";
@@ -79,6 +80,10 @@ public class UserLogin extends AppCompatActivity {
                 // Mover o cursor para o final do texto após alterar a visibilidade
                 password.setSelection(password.getText().length());
             }
+        });
+
+        btnForgotPassword.setOnClickListener(v -> {
+            AndroidUtil.openActivity(this, ChangePassword.class);
         });
 
     }
