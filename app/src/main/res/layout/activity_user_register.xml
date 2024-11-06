@@ -190,8 +190,8 @@
 
             <ImageView
                 android:id="@+id/imageView_eden_robot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="280dp"
                 android:src="@drawable/eden_robot"
                 android:layout_below="@id/textView_login"
                 android:layout_alignParentEnd="true"

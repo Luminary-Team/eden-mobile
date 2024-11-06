@@ -86,13 +86,13 @@ public class UserRegister extends AppCompatActivity {
 
             // Verifies if none of the values are null
             if (unformattedPhoneNumber != null && unformattedCpf != null
-                    && !email.isEmpty() && !name.isEmpty() && password.length() < 6) {
+                    && !email.isEmpty() && !name.isEmpty() && password.length() > 6) {
                 progressBar.setVisibility(View.GONE);
                 btnRegister.setEnabled(true);
                 btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else if (password.length() < 6) {
-                Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
+                passwordEditText.setError("A senha deve ter pelo menos 6 caracteres");
                 progressBar.setVisibility(View.GONE);
                 btnRegister.setEnabled(true);
                 btnRegister.setText("Cadastrar");
