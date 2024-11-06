@@ -1,5 +1,7 @@
 package com.eden.ui.activities;
 
+import static com.eden.utils.AndroidUtil.openActivity;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -99,6 +101,11 @@ public class RegisterProduct extends AppCompatActivity {
                         "12345678",
                         premium.isChecked()
                 );
+
+
+                if (premium.isChecked()) {
+                    openActivity(RegisterProduct.this, BoostedProduct.class);
+                }
 
 
                 Log.i("Selected Item id", String.valueOf(condition.getSelectedItemId()));

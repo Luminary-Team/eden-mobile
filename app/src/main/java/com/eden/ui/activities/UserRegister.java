@@ -46,15 +46,17 @@ public class UserRegister extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnRegister;
 
+    EditText nameEditText, phoneNumberEditText, cpfEditText, emailEditText, passwordEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
-        EditText nameEditText = findViewById(R.id.textInput_nome);
-        EditText phoneNumberEditText = findViewById(R.id.textInput_numero);
-        EditText cpfEditText = findViewById(R.id.textInput_cpf);
-        EditText emailEditText = findViewById(R.id.textInput_email);
-        EditText passwordEditText = findViewById(R.id.textInput_senha);
+        nameEditText = findViewById(R.id.textInput_nome);
+        phoneNumberEditText = findViewById(R.id.textInput_numero);
+        cpfEditText = findViewById(R.id.textInput_cpf);
+        emailEditText = findViewById(R.id.textInput_email);
+        passwordEditText = findViewById(R.id.textInput_senha);
         ImageView passwordToggle = findViewById(R.id.register_password_toggle);
         TextView btnLogin = findViewById(R.id.textView_login);
         btnRegister = findViewById(R.id.btn_cadastro);
@@ -83,10 +85,14 @@ public class UserRegister extends AppCompatActivity {
 
             // Verifies if none of the values are null
             if (unformattedPhoneNumber != null && unformattedCpf != null
-                    && !email.isEmpty() && !password.isEmpty() && !name.isEmpty()) {
+                    && !email.isEmpty() && !name.isEmpty() && password.length() < 6) {
                 progressBar.setVisibility(View.GONE);
                 btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
+            } else if (password.length() < 6) {
+                Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                btnRegister.setText("Cadastrar");
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
@@ -124,6 +130,13 @@ public class UserRegister extends AppCompatActivity {
             }
         });
 
+        // Adding text watchers to all the EditTexts
+        addTextWatcher(nameEditText);
+        addTextWatcher(phoneNumberEditText);
+        addTextWatcher(cpfEditText);
+        addTextWatcher(emailEditText);
+        addTextWatcher(passwordEditText);
+
         // Formatar Cellphone
         formatPhone(phoneNumberEditText);
 
@@ -134,8 +147,6 @@ public class UserRegister extends AppCompatActivity {
 
     // Saves user on database
     public void registerUser(String name, String cpf, String phoneNumber, String email, String password) {
-        progressBar.setVisibility(View.VISIBLE);
-        btnRegister.setText("");
 
         UserService api = RetrofitClient.getClient().create(UserService.class);
 
@@ -145,16 +156,14 @@ public class UserRegister extends AppCompatActivity {
         userCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnRegister.setText("");
                 try {
                     if (response.isSuccessful() && response.body() != null) {
-                        String jsonResponse = response.body().string();
-                        JSONObject jsonObject = new JSONObject(jsonResponse);
-
+                        progressBar.setVisibility(View.GONE);
+                        btnRegister.setText("Cadastrar");
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
-
-                        Log.d("CHECKPOINT", "JSON Object: " + jsonObject.toString());
-                        Log.d("CHECKPOINT", response.message());
 
                     } else if (response.errorBody() != null) {
                         progressBar.setVisibility(View.GONE);
@@ -167,22 +176,25 @@ public class UserRegister extends AppCompatActivity {
                         // TODO: Verify null
                         if (jsonObject.has("message")) {
                             String messageError = jsonObject.getString("message");
-                            if (messageError.trim().toLowerCase().contains("cpf")) {
-                                EditText cpfEditText = findViewById(R.id.textInput_cpf);
-                                cpfEditText.setError(messageError);
-                            } else if (messageError.trim().toLowerCase().contains("email")) {
-                                EditText emailEditText = findViewById(R.id.textInput_email);
-                                emailEditText.setError(messageError);
-                            } else if (messageError.trim().toLowerCase().contains("password")) {
-                                EditText passwordEditText = findViewById(R.id.textInput_senha);
-                                passwordEditText.setError(messageError);
-                            } else if (messageError.trim().toLowerCase().contains("phone")) {
-                                EditText phoneEditText = findViewById(R.id.textInput_numero);
-                                phoneEditText.setError(messageError);
-                            } else if (messageError.trim().toLowerCase().contains("name")) {
-                                EditText nameEditText = findViewById(R.id.textInput_nome);
+                            if (messageError.trim().toLowerCase().contains("name")) {
                                 nameEditText.setError(messageError);
+                                nameEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("email")) {
+                                emailEditText.setError(messageError);
+                                emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("password")) {
+                                passwordEditText.setError(messageError);
+                                passwordEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("phone")) {
+                                phoneNumberEditText.setError(messageError);
+                                phoneNumberEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("cpf")) {
+                                cpfEditText.setError(messageError);
+                                cpfEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
                             }
+                        } else if (jsonObject.has("cellphone")) {
+                            phoneNumberEditText.setError(jsonObject.getString("cellphone"));
+                            phoneNumberEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
                         }
 
                         // Exibe os erros no log
@@ -200,6 +212,24 @@ public class UserRegister extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Log.d("CHECKPOINT", throwable.getMessage());
+            }
+        });
+    }
+
+    private void addTextWatcher(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editText.setError(null); // Removes the error message
+                editText.setBackgroundResource(R.drawable.rounded_corner_shape); // Restores the original background
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -321,6 +351,5 @@ public class UserRegister extends AppCompatActivity {
             }
         });
     }
-
 
 }

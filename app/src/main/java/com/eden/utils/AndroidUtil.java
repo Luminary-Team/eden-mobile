@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -23,9 +22,8 @@ import com.eden.api.services.UserService;
 import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
-import com.eden.callbacks.UserCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.eden.utils.callbacks.TokenCallback;
+import com.eden.utils.callbacks.UserCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -143,6 +141,7 @@ public class AndroidUtil {
                                 .load(uri)
                                 .override(700, 700) // Resize the image to 500x500 pixels
                                 .into(imageView);
+                        imageView.setVisibility(View.VISIBLE);
                     } else {
                         Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
                     }
@@ -202,7 +201,7 @@ public class AndroidUtil {
         return scheme != null && scheme.equals("file") && uri.getPath() != null && uri.getPath().contains("camera");
     }
 
-    public static void getToken() {
+    public static void getToken(TokenCallback callback) {
         Retrofit client = RetrofitClient.getClient();
         String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         UserService service = client.create(UserService.class);
@@ -214,13 +213,16 @@ public class AndroidUtil {
                     token = response.body().getToken();
                     getUser(response1 -> {});
                     Log.d("TOKEN", "Token: " + token);
+                    callback.setResponse(new Token(token));
                 } else {
                     Log.d("TOKEN", "Error getting token");
+                    callback.setResponse(null);
                 }
             }
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
                 Log.d("TOKEN", throwable.getMessage());
+                callback.setResponse(null);
             }
         });
     }

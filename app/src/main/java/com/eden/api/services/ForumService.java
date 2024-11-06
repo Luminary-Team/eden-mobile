@@ -13,11 +13,15 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ForumService {
 
     @GET("/forum")
     Call<List<PostResponse>> getPosts(); // Get all posts from sql api
+
+    @GET("/forum")
+    Call<List<PostResponse>> getUserPosts(@Query("id") int id);
 
     @POST("/forum")
     Call<PostResponse> createPost(@Body PostRequest postRequest); // Create new post in mongodb api

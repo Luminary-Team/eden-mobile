@@ -43,14 +43,11 @@ public class FirebaseUserUtil {
             // TODO: Aplicar tratamento de erros
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @SuppressLint("ResourceAsColor")
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
                                 Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT).show();
-                                openActivity(context, MainActivity.class);
-                                ((Activity) context).finish();
+                                authenticate(context);
                             } else {
                                 // Treatment for the email text field
                                 emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
@@ -122,10 +119,9 @@ public class FirebaseUserUtil {
                             // Ir para home
                             authenticate(context);
 
-                            Toast.makeText(context, "Usuário cadastrado no firebase com sucesso!", Toast.LENGTH_SHORT).show();
+                            Log.w("register", "onComplete: " + user.getUid());
                         } else {
-                            // Caso de falha
-                            Toast.makeText(context, "Falha ao cadastrar: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e("register", "Registration failed: " + task.getException().getMessage());
                         }
                     }
         });

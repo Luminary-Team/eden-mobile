@@ -43,7 +43,8 @@
             android:layout_below="@id/post_content"
             android:layout_marginTop="1dp"
             android:theme="@style/arredondar"
-            android:scaleType="fitStart" />
+            android:scaleType="fitStart"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

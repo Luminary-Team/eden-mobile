@@ -1,4 +1,4 @@
-package com.eden.callbacks;
+package com.eden.utils.callbacks;
 
 import com.eden.api.dto.UserSchema;
 

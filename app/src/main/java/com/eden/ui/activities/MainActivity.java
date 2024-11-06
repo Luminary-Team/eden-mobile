@@ -96,20 +96,19 @@ public class MainActivity extends AppCompatActivity {
 
 //        sendNotification(getApplicationContext(), this);
 
-        if (currentUser != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_main, new FragmentHome()).commit();
+        btnSidebar.setOnClickListener(v -> {
 
-            btnSidebar.setOnClickListener(v -> {
+            if (currentUser != null) {
                 name.setText(currentUser.getName());
                 username.setText("@" + currentUser.getUserName());
+            }
 
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
-            });
-        }
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         // Sidebar configuration
         navView.setNavigationItemSelectedListener(menuItem -> {

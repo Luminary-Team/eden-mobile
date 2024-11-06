@@ -71,9 +71,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, String.valueOf(post.getUser().getId()));
         downloadImageFromFirebase(holder.content.getContext(), holder.imagePost, "post_" + post.getId() + ".jpg");
 
-        if (holder.imagePost != null)
-            holder.imagePost.setVisibility(View.VISIBLE);
-
         holder.itemView.setOnClickListener(v -> {
             // TODO: Isso vai ter que ser no callback de getCommentsForPost
             openBottomSheet(holder.itemView.getContext(), post);

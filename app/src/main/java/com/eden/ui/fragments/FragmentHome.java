@@ -3,6 +3,7 @@ package com.eden.ui.fragments;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.fetchBoughtProducts;
 import static com.eden.utils.AndroidUtil.fetchFavorites;
+import static com.eden.utils.AndroidUtil.getToken;
 import static com.eden.utils.AndroidUtil.getUser;
 
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import com.eden.adapter.ProductPremiumAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
+import com.eden.model.Token;
+import com.eden.utils.callbacks.TokenCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,6 +146,14 @@ public class FragmentHome extends Fragment {
                     } else {
                         try {
                             Log.d("ErrorBody", response.errorBody().string());
+                            String errorBody = response.errorBody().string().toLowerCase().trim();
+                            if (errorBody.contains("unauthorized")) {
+                                getToken(token -> {
+                                    loadProducts(recyclerView, progressBar);
+                                });
+                            } else {
+                                Log.d("Deu Ruim", response.errorBody().string());
+                            }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
