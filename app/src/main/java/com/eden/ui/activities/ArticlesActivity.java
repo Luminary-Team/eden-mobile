@@ -49,11 +49,8 @@ public class ArticlesActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body() != null) {
-
                     articles = response.body();
-
                     recyclerView.setAdapter(new ArticlesAdapter(articles));
-
                 }
             }
 
@@ -61,7 +58,6 @@ public class ArticlesActivity extends AppCompatActivity {
             public void onFailure(Call<List<Article>> call, Throwable throwable) {
                 progressBar.setVisibility(View.GONE);
                 throwable.getMessage();
-                // TODO: Tratar erros
             }
         });
 

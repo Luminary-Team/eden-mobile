@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.PixActivity">
 
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/back_icon" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -15,11 +25,12 @@
         android:layout_above="@id/imageView_qr_code_pix"
         android:layout_margin="20dp"
         android:textStyle="bold"
+        android:textSize="24sp"
         android:text="Realize o pagamento agora!"/>
 
     <ImageView
         android:id="@+id/imageView_qr_code_pix"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -40,17 +51,20 @@
         android:layout_below="@id/pix_code"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         android:text="Copiar" />
 
 
     <Button
-        android:id="@+id/btn_pix_prosseguir"
+        android:id="@+id/btn_pix_finish_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/button_blue"
-        android:text="Prosseguir"
+        android:text="Finalizar compra"
         android:textColor="@color/white"
         android:textSize="20sp"
         />

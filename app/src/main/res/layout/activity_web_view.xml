@@ -5,11 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.RestrictedArea">
 
-    <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <ImageButton
         android:id="@+id/back_btn"
         android:layout_width="40dp"
@@ -19,5 +14,21 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/back_icon" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/back_btn"
+        android:layout_marginTop="20dp"
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/eden_faxada"
+        />
 
 </RelativeLayout>

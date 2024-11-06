@@ -9,11 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView_eden_robot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/eden_robot"
+        android:layout_width="300dp"
+        android:layout_height="280dp"
         android:layout_gravity="end|bottom"
-        />
+        android:src="@drawable/eden_robot" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,6 +35,7 @@
                     android:id="@+id/imagem_eden_component"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
+                    android:scaleType="centerCrop"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/eden_logotipo_3" />
 
@@ -130,6 +130,18 @@
                 android:text="Login"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                />
+
+            <ProgressBar
+                android:id="@+id/user_register_progressBar"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_forgot_password"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:indeterminateTint="@color/white"
+                android:translationZ="2dp"
+                android:visibility="gone"
                 />
 
             <TextView

@@ -3,12 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="32dp">
+    android:padding="20dp">
+
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/back_icon" />
 
     <TextView
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/back_btn"
+        android:layout_marginTop="22dp"
+        android:layout_marginStart="12dp"
         android:text="Produto Turbinado"
         android:textSize="24sp"
         android:textColor="@color/edenBlue"
@@ -19,7 +32,7 @@
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtTitulo"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         android:text="Um plano premium em nosso aplicativo oferece benefícios excepcionais para vendedores que desejam aumentar sua visibilidade e vendas."
         android:textColor="@android:color/black"
         android:textSize="18sp" />
@@ -85,18 +98,6 @@
         android:textAlignment="center"
         android:textSize="16sp"
         android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnComprar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtBeneficio2"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/button_blue"
-        android:text="Prosseguir"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="20sp" />
 
 
 </RelativeLayout>

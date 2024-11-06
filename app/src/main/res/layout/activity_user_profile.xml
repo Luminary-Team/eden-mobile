@@ -54,6 +54,7 @@
             android:layout_marginStart="10dp"
             android:background="@null"
             android:text="Eden"
+            android:maxLength="18"
             android:textSize="28sp"
             android:textStyle="bold"
             />

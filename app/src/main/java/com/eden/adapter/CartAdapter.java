@@ -27,6 +27,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
     private final List<CartItemResponse> cartItems;
 
     public CartAdapter(List<CartItemResponse> args) {
+        assert args != null;
         Collections.reverse(args);
         this.cartItems = args;
     }

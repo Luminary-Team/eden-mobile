@@ -78,6 +78,7 @@ public class UserRegister extends AppCompatActivity {
         // Register the user
         btnRegister.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
+            btnRegister.setEnabled(false);
             btnRegister.setText("");
             String name = nameEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
@@ -87,15 +88,18 @@ public class UserRegister extends AppCompatActivity {
             if (unformattedPhoneNumber != null && unformattedCpf != null
                     && !email.isEmpty() && !name.isEmpty() && password.length() < 6) {
                 progressBar.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
                 btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else if (password.length() < 6) {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
                 btnRegister.setText("Cadastrar");
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
                 btnRegister.setText("Cadastrar");
             }
         });

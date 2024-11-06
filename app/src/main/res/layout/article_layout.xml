@@ -10,11 +10,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-                <ImageView
+                <WebView
                     android:id="@+id/article_image"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:scaleType="centerCrop"
+                    android:layout_margin="10dp"
+                    android:clickable="false"
                     android:src="@drawable/eden_faxada"
                     />
 
@@ -24,31 +25,30 @@
                     android:layout_below="@id/article_image"
                     android:layout_margin="20dp">
 
-                        <ImageView
-                            android:id="@+id/article_photo"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            />
+<!--                        <ImageView-->
+<!--                            android:id="@+id/article_photo"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:visibility="gone" />-->
 
                         <TextView
                             android:id="@+id/article_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/article_photo"
                             android:layout_marginTop="12dp"
-                            android:layout_marginStart="10dp"
                             android:text="Titulo artigo"
-                            android:textSize="16sp"
                             />
 
                         <TextView
                             android:id="@+id/article_content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/article_photo"
+                            android:layout_below="@id/article_title"
+                            android:layout_marginTop="20dp"
                             android:text="@string/lorem_ipsum"
                             android:ellipsize="end"
                             android:maxLines="10"
+                            android:textStyle="bold"
                             />
 
                 </RelativeLayout>

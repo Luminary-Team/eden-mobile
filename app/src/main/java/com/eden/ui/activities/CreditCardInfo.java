@@ -35,7 +35,6 @@ import retrofit2.Retrofit;
 
 public class CreditCardInfo extends AppCompatActivity {
 
-    TextView total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +47,6 @@ public class CreditCardInfo extends AppCompatActivity {
         EditText dataValidade = findViewById(R.id.data_validade);
         EditText cep = findViewById(R.id.cep);
         Button btnProsseguir = findViewById(R.id.btn_prosseguir);
-        total = findViewById(R.id.textView_total);
-
-        setTotal();
 
         // Save card info
         btnProsseguir.setOnClickListener(card -> {
@@ -85,7 +81,8 @@ public class CreditCardInfo extends AppCompatActivity {
                                         public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                                             if (response.isSuccessful() ) {
                                                 // TODO: Card to confirm purchase
-                                                openActivity(CreditCardInfo.this, MainActivity.class);
+                                                Toast.makeText(CreditCardInfo.this, "Registrado com Sucesso!", Toast.LENGTH_SHORT).show();
+                                                openActivity(CreditCardInfo.this, CartActivity.class);
                                             } else {
                                                 // TODO: Handle exception
                                                 try {
@@ -226,24 +223,4 @@ public class CreditCardInfo extends AppCompatActivity {
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
     }
-
-    private void setTotal() {
-        CartService orderService = RetrofitClient.getClient().create(CartService.class);
-        Call<CartResponse> call = orderService.getCartItemsByCartId(currentUser.getCartId());
-        call.enqueue(new Callback<CartResponse>() {
-            @Override
-            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
-                if (response.isSuccessful()) {
-                    CartResponse cartResponse = response.body();
-                    total.setText("R$ " + String.format("%.2f", cartResponse.getTotalSale()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CartResponse> call, Throwable throwable) {
-
-            }
-        });
-    }
-
 }

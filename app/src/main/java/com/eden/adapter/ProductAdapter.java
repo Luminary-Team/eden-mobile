@@ -83,9 +83,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if (product.getTitle() != null) {
                     viewHolderProduct.title.setText(product.getTitle());
                 }
-                if (product.getPrice() != 0) {
-                    viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
-                }
+                viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
 
                 downloadImageFromFirebase(viewHolderProduct.itemView.getContext(), viewHolderProduct.imageView, "product_" + product.getId() + ".jpg");
 

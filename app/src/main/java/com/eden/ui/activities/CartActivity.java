@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,11 +33,13 @@ import com.eden.api.dto.CartItemResponse;
 import com.eden.api.dto.CartResponse;
 import com.eden.api.dto.OrderRequest;
 import com.eden.api.dto.OrderResponse;
+import com.eden.api.dto.UserSchema;
 import com.eden.api.services.CartService;
 import com.eden.api.services.OrderService;
 import com.eden.utils.callbacks.SwipeToDeleteCallback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,7 +53,11 @@ public class CartActivity extends AppCompatActivity {
     RelativeLayout emptyCart;
     CartAdapter adapter;
     RadioGroup radioGroupPayment;
+    RadioButton radioPix, radioCredit;
     String selectedPayment;
+    Button cartBtn;
+    TextView totalPrice;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +83,12 @@ public class CartActivity extends AppCompatActivity {
 
         getUser(response -> {
 
-            Button cartBtn = findViewById(R.id.btn_cart);
+            cartBtn = findViewById(R.id.btn_cart);
             TextView changeBtn = findViewById(R.id.textView_change_payment_type);
             TextView paymentType = findViewById(R.id.textView_payment_type);
             ImageView paymentTypeImage = findViewById(R.id.imageView_payment_type);
-            TextView totalPrice = findViewById(R.id.textView_total);
-            RecyclerView recyclerView = findViewById(R.id.cart_recyclerView);
+            totalPrice = findViewById(R.id.textView_total);
+            recyclerView = findViewById(R.id.cart_recyclerView);
 
             selectedPayment = "Pix";
             paymentType.setText(selectedPayment);
@@ -91,59 +98,66 @@ public class CartActivity extends AppCompatActivity {
                 changePaymentType(paymentType, paymentTypeImage);
             });
 
-            // Getting cart items and display them
-            CartService cartService = RetrofitClient.getClient().create(CartService.class);
-
-            Call<CartResponse> call = cartService.getCartItemsByCartId(currentUser.getCartId());
-            call.enqueue(new Callback<CartResponse>() {
-                @Override
-                public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
-                    progressBar.setVisibility(View.GONE);
-                    if (response.isSuccessful() && response.body().getCartItems().size() != 0) {
-                        // TODO: Tratar exceção
-                        emptyCart.setVisibility(View.GONE);
-                        CartResponse cartResponse = response.body();
-
-                        // Find Total
-                        totalPrice.setText(String.format("R$ %.2f", cartResponse.getTotalSale()));
-
-                        // Find Cart Items
-                        List<CartItemResponse> cartItemResponses = cartResponse.getCartItems();
-                        adapter = new CartAdapter(cartItemResponses);
-
-                        recyclerView.setAdapter(adapter);
-
-                        enableSwipeToDelete(adapter, recyclerView);
-
-                        cartBtn.setOnClickListener(v -> {
-                            if (radioGroupPayment.getCheckedRadioButtonId() == R.id.radio_pix) {
-                                openActivity(CartActivity.this, PixActivity.class);
-                            } else {
-                                openActivity(CartActivity.this, CreditCardInfo.class);
-                            }
-                        });
-
-                    } else {
-                        emptyCart.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CartResponse> call, Throwable throwable) {
-                    progressBar.setVisibility(View.GONE);
-                    emptyCart.setVisibility(View.VISIBLE);
-                }
-
-            });
+            loadCart();
 
             recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
 
         });
     }
 
+    private void loadCart() {
+        // Getting cart items and display them
+        CartService cartService = RetrofitClient.getClient().create(CartService.class);
+
+        Call<CartResponse> call = cartService.getCartItemsByCartId(currentUser.getCartId());
+        call.enqueue(new Callback<CartResponse>() {
+            @Override
+            public void onResponse(Call<CartResponse> call, Response<CartResponse> response) {
+                progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful() && response.body().getCartItems().size() != 0) {
+                    // TODO: Tratar exceção
+                    emptyCart.setVisibility(View.GONE);
+                    CartResponse cartResponse = response.body();
+
+                    // Find Total
+                    totalPrice.setText(String.format("R$ %.2f", cartResponse.getTotalSale()));
+
+                    // Find Cart Items
+                    List<CartItemResponse> cartItemResponses = cartResponse.getCartItems();
+                    adapter = new CartAdapter(cartItemResponses);
+
+                    recyclerView.setAdapter(adapter);
+
+                    enableSwipeToDelete();
+
+                    cartBtn.setOnClickListener(v -> {
+                        if (radioGroupPayment.getCheckedRadioButtonId() == R.id.radio_pix) {
+                            openActivity(CartActivity.this, PixActivity.class);
+                        } else {
+                            if (currentUser.getCartId() != 0) {
+                                finishOrder();
+                            } else {
+                                openActivity(CartActivity.this, CreditCardInfo.class);
+                            }
+                        }
+                    });
+
+                } else {
+                    emptyCart.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponse> call, Throwable throwable) {
+                progressBar.setVisibility(View.GONE);
+                emptyCart.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+    }
+
     private void changePaymentType(TextView paymentType, ImageView paymentTypeImage) {
-
-
 
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_change_payment_type);
@@ -154,8 +168,16 @@ public class CartActivity extends AppCompatActivity {
         ImageView btnClose = dialog.findViewById(R.id.back_btn);
         btnClose.setOnClickListener(v -> dialog.dismiss());
 
+        TextView btnChangeCreditCard = dialog.findViewById(R.id.change_credit_card);
+        btnChangeCreditCard.setOnClickListener(v -> {
+            openActivity(CartActivity.this, CreditCardInfo.class);
+        });
+
         // RadioGroup para opções de pagamento
         radioGroupPayment = dialog.findViewById(R.id.radio_group_payment);
+        radioPix = dialog.findViewById(R.id.radio_pix);
+        radioCredit = dialog.findViewById(R.id.radio_cartao);
+        radioPix.setChecked(true);
 
         // Botão de confirmar
         Button btnConfirm = dialog.findViewById(R.id.btn_confirm);
@@ -209,7 +231,8 @@ public class CartActivity extends AppCompatActivity {
         });
     }
 
-    private void enableSwipeToDelete(CartAdapter adapter, RecyclerView recyclerView) {
+    private void enableSwipeToDelete() {
+        // TODO: ARRUMAR ESSA PORRA
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -221,9 +244,11 @@ public class CartActivity extends AppCompatActivity {
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
+                        recyclerView.setAdapter(null);
+                        loadCart();
                         Toast.makeText(CartActivity.this, "Produto removido", Toast.LENGTH_SHORT).show();
                         if (response.isSuccessful()) {
-                            Log.e("DELETE", response.body().toString());
+                            Log.e("DELETE", "removido com sucesso");
                         } else {
                             try {
                                 Log.e("DELETE", response.errorBody().string());

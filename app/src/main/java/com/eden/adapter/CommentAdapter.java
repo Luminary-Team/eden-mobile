@@ -36,7 +36,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolderComment holder, int position) {
         Comment comment = commentList.get(position);
 
-        // TODO: Falar pro tabuchi devolver comments
         holder.content.setText(comment.getContent());
         holder.name.setText(comment.getUser().getName());
         holder.userName.setText(comment.getUser().getUserName());
