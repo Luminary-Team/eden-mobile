@@ -54,15 +54,24 @@ public class CartActivity extends AppCompatActivity {
     CartAdapter adapter;
     RadioGroup radioGroupPayment;
     RadioButton radioPix, radioCredit;
+    Dialog dialog;
     String selectedPayment;
     Button cartBtn;
-    TextView totalPrice;
+    TextView totalPrice, paymentType;
     RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_change_payment_type);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
+
+        radioGroupPayment = dialog.findViewById(R.id.radio_group_payment);
+        radioGroupPayment.check(R.id.radio_pix);
 
         backBtn = findViewById(R.id.back_btn);
         progressBar = findViewById(R.id.products_progressBar);
@@ -81,28 +90,24 @@ public class CartActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        getUser(response -> {
+        cartBtn = findViewById(R.id.btn_cart);
+        TextView changeBtn = findViewById(R.id.textView_change_payment_type);
+        ImageView paymentTypeImage = findViewById(R.id.imageView_payment_type);
+        paymentType = findViewById(R.id.textView_payment_type);
+        totalPrice = findViewById(R.id.textView_total);
+        recyclerView = findViewById(R.id.cart_recyclerView);
 
-            cartBtn = findViewById(R.id.btn_cart);
-            TextView changeBtn = findViewById(R.id.textView_change_payment_type);
-            TextView paymentType = findViewById(R.id.textView_payment_type);
-            ImageView paymentTypeImage = findViewById(R.id.imageView_payment_type);
-            totalPrice = findViewById(R.id.textView_total);
-            recyclerView = findViewById(R.id.cart_recyclerView);
+        selectedPayment = "Pix";
+        paymentType.setText(selectedPayment);
 
-            selectedPayment = "Pix";
-            paymentType.setText(selectedPayment);
-            Glide.with(this).load("https://img.icons8.com/color/200/pix.png").into(paymentTypeImage);
+        Glide.with(this).load("https://img.icons8.com/color/200/pix.png").into(paymentTypeImage);
 
-            changeBtn.setOnClickListener(v -> {
-                changePaymentType(paymentType, paymentTypeImage);
-            });
+        changeBtn.setOnClickListener(v -> changePaymentType(paymentType, paymentTypeImage));
 
-            loadCart();
+        loadCart();
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
 
-        });
     }
 
     private void loadCart() {
@@ -159,19 +164,12 @@ public class CartActivity extends AppCompatActivity {
 
     private void changePaymentType(TextView paymentType, ImageView paymentTypeImage) {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_change_payment_type);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_background);
-
         // Botão de fechar
         ImageView btnClose = dialog.findViewById(R.id.back_btn);
         btnClose.setOnClickListener(v -> dialog.dismiss());
 
         TextView btnChangeCreditCard = dialog.findViewById(R.id.change_credit_card);
-        btnChangeCreditCard.setOnClickListener(v -> {
-            openActivity(CartActivity.this, CreditCardInfo.class);
-        });
+        btnChangeCreditCard.setOnClickListener(v -> openActivity(CartActivity.this, CreditCardInfo.class));
 
         // RadioGroup para opções de pagamento
         radioGroupPayment = dialog.findViewById(R.id.radio_group_payment);

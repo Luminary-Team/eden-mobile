@@ -77,21 +77,17 @@ public class FragmentHome extends Fragment {
             }
         });
 
-        getUser(response -> {
-            if (response != null) {
-                // Chama os produtos ao carregar a tela
-                loadProducts(recyclerView, progressBar);
+        // Chama os produtos ao carregar a tela
+        loadProducts(recyclerView, progressBar);
 
-                // Search for Products
-                searchProducts(searchBar, recyclerView, progressBar);
+        // Search for Products
+        searchProducts(searchBar, recyclerView, progressBar);
 
-                // Get Favorites
-                fetchFavorites();
+        // Get Favorites
+        fetchFavorites();
 
-                // Get Bought Products
-                fetchBoughtProducts();
-            }
-        });
+        // Get Bought Products
+        fetchBoughtProducts();
 
         // Reload posts on refresh
         if (swipeRefreshLayout != null) {
