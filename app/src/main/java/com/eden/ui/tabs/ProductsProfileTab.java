@@ -40,7 +40,6 @@ public class ProductsProfileTab extends Fragment {
         ProgressBar progressBar = view.findViewById(R.id.products_user_progressBar);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_products_user);
 
-
         progressBar.setVisibility(View.VISIBLE);
 
         ProductService productService = RetrofitClient.getClient().create(ProductService.class);

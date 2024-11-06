@@ -36,8 +36,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/imagem_eden_component"
                     android:layout_marginTop="-10dp"
-                    android:src="@drawable/eden"
-                    android:fontFamily=""/>
+                    android:src="@drawable/eden"/>
 
             </RelativeLayout>
 

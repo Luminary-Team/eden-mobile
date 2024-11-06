@@ -75,19 +75,21 @@ public class UserRegister extends AppCompatActivity {
 
         // Register the user
         btnRegister.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+            btnRegister.setText("");
             String name = nameEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
             // Verifies if none of the values are null
-            if (!name.isEmpty() && !unformattedPhoneNumber.isEmpty()
-                    && !unformattedCpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-//                progressBar.setVisibility(View.GONE);
+            if (unformattedPhoneNumber != null && unformattedCpf != null
+                    && !email.isEmpty() && !password.isEmpty() && !name.isEmpty()) {
+                progressBar.setVisibility(View.GONE);
                 btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
-//                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 btnRegister.setText("Cadastrar");
             }
         });
@@ -161,7 +163,6 @@ public class UserRegister extends AppCompatActivity {
                         // Tratando erros
                         String errorResponse = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorResponse);
-                        String errorMessage = jsonObject.getString("message");
 
                         // TODO: Verify null
                         if (jsonObject.has("message")) {
