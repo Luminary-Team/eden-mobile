@@ -89,7 +89,7 @@ public class RegisterProduct extends AppCompatActivity {
         btnAvancar.setOnClickListener(v -> {
 
             if (!title.getText().toString().isEmpty() &&
-                    Integer.parseInt(price.getText().toString()) > 0 &&
+                    Float.parseFloat(price.getText().toString()) > 0 &&
                     selectedImageUri != null && !description.getText().toString().isEmpty()) {
 
                 ProductRequest product = new ProductRequest(

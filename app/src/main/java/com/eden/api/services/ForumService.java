@@ -23,10 +23,13 @@ public interface ForumService {
     @GET("/forum")
     Call<List<PostResponse>> getUserPosts(@Query("id") int id);
 
-    @POST("/forum")
-    Call<PostResponse> createPost(@Body PostRequest postRequest); // Create new post in mongodb api
-
     @POST("/forum/comment/{postId}")
     Call<PostResponseMongo> addComment(@Path("postId") String postId, @Body CommentRequest commentRequest); // Add comment to post in mongodb api
+
+    @POST("/forum/like/{postId}")
+    Call<PostResponseMongo> likePost(@Path("postId") String postId, @Body int engagerId);
+
+    @POST("/forum")
+    Call<PostResponse> createPost(@Body PostRequest postRequest); // Create new post in mongodb api
 
 }

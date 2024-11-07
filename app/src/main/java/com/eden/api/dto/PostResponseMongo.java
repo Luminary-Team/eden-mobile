@@ -10,14 +10,14 @@ public class PostResponseMongo {
     private int userId;
     private String content;
     private List<Comment> comments;
-    private List<Integer> likeId;
+    private List<Integer> engager;
 
-    public PostResponseMongo(String id, int userId, String content, List<Comment> comments, List<Integer> likeId) {
+    public PostResponseMongo(String id, int userId, String content, List<Comment> comments, List<Integer> engager) {
         this.id = id;
         this.userId = userId;
         this.content = content;
         this.comments = comments;
-        this.likeId = likeId;
+        this.engager = engager;
     }
 
     public String getId() {
@@ -52,11 +52,11 @@ public class PostResponseMongo {
         this.comments = comments;
     }
 
-    public List<Integer> getLikeId() {
-        return likeId;
+    public List<Integer> getEngager() {
+        return engager;
     }
 
-    public void setLikeId(List<Integer> likeId) {
-        this.likeId = likeId;
+    public void setEngager(List<Integer> engager) {
+        this.engager = engager;
     }
 }

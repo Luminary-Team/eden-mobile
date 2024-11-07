@@ -42,9 +42,40 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/post_content"
             android:layout_marginTop="1dp"
+            android:layout_marginBottom="10dp"
             android:theme="@style/arredondar"
             android:scaleType="fitStart"
             android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/post_image"
+            android:textAlignment="center"
+            android:text="0"
+            />
+
+        <ImageView
+            android:id="@+id/like_post"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toStartOf="@id/like_count"
+            android:layout_alignBottom="@id/like_count"
+            android:layout_below="@id/post_image"
+            android:src="@drawable/heart_icon"
+            />
+
+        <ImageView
+            android:id="@+id/comment_post"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_toStartOf="@id/like_post"
+            android:layout_alignBottom="@id/like_post"
+            android:layout_below="@id/post_image"
+            android:src="@drawable/chat_icon"
+            />
 
     </RelativeLayout>
 

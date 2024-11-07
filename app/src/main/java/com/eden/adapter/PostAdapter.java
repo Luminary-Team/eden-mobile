@@ -1,6 +1,7 @@
 package com.eden.adapter;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.eden.ui.fragments.FragmentForum.loadPosts;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 import static com.eden.utils.AndroidUtil.downloadOtherUserProfilePicFromFirebase;
@@ -31,6 +32,8 @@ import com.eden.api.services.ForumService;
 import com.eden.model.Comment;
 import com.eden.ui.fragments.FragmentForum;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import org.w3c.dom.Text;
 
 import java.util.Collections;
 import java.util.List;
@@ -65,15 +68,48 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         }
 
         PostResponse post = postList.get(position);
+
         holder.content.setText(post.getContent());
         holder.name.setText(post.getUser().getName());
         holder.userName.setText("@" + post.getUser().getUserName());
+        holder.like_count.setText(String.valueOf(post.getEngager().size()));
+        holder.like_post.setImageResource(post.getEngager().contains(currentUser.getId()) ? R.drawable.heart_selected_icon : R.drawable.heart_icon);
+
         downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, String.valueOf(post.getUser().getId()));
         downloadImageFromFirebase(holder.content.getContext(), holder.imagePost, "post_" + post.getId() + ".jpg");
+
+        holder.like_post.setOnClickListener(v -> {
+            setLiked(post.getId(), holder.like_post, holder.like_count);
+
+        });
 
         holder.itemView.setOnClickListener(v -> {
             // TODO: Isso vai ter que ser no callback de getCommentsForPost
             openBottomSheet(holder.itemView.getContext(), post);
+        });
+    }
+
+    private void setLiked(String postId, ImageView like_post, TextView like_count) {
+        ForumService forumService = RetrofitClient.getClient().create(ForumService.class);
+        Call<PostResponseMongo> call = forumService.likePost(postId, currentUser.getId());
+        call.enqueue(new Callback<PostResponseMongo>() {
+            @Override
+            public void onResponse(Call<PostResponseMongo> call, Response<PostResponseMongo> response) {
+                if (response.isSuccessful()) {
+                    PostResponseMongo postResponseMongo = response.body();
+                    if (postResponseMongo != null) {
+                        like_post.setImageResource(R.drawable.heart_selected_icon);
+                        like_count.setText(String.valueOf(postResponseMongo.getEngager().size()));
+                    }
+                } else {
+                    Log.d("COMMENTS", "Response not successful: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponseMongo> call, Throwable throwable) {
+                Log.d("COMMENTS", throwable.getMessage());
+            }
         });
     }
 
@@ -119,7 +155,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
                     if (response.isSuccessful() && response.body() != null) {
                         Log.d("COMMENTS", response.body().toString());
 
-                        FragmentForum.loadPosts();
+                        loadPosts();
 
                         // TODO: Atualizar em tempo real
                         bottomSheetDialog.dismiss();
@@ -150,8 +186,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
     }
 
     public static class ViewHolderPost extends RecyclerView.ViewHolder {
-        private TextView content, name, userName;
-        private ImageView userPfp, imagePost;
+        private TextView content, name, userName, like_count;
+        private ImageView userPfp, imagePost, like_post, comment_post;
         // TODO: Colocar coisas do header
 
         public ViewHolderPost(@NonNull View itemView) {
@@ -161,6 +197,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
             name = itemView.findViewById(R.id.profile_name);
             userName = itemView.findViewById(R.id.profile_username);
             imagePost = itemView.findViewById(R.id.post_image);
+            like_post = itemView.findViewById(R.id.like_post);
+            like_count = itemView.findViewById(R.id.like_count);
+            comment_post = itemView.findViewById(R.id.comment_post);
         }
     }
 }
