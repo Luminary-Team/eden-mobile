@@ -89,7 +89,6 @@ public class FragmentForum extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
         });
 
-
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
 

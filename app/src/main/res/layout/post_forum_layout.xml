@@ -55,12 +55,13 @@
             android:layout_below="@id/post_image"
             android:textAlignment="center"
             android:text="0"
+            android:textSize="18sp"
             />
 
         <ImageView
             android:id="@+id/like_post"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_toStartOf="@id/like_count"
             android:layout_alignBottom="@id/like_count"
             android:layout_below="@id/post_image"
@@ -69,8 +70,8 @@
 
         <ImageView
             android:id="@+id/comment_post"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_toStartOf="@id/like_post"
             android:layout_alignBottom="@id/like_post"
             android:layout_below="@id/post_image"

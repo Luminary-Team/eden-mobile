@@ -72,21 +72,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
         holder.content.setText(post.getContent());
         holder.name.setText(post.getUser().getName());
         holder.userName.setText("@" + post.getUser().getUserName());
-        holder.like_count.setText(String.valueOf(post.getEngager().size()));
-        holder.like_post.setImageResource(post.getEngager().contains(currentUser.getId()) ? R.drawable.heart_selected_icon : R.drawable.heart_icon);
+        if (post.getEngager() != null) {
+            holder.like_count.setText(String.valueOf(post.getEngager().size()));
+            holder.like_post.setImageResource(post.getEngager().contains(currentUser.getId()) ? R.drawable.heart_selected_icon : R.drawable.heart_icon);
+        }
 
         downloadOtherUserProfilePicFromFirebase(holder.content.getContext(), holder.userPfp, String.valueOf(post.getUser().getId()));
         downloadImageFromFirebase(holder.content.getContext(), holder.imagePost, "post_" + post.getId() + ".jpg");
 
-        holder.like_post.setOnClickListener(v -> {
-            setLiked(post.getId(), holder.like_post, holder.like_count);
+        holder.like_post.setOnClickListener(v -> setLiked(post.getId(), holder.like_post, holder.like_count));
 
-        });
+        holder.comment_post.setOnClickListener(v -> openBottomSheet(holder.itemView.getContext(), post));
 
-        holder.itemView.setOnClickListener(v -> {
-            // TODO: Isso vai ter que ser no callback de getCommentsForPost
-            openBottomSheet(holder.itemView.getContext(), post);
-        });
+//        holder.itemView.setOnClickListener(v -> {
+//            // TODO: Isso vai ter que ser no callback de getCommentsForPost
+//            openBottomSheet(holder.itemView.getContext(), post, false);
+//        });
     }
 
     private void setLiked(String postId, ImageView like_post, TextView like_count) {
