@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.SuccessActivity">
+
+    <TextView
+        android:id="@+id/success_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/imageView_success"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="TextView Sucess!"
+        android:textSize="25sp"
+        />
+
+    <ImageView
+        android:id="@+id/imageView_success"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/heart_add_icon" />
+
+    <Button
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_blue"
+        android:text="Prosseguir"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        />
+
+
+
+</RelativeLayout>

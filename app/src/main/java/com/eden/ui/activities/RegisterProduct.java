@@ -103,11 +103,9 @@ public class RegisterProduct extends AppCompatActivity {
                         premium.isChecked()
                 );
 
-
                 if (premium.isChecked()) {
                     openActivity(RegisterProduct.this, BoostedProduct.class);
                 }
-
 
                 Log.i("Selected Item id", String.valueOf(condition.getSelectedItemId()));
 
@@ -119,12 +117,18 @@ public class RegisterProduct extends AppCompatActivity {
                     public void onResponse(Call<Product> call, Response<Product> response) {
                         if (response.isSuccessful()) {
                             Product product = response.body();
+                            finish();
 
                             AndroidUtil.uploadImageToFirebase(selectedImageUri,
                                     "product_" + product.getId() + ".jpg");
 
                             Log.d("Product", product.toString());
-                            Toast.makeText(RegisterProduct.this, "Produto criado com sucesso!", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(RegisterProduct.this, SuccessActivity.class);
+                            intent.putExtra("successType", "product");
+                            intent.putExtra("productId", product.getId());
+                            startActivity(intent);
+
                         } else  {
                             Log.d("Product", response.errorBody().toString());
                         }
@@ -136,8 +140,6 @@ public class RegisterProduct extends AppCompatActivity {
                         Log.d("Product", throwable.getMessage());
                     }
                 });
-
-                finish();
 
             } else {
                 Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();

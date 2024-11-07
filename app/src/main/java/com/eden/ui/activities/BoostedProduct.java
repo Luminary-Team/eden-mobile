@@ -13,6 +13,8 @@ public class BoostedProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boosted_product);
 
+        findViewById(R.id.btn_continue_premium).setOnClickListener(v -> finish());
+
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
     }

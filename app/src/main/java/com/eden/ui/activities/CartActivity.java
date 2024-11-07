@@ -1,7 +1,6 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
-import static com.eden.utils.AndroidUtil.getUser;
 import static com.eden.utils.AndroidUtil.openActivity;
 
 import androidx.annotation.NonNull;
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,13 +33,11 @@ import com.eden.api.dto.CartItemResponse;
 import com.eden.api.dto.CartResponse;
 import com.eden.api.dto.OrderRequest;
 import com.eden.api.dto.OrderResponse;
-import com.eden.api.dto.UserSchema;
 import com.eden.api.services.CartService;
 import com.eden.api.services.OrderService;
 import com.eden.utils.callbacks.SwipeToDeleteCallback;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -209,8 +207,11 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<OrderResponse> call, Response<OrderResponse> response) {
                 if (response.isSuccessful() ) {
-                    // TODO: Card to confirm purchase
-                    openActivity(CartActivity.this, MainActivity.class);
+                    Intent intent = new Intent(CartActivity.this, SuccessActivity.class);
+                    intent.putExtra("successType", "order");
+                    intent.putExtra("orderId", response.body().getTotalValue());
+                    startActivity(intent);
+                    finish();
                 } else {
                     // TODO: Handle exception
                     try {
