@@ -3,75 +3,87 @@ package com.eden.adapter;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
 import com.eden.model.Product;
 import com.eden.R;
-import com.eden.adapter.ProductPremiumAdapter;
-import com.eden.ui.activities.PremiumProduct;
 
 import java.util.Collections;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_NORMAL = 0;
-    private static final int TYPE_PREMIUM = 1;
+    private Handler handler;
+    private Runnable runnable;
+    private int currentPosition = 0;
 
-    private final List<Product> productList;
-    private final List<Product> premiumProducts;
+    private static final int TYPE_PREMIUM = 0;
+    private static final int TYPE_NORMAL = 1;
 
-    public ProductAdapter(List<Product> args, List<Product> args1) {
-        Collections.shuffle(args);
-        this.productList = args;
-        this.premiumProducts = args1;
+    private final List<Product> normalProductList;
+    private final List<Product> premiumProductList;
+
+    public ProductAdapter(List<Product> normalProducts, List<Product> premiumProducts) {
+        Collections.shuffle(normalProducts);
+        this.normalProductList = normalProducts;
+        this.premiumProductList = premiumProducts;
     }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//        if (position % 10 == 0) {
-//            return TYPE_PREMIUM;
-//        }
-//        return TYPE_NORMAL;
-//    }
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_PREMIUM; // Tipo para o carrossel
+        }
+        return TYPE_NORMAL; // Tipo para produtos normais
+    }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == TYPE_NORMAL) {
+        if (viewType == TYPE_PREMIUM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_premium_product, parent, false);
+            return new ViewHolderPremium(view);
+        } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_layout, parent, false);
             return new ViewHolderProduct(view);
-        } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_premium_product, parent, false);
-            return new ProductPremiumAdapter.ViewHolderProductPremium(view);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // Normal Product
-        if (holder instanceof ViewHolderProduct) {
+        if (holder instanceof ViewHolderPremium) {
+            // Premium Product
+
+            RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
+            recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+            recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList));
+
+            startAutoScroll(premiumProductList.size(), recyclerView);
+
+        } else if (holder instanceof ViewHolderProduct) {
+            // Normal Product
             ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;
-            if (productList != null) {
+            if (normalProductList != null) {
                 Log.d("ProductAdapter", "Position: " + position);
-                Product product = productList.get(position);
+                Product product = normalProductList.get(position - 1); // Ajustar a posição para ignorar o carrossel
                 if (product.getTitle() != null) {
                     viewHolderProduct.title.setText(product.getTitle());
                 }
-                if (product.getPrice() != 0) {
-                    viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
-                }
+                viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
 
                 downloadImageFromFirebase(viewHolderProduct.itemView.getContext(), viewHolderProduct.imageView, "product_" + product.getId() + ".jpg");
 
@@ -89,21 +101,54 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return normalProductList.size() + 1; // Adiciona 1 para o carrossel
+    }
+
+    private void startAutoScroll(int itemCount, RecyclerView recyclerView) {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (itemCount > 0) {
+                    currentPosition = (currentPosition + 1) % itemCount;
+                    recyclerView.smoothScrollToPosition(currentPosition);
+                    Log.i("AutoScroll", "Scrolling to position: " + currentPosition);
+                }
+                handler.postDelayed(this, 3000);
+            }
+        };
+        handler.postDelayed(runnable, 3000);
+    }
+
+    public void stopAutoScroll() {
+        if (handler != null) {
+            handler.removeCallbacks(runnable); // Remove callbacks para evitar vazamentos de memória
+        }
     }
 
     public static class ViewHolderProduct extends RecyclerView.ViewHolder {
-        private TextView usageTimeId, usageTime, conditionTypeId, user,
-                title, description, price, maxPrice, senderZipCode;
+        private TextView title, price;
         private ImageView imageView;
-        private RatingBar ratingBar;
-
 
         public ViewHolderProduct(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.product_title);
             price = itemView.findViewById(R.id.product_price);
             imageView = itemView.findViewById(R.id.product_image);
+        }
+    }
+
+    public static class ViewHolderPremium extends RecyclerView.ViewHolder {
+        public TextView premiumTitle, premiumPrice;
+        public ImageView premiumImageView;
+        public ImageButton premiumOverflowMenu;
+
+        public ViewHolderPremium(@NonNull View premiumItemView) {
+            super(premiumItemView);
+            premiumOverflowMenu = premiumItemView.findViewById(R.id.premium_overflow_menu);
+            premiumTitle = premiumItemView.findViewById(R.id.premium_product_title);
+            premiumPrice = premiumItemView.findViewById(R.id.premium_product_price);
+            premiumImageView = premiumItemView.findViewById(R.id.premium_product_image);
         }
     }
 }

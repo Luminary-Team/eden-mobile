@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/back_icon" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/comment_pfp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/back_btn"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/lightGrey"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/to_circle"
+            tools:srcCompat="@drawable/pfp_placeholder_icon"
+            />
+
+        <EditText
+            android:id="@+id/editText_content"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/back_btn"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toEndOf="@id/comment_pfp"
+            android:background="@null"
+            android:gravity="start"
+            android:hint="O que está pensando..."
+            android:inputType="text|textMultiLine|textCapSentences"
+            android:maxLines="7"
+            android:minLines="1" />
+
+        <ImageView
+            android:id="@+id/image_post"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@id/editText_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/arredondar"
+            tools:srcCompat="@drawable/pfp_placeholder_icon"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/button_add_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignEnd="@id/button_add_post"
+            android:layout_below="@id/image_post"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/image_icon"
+            app:tint="@color/edenBlue" />
+
+        <Button
+            android:id="@+id/button_add_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_add_image"
+            android:background="@drawable/button_blue"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:text="Postar"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

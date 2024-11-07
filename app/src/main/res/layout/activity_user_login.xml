@@ -9,11 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView_eden_robot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/eden_robot"
+        android:layout_width="300dp"
+        android:layout_height="280dp"
         android:layout_gravity="end|bottom"
-        />
+        android:src="@drawable/eden_robot" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,34 +21,32 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <RelativeLayout
                 android:id="@+id/header_layout"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 >
 
                 <ImageView
                     android:id="@+id/imagem_eden_component"
-                    android:layout_width="135dp"
+                    android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
                     android:scaleType="centerCrop"
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/eden_logotipo_3" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toRightOf="@id/imagem_eden_component"
-                    android:text="Eden"
-                    android:textColor="@color/edenBlue"
-                    android:textSize="40dp" />
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/imagem_eden_component"
+                    android:layout_marginTop="-10dp"
+                    android:src="@drawable/eden"
+                    android:fontFamily=""/>
 
             </RelativeLayout>
 
@@ -59,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header_layout"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/rounded_corner_shape"
                 android:drawableStart="@drawable/email_icon"
                 android:drawablePadding="10dp"
@@ -96,7 +93,19 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/errorRed"
                 android:textSize="15sp"
-                android:visibility="invisible"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/textView_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/error_message"
+                android:text="Esqueci a senha"
+                android:textStyle="bold"
+                android:textAlignment="center"
                 />
 
             <ImageView
@@ -110,18 +119,29 @@
                 android:layout_marginTop="10dp"
                 app:tint="@color/edenBlue" />
 
-
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textInput_senha_login"
+                android:layout_below="@id/textView_forgot_password"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/button_blue"
                 android:text="Login"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                />
+
+            <ProgressBar
+                android:id="@+id/user_register_progressBar"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_forgot_password"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:indeterminateTint="@color/white"
+                android:translationZ="2dp"
+                android:visibility="gone"
                 />
 
             <TextView
@@ -133,6 +153,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_below="@id/btn_login"
                 android:text="Não tem uma conta? Cadastre-se"
+                android:textStyle="bold"
                 android:textAlignment="center"
                 />
 

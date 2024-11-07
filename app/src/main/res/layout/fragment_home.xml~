@@ -28,11 +28,13 @@
             android:textColorHint="@color/edenBlue" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+            android:id="@+id/swipeRefreshLayout_home"
             android:layout_below="@+id/search_bar"
+            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:clipToPadding="">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_produtos"
@@ -44,13 +46,13 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <ProgressBar
-            android:id="@+id/products_progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/products_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
 </FrameLayout>

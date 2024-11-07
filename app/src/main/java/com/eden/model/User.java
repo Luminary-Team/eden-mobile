@@ -1,13 +1,13 @@
 package com.eden.model;
 
 public class User {
-    public String cpf;
-    public String name;
-    public String userName;
-    public String password;
-    public float rating;
-    public String email;
-    public String cellphone;
+    private String cpf;
+    private String name;
+    private String userName;
+    private String password;
+    private float rating;
+    private String email;
+    private String cellphone;
 
     public User(String cpf, String name, String userName, String password, float rating, String email, String cellphone) {
         this.cpf = cpf;

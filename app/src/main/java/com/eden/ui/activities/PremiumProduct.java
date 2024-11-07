@@ -3,6 +3,7 @@ package com.eden.ui.activities;
 import static com.eden.utils.AndroidUtil.currentUser;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,4 +51,5 @@ public class PremiumProduct extends AppCompatActivity {
         });
 
     }
+
 }

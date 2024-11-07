@@ -18,33 +18,35 @@ import com.eden.api.dto.CartResponse;
 import com.eden.model.Product;
 import com.eden.ui.activities.BuyProduct;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem> {
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItemCart> {
 
     private final List<CartItemResponse> cartItems;
 
     public CartAdapter(List<CartItemResponse> args) {
+        assert args != null;
         Collections.reverse(args);
         this.cartItems = args;
     }
 
     @NonNull
     @Override
-    public CartAdapter.ViewHolderItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CartAdapter.ViewHolderItemCart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_view_layout, parent, false);
-        return new CartAdapter.ViewHolderItem(view);
+        return new CartAdapter.ViewHolderItemCart(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CartAdapter.ViewHolderItem holder, int position) {
+    public void onBindViewHolder(@NonNull CartAdapter.ViewHolderItemCart holder, int position) {
         Product item = cartItems.get(position).getProduct();
         if (!cartItems.isEmpty()) {
             holder.title.setText(item.getTitle() != null ? item.getTitle() : "");
             holder.price.setText(item.getPrice() != 0 ? String.format("R$ %.2f", item.getPrice()) : "");
             holder.description.setText(item.getDescription() != null ? item.getDescription() : "");
-            holder.maxPrice.setText(item.getMaxPrice() != 0 ? String.format("R$ %.2f", item.getMaxPrice()) : "");
+//            holder.maxPrice.setText(item.getMaxPrice() != 0 ? String.format("R$ %.2f", item.getMaxPrice()) : "");
 
             downloadImageFromFirebase(holder.itemView.getContext(), holder.imageView, "product_" + item.getId() + ".jpg");
 
@@ -65,14 +67,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolderItem
         return cartItems.size();
     }
 
-    public class ViewHolderItem extends RecyclerView.ViewHolder {
+    public List<CartItemResponse> getData() {
+        return cartItems;
+    }
+
+    public class ViewHolderItemCart extends RecyclerView.ViewHolder {
         private TextView title, description, price, maxPrice;
         private ImageView imageView;
 
-        public ViewHolderItem(@NonNull View itemView) {
+        public ViewHolderItemCart(@NonNull View itemView) {
             super(itemView);
-            ImageView overflowMenu = itemView.findViewById(R.id.overflow_menu);
-            overflowMenu.setVisibility(View.GONE);
+            itemView.findViewById(R.id.overflow_menu).setVisibility(View.GONE);
             imageView = itemView.findViewById(R.id.cart_product_image);
             title = itemView.findViewById(R.id.cart_product_title);
             description = itemView.findViewById(R.id.cart_product_description);

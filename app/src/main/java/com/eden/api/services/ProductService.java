@@ -10,6 +10,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
@@ -23,11 +24,13 @@ public interface ProductService {
     @GET("/product/getPremiumProducts")
     Call<List<Product>> getPremiumProducts(@Header("userId") int userId);
     @GET("/product/getByTitle")
-    Call<List<Product>> getProductByTitle(@Query("title") String title);
+    Call<List<Product>> getProductByTitle(@Query("title") String title, @Header("userId") int userId);
     @GET("/product/getByUserId/{id}")
     Call<List<Product>> getProductsByUserId(@Path("id") int id);
     @POST("/product/register")
     Call<Product> registerProduct(@Body ProductRequest productRequest);
     @PATCH("/product/update/{id}")
     Call<Product> updateProduct(@Body ProductRequest productRequest, @Path("id") int id);
+    @DELETE("/product/delete/{id}")
+    Call<Void> deleteProduct(@Path("id") int id);
 }

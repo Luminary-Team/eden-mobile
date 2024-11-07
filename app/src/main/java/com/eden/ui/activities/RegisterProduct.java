@@ -1,5 +1,7 @@
 package com.eden.ui.activities;
 
+import static com.eden.utils.AndroidUtil.openActivity;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -52,6 +55,8 @@ public class RegisterProduct extends AppCompatActivity {
         price = findViewById(R.id.editText_product_price);
         description = findViewById(R.id.editText_product_description);
         condition = findViewById(R.id.spinner_condicao);
+        CheckBox premium = findViewById(R.id.checkBox_premium);
+        Spinner condition = findViewById(R.id.spinner_condicao);
 
         // Selecionando imagem
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -83,45 +88,63 @@ public class RegisterProduct extends AppCompatActivity {
         // Saving data on database
         btnAvancar.setOnClickListener(v -> {
 
-            ProductRequest product = new ProductRequest(
-                    1,
-                    1,
-                    FirebaseAuth.getInstance().getCurrentUser().getEmail(),
-                    title.getText().toString(),
-                    description.getText().toString(),
-                    Float.parseFloat(price.getText().toString()),
-                    "12345678",
-                    0
-            );
+            if (!title.getText().toString().isEmpty() &&
+                    Integer.parseInt(price.getText().toString()) > 0 &&
+                    selectedImageUri != null && !description.getText().toString().isEmpty()) {
 
-            // Calling API
-            ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-            Call<Product> call = productService.registerProduct(product);
-            Bundle bundle = getIntent().getExtras();
-            call.enqueue(new Callback<Product>() {
-                @Override
-                public void onResponse(Call<Product> call, Response<Product> response) {
-                    if (response.isSuccessful()) {
-                        Product product = response.body();
+                ProductRequest product = new ProductRequest(
+                        1,
+                        condition.getSelectedItemId(),
+                        FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                        title.getText().toString(),
+                        description.getText().toString(),
+                        Float.parseFloat(price.getText().toString()),
+                        "12345678",
+                        premium.isChecked()
+                );
 
-                        AndroidUtil.uploadImageToFirebase(selectedImageUri,
-                                "product_" + product.getId() + ".jpg");
+                if (premium.isChecked()) {
+                    openActivity(RegisterProduct.this, BoostedProduct.class);
+                }
 
-                        Log.d("Product", product.toString());
-                        Toast.makeText(RegisterProduct.this, "Produto criado com sucesso!", Toast.LENGTH_SHORT).show();
-                    } else  {
-                        Log.d("Product", response.errorBody().toString());
+                Log.i("Selected Item id", String.valueOf(condition.getSelectedItemId()));
+
+                // Calling API
+                ProductService productService = RetrofitClient.getClient().create(ProductService.class);
+                Call<Product> call = productService.registerProduct(product);
+                call.enqueue(new Callback<Product>() {
+                    @Override
+                    public void onResponse(Call<Product> call, Response<Product> response) {
+                        if (response.isSuccessful()) {
+                            Product product = response.body();
+                            finish();
+
+                            AndroidUtil.uploadImageToFirebase(selectedImageUri,
+                                    "product_" + product.getId() + ".jpg");
+
+                            Log.d("Product", product.toString());
+
+                            Intent intent = new Intent(RegisterProduct.this, SuccessActivity.class);
+                            intent.putExtra("successType", "product");
+                            intent.putExtra("productId", product.getId());
+                            startActivity(intent);
+
+                        } else  {
+                            Log.d("Product", response.errorBody().toString());
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Product> call, Throwable throwable) {
-                    // TODO: handle failure
-                    Log.d("Product", throwable.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Product> call, Throwable throwable) {
+                        // TODO: handle failure
+                        Log.d("Product", throwable.getMessage());
+                    }
+                });
 
-            finish();
+            } else {
+                Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
         productImage = findViewById(R.id.register_product_image);

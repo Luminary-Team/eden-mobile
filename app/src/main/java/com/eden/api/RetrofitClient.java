@@ -7,6 +7,8 @@ import android.util.Log;
 import com.eden.model.Token;
 import com.eden.utils.AndroidUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +20,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static final String baseUrl ="https://desenvolvimento-ii.onrender.com/";
-    private static final String baseUrlMongo ="https://eden-api-mongo.onrender.com/";
+    private static String baseUrl = "https://desenvolvimento-ii.onrender.com/"; // SQL render - Luminary
+    private static String baseUrlMongo = "https://eden-api-mongo.onrender.com/"; // MongoDB render - Luminary
+
+    private static final List<String> baseUrls = List.of(
+            "http://3.94.25.250:8080/", // MONGODB AWS - Pedro
+            "http://107.20.132.70:8080/", // SQL AWS - Pedro
+            "https://eden-api-mongo-a2dh.onrender.com/", // MongoDB render - Willamy
+            "https://eden-api-w9pm.onrender.com/" // SQL render - Willamy
+    );
+
+    private static int currentUrlIndex = 0;
 
     public static Retrofit getClient() {
 
@@ -27,6 +38,8 @@ public class RetrofitClient {
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        Log.d("RetrofitClient", "baseUrl: " + baseUrl);
 
         return retrofit;
     }
@@ -53,7 +66,21 @@ public class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        Log.d("RetrofitClient", "baseUrl: " + baseUrl);
+
         return retrofit;
 
     }
+
+    public static void changeService() {
+        // Tenta mudar para a próxima URL
+        if (currentUrlIndex < baseUrls.size() - 1) {
+            currentUrlIndex++;
+            baseUrl = baseUrls.get(currentUrlIndex);
+            Log.d("RetrofitClient", "Mudando para a URL: " + baseUrl);
+        } else {
+            Log.d("RetrofitClient", "Todas as URLs foram tentadas.");
+        }
+    }
+
 }

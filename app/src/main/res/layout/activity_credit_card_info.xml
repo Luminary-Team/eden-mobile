@@ -103,6 +103,8 @@
             android:inputType="number"
             android:maxLength="5"
             android:background="@drawable/edit_text_default_background"
+            android:drawableEnd="@drawable/calendar_icon"
+            android:drawableTint="@color/edenBlue"
             android:padding="16dp"
             android:textSize="16sp" />
 
@@ -140,53 +142,24 @@
             android:drawableTint="@color/edenBlue"
             android:hint="CEP"
             android:inputType="number"
-            android:maxLength="8"
+            android:maxLength="9"
             android:padding="16dp"
             android:textColorHint="@color/edenBlue"
             android:textSize="16sp" />
 
     </RelativeLayout>
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_prosseguir"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_alignParentBottom="true"
-        app:cardElevation="20dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="20dp"
-            android:paddingTop="10dp"
-            android:paddingHorizontal="40dp">
-
-            <TextView
-                android:id="@+id/textView_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="Total: R$ 0,00"
-                android:textColor="@color/edenBlue"
-                android:textStyle="bold"
-                />
-
-            <Button
-                android:id="@+id/btn_prosseguir"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textView_total"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/button_blue"
-                android:text="Prosseguir"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                />
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_blue"
+        android:text="Prosseguir"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        />
 
 </RelativeLayout>

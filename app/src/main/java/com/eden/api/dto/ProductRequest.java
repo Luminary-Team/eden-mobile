@@ -9,12 +9,12 @@ public class ProductRequest {
     private String description;
     private float price;
     private String senderZipCode;
-    private float rating;
+    private boolean premium;
 
     public ProductRequest() {
     }
 
-    public ProductRequest(long usageTimeId, long conditionTypeId, String userEmail, String title, String description, float price, String senderZipCode, float rating) {
+    public ProductRequest(long usageTimeId, long conditionTypeId, String userEmail, String title, String description, float price, String senderZipCode, boolean premium) {
         this.usageTimeId = usageTimeId;
         this.conditionTypeId = conditionTypeId;
         this.userEmail = userEmail;
@@ -22,7 +22,7 @@ public class ProductRequest {
         this.description = description;
         this.price = price;
         this.senderZipCode = senderZipCode;
-        this.rating = rating;
+        this.premium = premium;
     }
 
     public long getUsageTimeId() {
@@ -81,11 +81,11 @@ public class ProductRequest {
         this.senderZipCode = senderZipCode;
     }
 
-    public float getRating() {
-        return rating;
+    public boolean isPremium() {
+        return premium;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
+    public void setPremium(boolean premium) {
+        this.premium = premium;
     }
 }

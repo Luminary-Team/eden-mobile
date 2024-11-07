@@ -33,7 +33,6 @@ public class ArticlesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_articles);
 
         ImageButton backBtn = findViewById(R.id.back_btn);
@@ -50,11 +49,8 @@ public class ArticlesActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body() != null) {
-
                     articles = response.body();
-
                     recyclerView.setAdapter(new ArticlesAdapter(articles));
-
                 }
             }
 
@@ -62,7 +58,6 @@ public class ArticlesActivity extends AppCompatActivity {
             public void onFailure(Call<List<Article>> call, Throwable throwable) {
                 progressBar.setVisibility(View.GONE);
                 throwable.getMessage();
-                // TODO: Tratar erros
             }
         });
 

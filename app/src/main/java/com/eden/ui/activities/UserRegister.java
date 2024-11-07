@@ -4,16 +4,20 @@ import static com.eden.utils.AndroidUtil.authenticate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,35 +43,64 @@ public class UserRegister extends AppCompatActivity {
 
     FirebaseUserUtil db = new FirebaseUserUtil();
     private String unformattedPhoneNumber, unformattedCpf;
+    private ProgressBar progressBar;
+    private Button btnRegister;
+
+    EditText nameEditText, phoneNumberEditText, cpfEditText, emailEditText, passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
-        EditText nameEditText = findViewById(R.id.textInput_nome);
-        EditText phoneNumberEditText = findViewById(R.id.textInput_numero);
-        EditText cpfEditText = findViewById(R.id.textInput_cpf);
-        EditText emailEditText = findViewById(R.id.textInput_email);
-        EditText passwordEditText = findViewById(R.id.textInput_senha);
+        nameEditText = findViewById(R.id.textInput_nome);
+        phoneNumberEditText = findViewById(R.id.textInput_numero);
+        cpfEditText = findViewById(R.id.textInput_cpf);
+        emailEditText = findViewById(R.id.textInput_email);
+        passwordEditText = findViewById(R.id.textInput_senha);
         ImageView passwordToggle = findViewById(R.id.register_password_toggle);
-        Button btnRegister = findViewById(R.id.btn_cadastro);
         TextView btnLogin = findViewById(R.id.textView_login);
+        btnRegister = findViewById(R.id.btn_cadastro);
+        progressBar = findViewById(R.id.user_register_progressBar);
 
-        // Setting underline text
-        btnLogin.setPaintFlags(btnLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        progressBar.setVisibility(View.GONE);
+
+        String fullText = "Já tem uma conta? Faça Login";
+        SpannableString spannableString = new SpannableString(fullText);
+
+        int start = fullText.indexOf("Faça Login");
+        int end = start + "Faça Login".length();
+        spannableString.setSpan(new UnderlineSpan(), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.edenVeryLightBlue)),
+                start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        btnLogin.setText(spannableString);
 
         // Register the user
         btnRegister.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+            btnRegister.setEnabled(false);
+            btnRegister.setText("");
             String name = nameEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
             // Verifies if none of the values are null
-            if (!name.isEmpty() && !unformattedPhoneNumber.isEmpty()
-                    && !unformattedCpf.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
+            if (unformattedPhoneNumber != null && unformattedCpf != null
+                    && !email.isEmpty() && !name.isEmpty() && password.length() > 6) {
+                progressBar.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
+                btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
+            } else if (password.length() < 6) {
+                passwordEditText.setError("A senha deve ter pelo menos 6 caracteres");
+                progressBar.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
+                btnRegister.setText("Cadastrar");
             } else {
                 Toast.makeText(this, "Os valores não podem estar vazios", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                btnRegister.setEnabled(true);
+                btnRegister.setText("Cadastrar");
             }
         });
 
@@ -101,6 +134,13 @@ public class UserRegister extends AppCompatActivity {
             }
         });
 
+        // Adding text watchers to all the EditTexts
+        addTextWatcher(nameEditText);
+        addTextWatcher(phoneNumberEditText);
+        addTextWatcher(cpfEditText);
+        addTextWatcher(emailEditText);
+        addTextWatcher(passwordEditText);
+
         // Formatar Cellphone
         formatPhone(phoneNumberEditText);
 
@@ -114,65 +154,55 @@ public class UserRegister extends AppCompatActivity {
 
         UserService api = RetrofitClient.getClient().create(UserService.class);
 
-        // Creating User
-        User user = new User(cpf, name, name,
-                password, 0, email, phoneNumber);
-        Call<ResponseBody> userCall = api.userRegister(user);
+        Call<ResponseBody> userCall = api.userRegister(new User(cpf, name, name,
+                password, 0, email, phoneNumber));
 
         userCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                progressBar.setVisibility(View.VISIBLE);
+                btnRegister.setText("");
                 try {
                     if (response.isSuccessful() && response.body() != null) {
-                        String jsonResponse = response.body().string();
-                        JSONObject jsonObject = new JSONObject(jsonResponse);
-
+                        progressBar.setVisibility(View.GONE);
+                        btnRegister.setText("Cadastrar");
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
 
-                        Log.d("CHECKPOINT", "JSON Object: " + jsonObject.toString());
-                        Log.d("CHECKPOINT", response.message());
-
                     } else if (response.errorBody() != null) {
+                        progressBar.setVisibility(View.GONE);
+                        btnRegister.setText("Cadastrar");
+
                         // Tratando erros
                         String errorResponse = response.errorBody().string();
                         JSONObject jsonObject = new JSONObject(errorResponse);
 
+                        // TODO: Verify null
                         if (jsonObject.has("message")) {
                             String messageError = jsonObject.getString("message");
-                            if (messageError.trim().toLowerCase().contains("cpf")) {
-                                EditText cpfEditText = findViewById(R.id.textInput_cpf);
+                            if (messageError.trim().toLowerCase().contains("name")) {
+                                nameEditText.setError(messageError);
+                                nameEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("email")) {
+                                emailEditText.setError(messageError);
+                                emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("password")) {
+                                passwordEditText.setError(messageError);
+                                passwordEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("phone")) {
+                                phoneNumberEditText.setError(messageError);
+                                phoneNumberEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                            } else if (messageError.trim().toLowerCase().contains("cpf")) {
                                 cpfEditText.setError(messageError);
+                                cpfEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
                             }
-                        }
-
-                        // Verifica os campos que contêm erros e define mensagens de erro nos EditTexts
-                        if (jsonObject.has("cpf")) {
-                            String cpfError = jsonObject.getString("cpf");
-                            EditText cpfEditText = findViewById(R.id.textInput_cpf);
-                            cpfEditText.setError(cpfError);
-                        }
-
-                        if (jsonObject.has("cellphone")) {
-                            String phoneError = jsonObject.getString("cellphone");
-                            EditText phoneEditText = findViewById(R.id.textInput_numero);
-                            phoneEditText.setError(phoneError);
-                        }
-
-                        if (jsonObject.has("email")) {
-                            String emailError = jsonObject.getString("email");
-                            EditText emailEditText = findViewById(R.id.textInput_email);
-                            emailEditText.setError(emailError);
-                        }
-
-                        if (jsonObject.has("password")) {
-                            String passwordError = jsonObject.getString("password");
-                            EditText passwordEditText = findViewById(R.id.textInput_senha);
-                            passwordEditText.setError(passwordError);
+                        } else if (jsonObject.has("cellphone")) {
+                            phoneNumberEditText.setError(jsonObject.getString("cellphone"));
+                            phoneNumberEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
                         }
 
                         // Exibe os erros no log
-                        Log.d("CHECKPOINT", "Erros recebidos: " + jsonObject.toString());
+                        Log.d("CHECKPOINT", "Erros recebidos: " + jsonObject );
 
                     }
                 } catch (JSONException e) {
@@ -186,6 +216,24 @@ public class UserRegister extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Log.d("CHECKPOINT", throwable.getMessage());
+            }
+        });
+    }
+
+    private void addTextWatcher(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editText.setError(null); // Removes the error message
+                editText.setBackgroundResource(R.drawable.rounded_corner_shape); // Restores the original background
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -307,6 +355,5 @@ public class UserRegister extends AppCompatActivity {
             }
         });
     }
-
 
 }

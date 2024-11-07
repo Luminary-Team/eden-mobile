@@ -6,14 +6,17 @@ import static com.eden.utils.AndroidUtil.openActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eden.R;
 import com.eden.adapter.ViewPagerAdapter;
+import com.eden.api.dto.UserSchema;
 import com.eden.utils.AndroidUtil;
+import com.eden.utils.callbacks.UserCallback;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -59,28 +62,6 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-        // Setting Values
-        TextView name = findViewById(R.id.profile_name);
-        TextView username = findViewById(R.id.profile_username);
-        RatingBar rating = findViewById(R.id.profile_rating);
-
-        if (currentUser != null) {
-            name.setText(currentUser.getName());
-            username.setText(currentUser.getUserName());
-            rating.setRating(currentUser.getRating());
-        }
-
-        // Setting header
-        RelativeLayout headerProfile = findViewById(R.id.header_profile);
-
-        // Setting perfil photo
-        profilePic = findViewById(R.id.profile_pic);
-        AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
-
-        headerProfile.setOnClickListener(v -> {
-            openActivity(this, UserProfileEdit.class);
-        });
-
         (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
 //        navView.setNavigationItemSelectedListener(item -> {
@@ -92,6 +73,39 @@ public class UserProfile extends AppCompatActivity {
 //            }
 //        });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AndroidUtil.getUser(new UserCallback() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void setResponse(UserSchema response) {
+
+                // Setting Values
+                TextView name = findViewById(R.id.profile_name);
+                TextView username = findViewById(R.id.profile_username);
+                RatingBar rating = findViewById(R.id.profile_rating);
+
+                if (currentUser != null) {
+                    name.setText(currentUser.getName());
+                    username.setText("@" + currentUser.getUserName());
+                    rating.setRating(currentUser.getRating());
+                }
+
+                // Setting perfil photo
+                profilePic = findViewById(R.id.profile_pic);
+                AndroidUtil.downloadProfilePicFromFirebase(UserProfile.this, profilePic);
+
+                // Open the editUser activity
+                ImageView edit_btn = findViewById(R.id.edit_btn);
+                edit_btn.setOnClickListener(v -> openActivity(UserProfile.this, UserProfileEdit.class));
+
+            }
+        });
 
     }
 }
