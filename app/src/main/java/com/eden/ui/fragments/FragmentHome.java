@@ -3,6 +3,7 @@ package com.eden.ui.fragments;
 import static com.eden.utils.AndroidUtil.currentUser;
 import static com.eden.utils.AndroidUtil.fetchBoughtProducts;
 import static com.eden.utils.AndroidUtil.fetchFavorites;
+import static com.eden.utils.AndroidUtil.getToken;
 import static com.eden.utils.AndroidUtil.getUser;
 
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -27,9 +29,12 @@ import android.widget.Toast;
 
 import com.eden.R;
 import com.eden.adapter.ProductAdapter;
+import com.eden.adapter.ProductPremiumAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
+import com.eden.model.Token;
+import com.eden.utils.callbacks.TokenCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +50,7 @@ public class FragmentHome extends Fragment {
     List<Product> premiumProducts = new ArrayList<>();
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    ProductAdapter productAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -64,36 +70,33 @@ public class FragmentHome extends Fragment {
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                // Se for a posição 0 (carrossel), ocupa 2 colunas
                 if (position == 0) {
-                    return 2; // Ocupa 2 colunas
+                    return 2;
                 }
-                return 1; // Os outros itens ocupam 1 coluna
+                return 1;
             }
         });
 
-        getUser(response -> {
-            if (response != null) {
-                // Chama os produtos ao carregar a tela
-                loadProducts(recyclerView, progressBar);
+        // Chama os produtos ao carregar a tela
+        loadProducts(recyclerView, progressBar);
 
-                // Search for Products
-                searchProducts(searchBar, recyclerView, progressBar);
+        // Search for Products
+        searchProducts(searchBar, recyclerView, progressBar);
 
-                // Get Favorites
-                fetchFavorites();
+        // Get Favorites
+        fetchFavorites();
 
-                // Get Bought Products
-                fetchBoughtProducts();
-            }
-        });
+        // Get Bought Products
+        fetchBoughtProducts();
 
         // Reload posts on refresh
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            recyclerView.setAdapter(null);
-            loadProducts(recyclerView, progressBar);
-            swipeRefreshLayout.setRefreshing(false);
-        });
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                recyclerView.setAdapter(null);
+                loadProducts(recyclerView, progressBar);
+                swipeRefreshLayout.setRefreshing(false);
+            });
+        }
 
         return view;
     }
@@ -115,11 +118,17 @@ public class FragmentHome extends Fragment {
                         Call<List<Product>> callPremium = productService.getPremiumProducts(currentUser.getId());
                         callPremium.enqueue(new Callback<List<Product>>() {
                             @Override
-                            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                                if (response.isSuccessful()) {
-                                    premiumProducts = response.body();
+                            public void onResponse(Call<List<Product>> call, Response<List<Product>> responsePremium) {
+                                if (responsePremium.isSuccessful()) {
 
-                                    recyclerView.setAdapter(new ProductAdapter(products, premiumProducts));
+                                    premiumProducts = responsePremium.body();
+                                    productAdapter = new ProductAdapter(products, premiumProducts);
+                                    recyclerView.setAdapter(productAdapter);
+
+                                    // Anexar o SnapHelper aqui
+                                    RecyclerView premiumRecyclerView = recyclerView.findViewById(R.id.recyclerView_premium_product);
+                                    LinearSnapHelper snapHelper = new LinearSnapHelper();
+                                    snapHelper.attachToRecyclerView(premiumRecyclerView);
 
                                 }
                             }
@@ -133,6 +142,14 @@ public class FragmentHome extends Fragment {
                     } else {
                         try {
                             Log.d("ErrorBody", response.errorBody().string());
+                            String errorBody = response.errorBody().string().toLowerCase().trim();
+                            if (errorBody.contains("unauthorized")) {
+                                getToken(token -> {
+                                    loadProducts(recyclerView, progressBar);
+                                });
+                            } else {
+                                Log.d("Deu Ruim", response.errorBody().string());
+                            }
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -171,14 +188,15 @@ public class FragmentHome extends Fragment {
                         String query = "%" + s.toString() + "%"; // Atualize a query de busca com a string digitada pelo usuário
                         if (!query.contentEquals("%%")) {
                             ProductService productService = RetrofitClient.getClient().create(ProductService.class);
-                            Call<List<Product>> call = productService.getProductByTitle(query); // Atualize a chamada da API com a query de busca
+                            Call<List<Product>> call = productService.getProductByTitle(query, currentUser.getId()); // Atualize a chamada da API com a query de busca
                             call.enqueue(new Callback<List<Product>>() {
                                 @Override
                                 public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                                     if (response.isSuccessful()) {
                                         if (response.body() != null) {
                                             products = response.body(); // Atualize a lista de produtos com os resultados da busca
-                                            recyclerView.setAdapter(new ProductAdapter(products, premiumProducts)); // Notifique o adapter sobre a atualização da lista de produtos
+                                            productAdapter = new ProductAdapter(products, premiumProducts);
+                                            recyclerView.setAdapter(productAdapter); // Notifique o adapter sobre a atualização da lista de produtos
                                             progressBar.setVisibility(View.GONE);
                                         } else {
                                             Toast.makeText(getActivity(), "Nenhum resultado encontrado", Toast.LENGTH_SHORT).show();
@@ -213,4 +231,11 @@ public class FragmentHome extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (productAdapter != null) {
+            productAdapter.stopAutoScroll();
+        }
+    }
 }

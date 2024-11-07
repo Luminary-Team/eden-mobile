@@ -25,15 +25,15 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add_post"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="20dp"
             android:backgroundTint="@color/edenBlue"
             android:src="@drawable/add_icon"
             android:tint="@color/white"
-            app:fabCustomSize="72dp"
+            app:fabCustomSize="65dp"
             app:maxImageSize="50dp" />
 
     </RelativeLayout>

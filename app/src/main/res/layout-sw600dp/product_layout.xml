@@ -21,7 +21,7 @@
             android:layout_height="125dp"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/arrendar"
+            app:shapeAppearanceOverlay="@style/arredondar"
             android:src="@drawable/eden_logotipo_2" />
 
         <TextView

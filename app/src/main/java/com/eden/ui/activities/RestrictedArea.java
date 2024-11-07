@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.eden.R;
 
 public class RestrictedArea extends AppCompatActivity {
+
     WebView webView;
 
     @Override
@@ -23,9 +24,12 @@ public class RestrictedArea extends AppCompatActivity {
         //Ativando o JavaScript
         webView.getSettings().setJavaScriptEnabled(true);
 
-        webView.setWebViewClient(new WebViewClient()); // Para abrir links dentro da WebView
+        webView.setWebViewClient(new WebViewClient());
 
         webView.loadUrl("https://eden-restrict-area.onrender.com/");
+
+        // Setting up back button
+        (findViewById(R.id.back_btn)).setOnClickListener(v -> finish());
 
     }
 

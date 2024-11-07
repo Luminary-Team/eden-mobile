@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/nav_favoritos"
+            android:title="Favoritos"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/favorite_icon" />
+        <item
+            android:id="@+id/nav_pontos"
+            android:title="Pontos de Coleta"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/location_icon" />
+        <item
+            android:id="@+id/nav_artigos"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/article_icon"
+            android:title="Artigos Informativos" />
+<!--        <item-->
+<!--            android:id="@+id/nav_my_posts"-->
+<!--            android:iconTint="@color/edenBlue"-->
+<!--            android:icon="@drawable/lock_fullfilled_icon"-->
+<!--            android:title="Meus posts" />-->
+        <item
+            android:id="@+id/nav_comprados"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/cart_fullfilled_icon"
+            android:title="Produtos Comprados" />
+        <item
+            android:id="@+id/nav_restricted_area"
+            android:iconTint="@color/edenBlue"
+            android:icon="@drawable/lock_fullfilled_icon"
+            android:title="Área Restrita" />
+
+</menu>

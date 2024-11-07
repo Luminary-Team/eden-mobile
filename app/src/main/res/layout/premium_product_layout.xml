@@ -1,94 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
-    android:layout_height="130dp"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
     android:layout_margin="8dp"
+    android:layout_marginHorizontal="20dp"
     android:backgroundTint="#E3E8FD"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="@color/edenProductBlue">
+        android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/product_image"
+            android:id="@+id/premium_product_image"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/edenProductBlue"
+            android:scaleType="centerCrop"
+            android:src="@drawable/eden_logotipo_2" />
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:scaleType="centerInside"
-            app:shapeAppearanceOverlay="@style/arrendar"
-            android:src="@drawable/image_premium" />
+            android:layout_toEndOf="@id/premium_product_image"
+            android:backgroundTint="@color/edenProductBlue"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/product_title"
+            <TextView
+                android:id="@+id/premium_product_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/edenProductBlue"
+                android:maxLines="2"
+                android:text="Título"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/premium_product_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/premium_product_title"
+                android:text="Descricao"
+                android:textSize="12sp"
+                android:maxLines="3"/>
+
+            <TextView
+                android:id="@+id/premium_product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/premium_product_description"
+                android:layout_alignParentBottom="true"
+                android:backgroundTint="@color/edenProductBlue"
+                android:maxLines="1"
+                android:textColor="@color/edenBlue"
+                android:gravity="bottom"
+                android:text="R$"
+                android:textSize="16sp"
+                />
+
+<!--            <TextView-->
+<!--                android:id="@+id/premium_max_price"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/premium_product_price"-->
+<!--                android:visibility="invisible"-->
+<!--                android:backgroundTint="@color/edenProductBlue"-->
+<!--                android:text="R$"-->
+<!--                android:textColor="#FC9F35"-->
+<!--                android:textSize="12sp"-->
+<!--                />-->
+
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/premium_overflow_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/product_image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/edenProductBlue"
-            android:maxLines="2"
-            android:text="Título"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/descricao_produto"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_below="@id/titulo_produto"-->
-        <!--            android:text="Descricao"-->
-        <!--            android:textSize="12sp" />-->
-
-        <!--        <RatingBar-->
-        <!--            android:id="@+id/rating_produto"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="15dp"-->
-        <!--            android:layout_below="@id/titulo_produto"-->
-        <!--            style="@style/Widget.AppCompat.RatingBar.Small"-->
-        <!--            android:backgroundTint="@color/edenProductBlue"-->
-        <!--            android:progressTint="@color/edenBlue"-->
-        <!--            android:isIndicator="true"-->
-        <!--            android:numStars="5"-->
-        <!--            android:rating="5" />-->
-
-        <!--        <CheckBox-->
-        <!--            android:id="@+id/coracao_produto"-->
-        <!--            android:layout_width="30dp"-->
-        <!--            android:layout_height="30dp"-->
-        <!--            android:layout_alignParentBottom="true"-->
-        <!--            android:layout_toLeftOf="@id/add_carrinho_produto"-->
-        <!--            android:button="@drawable/heart_icon"-->
-        <!--            android:buttonTintMode="add"-->
-        <!--            android:buttonTint="@color/edenBlue"-->
-        <!--            />-->
-
-        <TextView
-            android:id="@+id/product_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/product_title"
-            android:backgroundTint="@color/edenProductBlue"
-            android:maxLines="1"
-            android:textColor="@color/edenBlue"
-            android:text="R$"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:id="@+id/max_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/product_price"
-            android:visibility="invisible"
-            android:backgroundTint="@color/edenProductBlue"
-            android:text="R$"
-            android:textColor="#FC9F35"
-            android:textSize="12sp"
-            />
+            android:background="@null"
+            android:src="@drawable/dots_icon"
+            app:tint="@color/edenBlue" />
 
     </RelativeLayout>
+
 
 </androidx.cardview.widget.CardView>

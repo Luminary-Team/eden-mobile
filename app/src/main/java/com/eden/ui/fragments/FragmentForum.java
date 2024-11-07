@@ -10,6 +10,7 @@ import static com.eden.utils.AndroidUtil.downloadProfilePicFromFirebase;
 import static com.eden.utils.AndroidUtil.isImageFromCamera;
 import static com.eden.utils.AndroidUtil.uploadImageToFirebase;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -43,6 +44,7 @@ import com.eden.api.RetrofitClient;
 import com.eden.api.dto.PostResponse;
 import com.eden.api.services.ForumService;
 import com.eden.model.Post;
+import com.eden.model.PostRequest;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -57,6 +59,10 @@ public class FragmentForum extends Fragment {
 
     ImageView imagePost;
 
+    @SuppressLint("StaticFieldLeak")
+    static ProgressBar progressBar;
+    static RecyclerView recyclerView;
+
     ActivityResultLauncher<Intent> imagePickLauncher;
     Uri finalSelectedImageUri;
 
@@ -66,20 +72,20 @@ public class FragmentForum extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forum, container, false);
         FloatingActionButton addPost = view.findViewById(R.id.btn_add_post);
-        ProgressBar progressBar = view.findViewById(R.id.forum_progressBar);
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_forum);
+        progressBar = view.findViewById(R.id.forum_progressBar);
 
         addPost.setOnClickListener(v -> showAddPostDialog());
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_posts);
+        recyclerView = view.findViewById(R.id.recyclerView_posts);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadPosts(recyclerView, progressBar);
+        loadPosts();
 
         // Reload posts on refresh
         swipeRefreshLayout.setOnRefreshListener(() -> {
             recyclerView.setAdapter(null);
-            loadPosts(recyclerView, progressBar);
+            loadPosts();
             swipeRefreshLayout.setRefreshing(false);
         });
 
@@ -143,7 +149,7 @@ public class FragmentForum extends Fragment {
         return view;
     }
 
-    private void loadPosts(RecyclerView recyclerView, ProgressBar progressBar) {
+    public static void loadPosts() {
         // Get all posts
         progressBar.setVisibility(View.VISIBLE);
         ForumService forumService = RetrofitClient.getClient().create(ForumService.class);
@@ -154,7 +160,11 @@ public class FragmentForum extends Fragment {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
                     List<PostResponse> posts = response.body();
-                    recyclerView.setAdapter(new PostAdapter(posts));
+                    if (posts != null) {
+                        recyclerView.setAdapter(new PostAdapter(posts));
+                    } else {
+                        // Fazer imagenzinha de vazio
+                    }
                 } else {
                     try {
                         progressBar.setVisibility(View.GONE);
@@ -191,7 +201,7 @@ public class FragmentForum extends Fragment {
         ShapeableImageView pfp = dialog.findViewById(R.id.comment_pfp);
         imagePost = dialog.findViewById(R.id.image_post);
 
-        imagePost.setVisibility(View.VISIBLE);
+        imagePost.setVisibility(View.GONE);
 
         downloadProfilePicFromFirebase(getContext(), pfp);
 
@@ -210,14 +220,17 @@ public class FragmentForum extends Fragment {
 
             // Create a post
             ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
-            Call<PostResponse> call = forumService.createPost(new Post(currentUser.getId(), content.getText().toString()));
+            Call<PostResponse> call = forumService.createPost(new PostRequest(currentUser.getId(), content.getText().toString()));
+
             call.enqueue(new Callback<PostResponse>() {
                 @Override
                 public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
                     if(response.isSuccessful()) {
                         PostResponse post = response.body();
                         Toast.makeText(getContext(), "Post criado com sucesso", Toast.LENGTH_SHORT).show();
-                        uploadImageToFirebase(finalSelectedImageUri, "post_" + post.getId() + ".jpg");
+                        if (finalSelectedImageUri != null)
+                            uploadImageToFirebase(finalSelectedImageUri, "post_" + post.getId() + ".jpg");
+                        loadPosts();
                         dialog.dismiss();
                     } else {
                         try {
@@ -239,5 +252,6 @@ public class FragmentForum extends Fragment {
         back_btn.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
+
     }
 }

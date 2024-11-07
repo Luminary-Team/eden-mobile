@@ -34,6 +34,7 @@ import com.eden.api.services.CartService;
 import com.eden.api.services.UserService;
 import com.eden.model.Cart;
 import com.eden.model.Product;
+import com.eden.utils.NotificationReceiver;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
@@ -91,7 +92,7 @@ public class BuyProduct extends AppCompatActivity {
         btnComprar.setOnClickListener(v -> {
             openActivity(this, CartActivity.class);
             addCart(intent.getIntExtra("id", 0));
-            notificar();
+//            notificar();
             finish();
         });
 
@@ -218,40 +219,39 @@ public class BuyProduct extends AppCompatActivity {
 
     }
 
-    public void notificar() {
-
-        // Criar Notificação
-        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
-        PendingIntent pendindIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.drawable.eden_logotipo_2)
-                .setContentTitle("Título da notificação")
-                .setContentText("CLIQUE E RECEBA!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setContentIntent(pendindIntent);
-
-        // Criar Canal de Notificação
-        NotificationChannel channel = new NotificationChannel("channel_id", "Notificar",
-                NotificationManager.IMPORTANCE_HIGH);
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(channel);
-
-        // Mostrar notificação
-        NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(this);
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        notificationCompat.notify(1, builder.build());
-
-
-    }
+//    public void notificar() {
+//
+//        // Criar Notificação
+//        Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+//        PendingIntent pendindIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
+//
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
+//                .setSmallIcon(R.drawable.eden_logotipo_2)
+//                .setContentTitle("Título da notificação")
+//                .setContentText("CLIQUE E RECEBA!")
+//                .setPriority(NotificationCompat.PRIORITY_HIGH)
+//                .setAutoCancel(true)
+//                .setContentIntent(pendindIntent);
+//
+//        // Criar Canal de Notificação
+//        NotificationChannel channel = new NotificationChannel("channel_id", "Notificar",
+//                NotificationManager.IMPORTANCE_HIGH);
+//        NotificationManager manager = getSystemService(NotificationManager.class);
+//        manager.createNotificationChannel(channel);
+//
+//        // Mostrar notificação
+//        NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(this);
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        notificationCompat.notify(1, builder.build());
+//
+//
+//    }
 }

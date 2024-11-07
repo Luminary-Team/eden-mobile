@@ -1,19 +1,18 @@
 package com.eden.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
-
-import androidx.core.content.ContextCompat;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.eden.R;
 import com.eden.api.RetrofitClient;
 import com.eden.api.dto.OrderGetAllResponse;
 import com.eden.api.dto.TokenRequest;
@@ -23,7 +22,7 @@ import com.eden.api.services.UserService;
 import com.eden.model.Product;
 import com.eden.model.Token;
 import com.eden.ui.activities.MainActivity;
-import com.eden.ui.activities.UserLogin;
+import com.eden.utils.callbacks.TokenCallback;
 import com.eden.utils.callbacks.UserCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,7 +42,6 @@ public class AndroidUtil {
     public static String token;
     public static UserSchema currentUser;
     public static List<Product> favorites, boughtProducts;
-    private static int loginTries = 0;
 
     // Open intent
     public static void openActivity(Context context, Class<?> className) {
@@ -113,6 +111,7 @@ public class AndroidUtil {
 
     public static void uploadImageToFirebase(Uri uri, String imagePath) {
         // Create "images" folder reference in Firebase Storage
+        storageRef.child(imagePath);
         StorageReference imageRef = storageRef.child(imagePath);
 
         // Upload image to Firebase Storage
@@ -130,6 +129,7 @@ public class AndroidUtil {
     public static void downloadImageFromFirebase(Context context, ImageView imageView, String imagePath) {
         // Create reference to the image:
         StorageReference imageRef = storageRef.child(imagePath);
+        Log.d("CHECKPOINT", imageRef.getDownloadUrl().toString());
 
         // Download image from Firebase Storage
         imageRef.getDownloadUrl()
@@ -139,14 +139,28 @@ public class AndroidUtil {
                         // Use the download URL to display the image
                         Glide.with(context)
                                 .load(uri)
-                                .override(500, 500) // Resize the image to 300x300 pixels
+                                .override(700, 700) // Resize the image to 500x500 pixels
                                 .into(imageView);
+                        imageView.setVisibility(View.VISIBLE);
                     } else {
                         Log.w("AndroidUtil", "Activity is no longer valid, cannot load image");
                     }
                 }).addOnFailureListener(e -> {
-                    Log.e("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                    Log.d("CHECKPOINT", "Error downloading image: " + e.getMessage());
+                    if (imagePath.contains("ProfilePic")) {
+                        imageView.setImageResource(R.drawable.pfp_placeholder_icon);
+                    } else {
+                        imageView.setImageResource(R.drawable.eden_logotipo_3);
+                    }
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.i("TAG", "downloadImageFromFirebase: Deu bom");
+                    } else {
+                        Log.i("TAG", "downloadImageFromFirebase: Q porra ta acontecendo");
+
+                    }
                 });
+        Log.d("CHECKPOINT", "where da fuck is the error starting?");
     }
 
     public static void downloadImageFromFirebaseWithRoundedCorners(Context context, ImageView imageView, String imagePath) {
@@ -187,7 +201,7 @@ public class AndroidUtil {
         return scheme != null && scheme.equals("file") && uri.getPath() != null && uri.getPath().contains("camera");
     }
 
-    public static void getToken() {
+    public static void getToken(TokenCallback callback) {
         Retrofit client = RetrofitClient.getClient();
         String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         UserService service = client.create(UserService.class);
@@ -199,20 +213,23 @@ public class AndroidUtil {
                     token = response.body().getToken();
                     getUser(response1 -> {});
                     Log.d("TOKEN", "Token: " + token);
+                    callback.setResponse(new Token(token));
                 } else {
                     Log.d("TOKEN", "Error getting token");
+                    callback.setResponse(null);
                 }
             }
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
                 Log.d("TOKEN", throwable.getMessage());
+                callback.setResponse(null);
             }
         });
     }
     public static void getUser(UserCallback callback) {
         // TODO: Implementar callback no resto :cry:
         UserService service = RetrofitClient.getClientWithToken().create(UserService.class);
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String email = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         Call<UserSchema> call = service.getParam(email);
 
         call.enqueue(new Callback<UserSchema>() {
@@ -282,7 +299,7 @@ public class AndroidUtil {
                     });
 
                 } else if (response.code() == 503) {
-                    RetrofitClient.changeService();
+                    Toast.makeText(context, "A api ainda nn acordou", Toast.LENGTH_SHORT).show();
                     authenticate(context);
                 } else {
                     Log.d("TOKEN", "Error getting token");
@@ -291,59 +308,10 @@ public class AndroidUtil {
             @Override
             public void onFailure(Call<Token> call, Throwable throwable) {
                 Log.d("TOKEN", throwable.getMessage());
-                loginTries++;
-                if (loginTries < 3) {
-                    authenticate(context);
-                } else {
-                    openActivity(context, UserLogin.class);
-                    loginTries = 0;
-                }
+                authenticate(context);
             }
         });
 
     }
-
-    private static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
-    };
-
-    private boolean allPermissionsGranted(Context context) {
-        for (String permission : REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-//    public static void notify(Context context, Context localContext) {
-//
-//        // Create Notification
-//        Intent intent = new Intent(context, NotificationReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-//
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(localContext, "channel_id")
-//                .setSmallIcon(R.drawable.eden_logotipo_2)
-//                .setContentTitle("Notification Title")
-//                .setContentText("CLICK AND RECEIVE!")
-//                .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent);
-//
-//        // Create Notification Channel
-//        NotificationChannel channel = new NotificationChannel("channel_id", "Notify",
-//                NotificationManager.IMPORTANCE_HIGH);
-//        NotificationManager manager = getSystemService(NotificationManager.class);
-//        manager.createNotificationChannel(channel);
-//
-//        // Show notification
-//        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(localContext);
-//        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Handle missing permission
-//            return;
-//        }
-//        notificationManagerCompat.notify(1, builder.build());
-//    }
 
 }

@@ -17,7 +17,7 @@
         app:shapeAppearance="@style/to_circle"
         app:strokeColor="@color/edenBlue"
         app:strokeWidth="2dp"
-        tools:srcCompat="@tools:sample/avatars"/>
+        tools:srcCompat="@drawable/pfp_placeholder_icon"/>
 
     <TextView
         android:id="@+id/profile_name"
@@ -36,7 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/profile_name"
-        android:layout_toRightOf="@id/profile_pic"
+        android:layout_marginTop="-5dp"
+        android:layout_toEndOf="@id/profile_pic"
         android:layout_marginStart="10dp"
         android:background="@null"
         android:text="@string/userNameText"

@@ -56,7 +56,6 @@ public class UserProfileEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile_edit);
 
         // Setting Values
@@ -176,14 +175,6 @@ public class UserProfileEdit extends AppCompatActivity {
         );
 
         AndroidUtil.downloadProfilePicFromFirebase(this, profilePic);
-
-        // Logout
-        (findViewById(R.id.textView_logout)).setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(UserProfileEdit.this, SplashScreen.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> {
             finish();

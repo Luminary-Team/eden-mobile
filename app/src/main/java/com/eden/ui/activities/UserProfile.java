@@ -6,9 +6,10 @@ import static com.eden.utils.AndroidUtil.openActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.eden.R;
@@ -80,6 +81,7 @@ public class UserProfile extends AppCompatActivity {
         super.onResume();
 
         AndroidUtil.getUser(new UserCallback() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void setResponse(UserSchema response) {
 
@@ -90,20 +92,17 @@ public class UserProfile extends AppCompatActivity {
 
                 if (currentUser != null) {
                     name.setText(currentUser.getName());
-                    username.setText(currentUser.getUserName());
+                    username.setText("@" + currentUser.getUserName());
                     rating.setRating(currentUser.getRating());
                 }
-
-                // Setting header
-                RelativeLayout headerProfile = findViewById(R.id.header_profile);
 
                 // Setting perfil photo
                 profilePic = findViewById(R.id.profile_pic);
                 AndroidUtil.downloadProfilePicFromFirebase(UserProfile.this, profilePic);
 
-                headerProfile.setOnClickListener(v -> {
-                    openActivity(UserProfile.this, UserProfileEdit.class);
-                });
+                // Open the editUser activity
+                ImageView edit_btn = findViewById(R.id.edit_btn);
+                edit_btn.setOnClickListener(v -> openActivity(UserProfile.this, UserProfileEdit.class));
 
             }
         });

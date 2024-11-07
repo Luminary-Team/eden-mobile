@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,80 +37,6 @@ public class FirebaseUserUtil {
         return currentUserId() != null;
     }
 
-    public void login(EditText emailEditText, EditText passwordEditText, TextView errorMessage, Context context) {
-        if (!emailEditText.getText().toString().isEmpty() && !passwordEditText.getText().toString().isEmpty()) {
-            String email = emailEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-            // TODO: Aplicar tratamento de erros
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @SuppressLint("ResourceAsColor")
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Toast.makeText(context, "Login bem-sucedido!", Toast.LENGTH_SHORT).show();
-                                openActivity(context, MainActivity.class);
-                                ((Activity) context).finish();
-                            } else {
-                                // Treatment for the email text field
-                                emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
-                                passwordEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
-
-                                emailEditText.addTextChangedListener(new TextWatcher() {
-                                    @Override
-                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                                    }
-
-                                    @Override
-                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                        errorMessage.setVisibility(View.INVISIBLE);
-                                        emailEditText.setError(null);
-                                        emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape);
-                                    }
-
-                                    @Override
-                                    public void afterTextChanged(Editable editable) {
-                                    }
-
-                                });
-                                passwordEditText.addTextChangedListener(new TextWatcher() {
-                                    @Override
-                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                                    }
-
-                                    @Override
-                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                        errorMessage.setVisibility(View.INVISIBLE);
-                                        passwordEditText.setError(null);
-                                        passwordEditText.setBackgroundResource(R.drawable.rounded_corner_shape);
-                                    }
-
-                                    @Override
-                                    public void afterTextChanged(Editable editable) {
-                                    }
-
-                                });
-
-                            }
-                        }
-                    }).addOnFailureListener(e -> {
-                        errorMessage.setTextColor(ContextCompat.getColor(context, R.color.errorRed));
-                        errorMessage.setVisibility(View.VISIBLE);
-                        Log.d("login", "Login falhou: " + e.getMessage());
-                        if (e.getMessage().contains("The email address is badly formatted.")) {
-                            errorMessage.setText("Email inválido");
-                        } else {
-                            errorMessage.setText("Email ou senha incorretos");
-                        }
-                    });
-        } else {
-            errorMessage.setVisibility(View.VISIBLE);
-            errorMessage.setTextColor(ContextCompat.getColor(context, R.color.edenBlue));
-            errorMessage.setText("Preencha todos os campos");
-        }
-    }
-
     public void register(String email, String senha, Context context) {
         mAuth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -122,10 +49,9 @@ public class FirebaseUserUtil {
                             // Ir para home
                             authenticate(context);
 
-                            Toast.makeText(context, "Usuário cadastrado no firebase com sucesso!", Toast.LENGTH_SHORT).show();
+                            Log.w("register", "onComplete: " + user.getUid());
                         } else {
-                            // Caso de falha
-                            Toast.makeText(context, "Falha ao cadastrar: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Log.e("register", "Registration failed: " + task.getException().getMessage());
                         }
                     }
         });

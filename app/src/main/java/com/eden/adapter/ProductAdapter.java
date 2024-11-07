@@ -3,15 +3,18 @@ package com.eden.adapter;
 import static com.eden.utils.AndroidUtil.downloadImageFromFirebase;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
@@ -22,6 +25,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private Handler handler;
+    private Runnable runnable;
+    private int currentPosition = 0;
 
     private static final int TYPE_PREMIUM = 0;
     private static final int TYPE_NORMAL = 1;
@@ -58,11 +65,15 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderPremium) {
-            // Configurar o carrossel
+            // Premium Product
+
             RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
             recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerView.post(() -> recyclerView.scrollToPosition(1));
-            recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList)); // Passar a lista de produtos premium
+
+            recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList));
+
+            startAutoScroll(premiumProductList.size(), recyclerView);
+
         } else if (holder instanceof ViewHolderProduct) {
             // Normal Product
             ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;
@@ -72,9 +83,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if (product.getTitle() != null) {
                     viewHolderProduct.title.setText(product.getTitle());
                 }
-                if (product.getPrice() != 0) {
-                    viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
-                }
+                viewHolderProduct.price.setText(String.format("R$ %.2f", product.getPrice()));
 
                 downloadImageFromFirebase(viewHolderProduct.itemView.getContext(), viewHolderProduct.imageView, "product_" + product.getId() + ".jpg");
 
@@ -95,6 +104,28 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return normalProductList.size() + 1; // Adiciona 1 para o carrossel
     }
 
+    private void startAutoScroll(int itemCount, RecyclerView recyclerView) {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (itemCount > 0) {
+                    currentPosition = (currentPosition + 1) % itemCount;
+                    recyclerView.smoothScrollToPosition(currentPosition);
+                    Log.i("AutoScroll", "Scrolling to position: " + currentPosition);
+                }
+                handler.postDelayed(this, 3000);
+            }
+        };
+        handler.postDelayed(runnable, 3000);
+    }
+
+    public void stopAutoScroll() {
+        if (handler != null) {
+            handler.removeCallbacks(runnable); // Remove callbacks para evitar vazamentos de memória
+        }
+    }
+
     public static class ViewHolderProduct extends RecyclerView.ViewHolder {
         private TextView title, price;
         private ImageView imageView;
@@ -108,9 +139,16 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public static class ViewHolderPremium extends RecyclerView.ViewHolder {
-        public ViewHolderPremium(@NonNull View itemView) {
-            super(itemView);
-            // Inicialize outros componentes do layout do carrossel, se necessário
+        public TextView premiumTitle, premiumPrice;
+        public ImageView premiumImageView;
+        public ImageButton premiumOverflowMenu;
+
+        public ViewHolderPremium(@NonNull View premiumItemView) {
+            super(premiumItemView);
+            premiumOverflowMenu = premiumItemView.findViewById(R.id.premium_overflow_menu);
+            premiumTitle = premiumItemView.findViewById(R.id.premium_product_title);
+            premiumPrice = premiumItemView.findViewById(R.id.premium_product_price);
+            premiumImageView = premiumItemView.findViewById(R.id.premium_product_image);
         }
     }
 }

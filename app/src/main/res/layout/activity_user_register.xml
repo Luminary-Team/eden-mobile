@@ -13,34 +13,30 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
 
             <RelativeLayout
                 android:id="@+id/header_layout"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 >
 
                 <ImageView
                     android:id="@+id/imagem_eden_component"
-                    android:layout_width="135dp"
+                    android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:scaleType="centerCrop"
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/eden_logotipo_3" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_toRightOf="@id/imagem_eden_component"
-                    android:text="Eden"
-                    android:textColor="@color/edenBlue"
-                    android:textSize="40dp" />
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/imagem_eden_component"
+                    android:layout_marginTop="-10dp"
+                    android:src="@drawable/eden"/>
 
             </RelativeLayout>
 
@@ -141,6 +137,18 @@
                 android:layout_marginTop="10dp"
                 app:tint="@color/edenBlue" />
 
+            <TextView
+                android:id="@+id/error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_senha"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/errorRed"
+                android:textSize="15sp"
+                android:visibility="gone"
+                />
+
             <Button
                 android:id="@+id/btn_cadastro"
                 android:layout_width="match_parent"
@@ -156,6 +164,17 @@
                 app:cornerRadius="5dp"
                 />
 
+            <ProgressBar
+                android:id="@+id/user_register_progressBar"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textInput_senha"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:indeterminateTint="@color/white"
+                android:translationZ="2dp"
+                />
+
             <TextView
                 android:id="@+id/textView_login"
                 android:layout_width="match_parent"
@@ -169,16 +188,17 @@
                 android:textAlignment="center"
                 />
 
+            <ImageView
+                android:id="@+id/imageView_eden_robot"
+                android:layout_width="300dp"
+                android:layout_height="280dp"
+                android:src="@drawable/eden_robot"
+                android:layout_below="@id/textView_login"
+                android:layout_alignParentEnd="true"
+                android:translationZ="100dp" />
+
         </RelativeLayout>
 
     </ScrollView>
-
-    <ImageView
-        android:id="@+id/imageView_eden_robot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/eden_robot"
-        android:layout_gravity="end|bottom"
-        android:translationZ="100dp" />
 
 </FrameLayout>

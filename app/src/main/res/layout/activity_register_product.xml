@@ -27,7 +27,7 @@
             android:layout_marginTop="22dp"
             android:layout_marginStart="12dp"
             android:layout_toRightOf="@id/back_btn"
-            android:text="Editar Produto"
+            android:text="Adicionar produto"
             android:textSize="24sp"
             />
 
@@ -41,14 +41,15 @@
 
             <ImageView
                 android:id="@+id/register_product_image"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
-                app:shapeAppearance="@style/to_circle"
                 android:background="@drawable/camera_placeholder"
-                android:scaleType="centerCrop" />
+                android:scaleType="center"
+                android:orientation="horizontal"
+                />
 
             <EditText
                 android:id="@+id/editText_product_title"
@@ -75,7 +76,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_corner_shape"
                 android:hint="Preço"
-                android:inputType="number"
+                android:maxLength="7"
+                android:inputType="numberDecimal"
                 android:padding="10dp"
                 android:textSize="15sp" />
 
@@ -101,12 +103,10 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editText_product_description"
-                android:drawableStart="@drawable/description_icon"
                 android:drawableTint="@color/edenBlue"
                 android:drawablePadding="10dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_corner_shape"
-
                 android:entries="@array/spinner"
                 android:inputType="text|textEmailAddress"
                 android:padding="10dp"
@@ -117,11 +117,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:layout_alignParentEnd="true"
+                android:layout_toLeftOf="@id/premium_info"
                 android:layout_below="@id/editText_product_description"
                 android:buttonTint="@color/edenBlue"
                 android:text="Premium"
                 />
+
+            <ImageView
+                android:id="@+id/premium_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/editText_product_description"/>
 
         </RelativeLayout>
 

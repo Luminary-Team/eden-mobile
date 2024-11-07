@@ -3,16 +3,14 @@ package com.eden.ui.activities;
 import static com.eden.utils.AndroidUtil.currentUser;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.R;
-import com.eden.adapter.PremiumProductAdapter;
+import com.eden.adapter.ProductPremiumAdapter;
 import com.eden.api.RetrofitClient;
 import com.eden.api.services.ProductService;
 import com.eden.model.Product;
@@ -24,6 +22,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PremiumProduct extends AppCompatActivity {
+
+    private Handler handler;
+    private Runnable runnable;
+    private int currentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,8 @@ public class PremiumProduct extends AppCompatActivity {
                 List<Product> products = response.body();
 
                 if (products != null) {
-                    recyclerView.setAdapter(new PremiumProductAdapter(products));
+                    recyclerView.setAdapter(new ProductPremiumAdapter(products));
+                    startAutoScroll(products.size(), recyclerView);
                 }
 
             }
@@ -53,4 +56,28 @@ public class PremiumProduct extends AppCompatActivity {
         });
 
     }
+
+    private void startAutoScroll(int itemCount, RecyclerView recyclerView) {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (itemCount > 0) {
+                    currentPosition = (currentPosition + 1) % itemCount; // Mover para a próxima posição
+                    recyclerView.smoothScrollToPosition(currentPosition);
+                }
+                handler.postDelayed(this, 1000); // 3 segundos
+            }
+        };
+        handler.postDelayed(runnable, 1000); // Iniciar após 3 segundos
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (handler != null) {
+            handler.removeCallbacks(runnable); // Remove callbacks to prevent memory leaks
+        }
+    }
+
 }

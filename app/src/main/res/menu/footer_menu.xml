@@ -11,7 +11,7 @@
         android:id="@+id/menu_add"/>
 
     <item android:title="Fórum"
-        android:icon="@drawable/forum_outlined_icon"
+        android:icon="@drawable/people_outline_icon"
         android:id="@+id/menu_forum"/>
 
 </menu>
