@@ -105,8 +105,7 @@ public class UserProfile extends AppCompatActivity {
                 AndroidUtil.downloadProfilePicFromFirebase(UserProfile.this, profilePic);
 
                 // Open the editUser activity
-                ImageView edit_btn = findViewById(R.id.edit_btn);
-                edit_btn.setOnClickListener(v -> openActivity(UserProfile.this, UserProfileEdit.class));
+                (findViewById(R.id.header_profile)).setOnClickListener(v -> openActivity(UserProfile.this, UserProfileEdit.class));
 
             }
         });
