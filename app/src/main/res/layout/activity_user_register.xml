@@ -172,7 +172,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
                 android:indeterminateTint="@color/white"
-                android:translationZ="2dp"
+                android:translationZ="3dp"
                 />
 
             <TextView
