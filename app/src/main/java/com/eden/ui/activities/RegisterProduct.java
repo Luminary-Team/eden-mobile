@@ -94,7 +94,7 @@ public class RegisterProduct extends AppCompatActivity {
 
                 ProductRequest product = new ProductRequest(
                         1,
-                        condition.getSelectedItemId(),
+                        1,
                         FirebaseAuth.getInstance().getCurrentUser().getEmail(),
                         title.getText().toString(),
                         description.getText().toString(),

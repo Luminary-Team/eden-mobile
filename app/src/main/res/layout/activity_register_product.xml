@@ -41,13 +41,13 @@
 
             <ImageView
                 android:id="@+id/register_product_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="400dp"
+                android:layout_height="250dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/camera_placeholder"
-                android:scaleType="center"
+                android:scaleType="centerCrop"
                 android:orientation="horizontal"
                 />
 
