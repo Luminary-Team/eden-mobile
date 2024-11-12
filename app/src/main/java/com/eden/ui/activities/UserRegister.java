@@ -74,7 +74,6 @@ public class UserRegister extends AppCompatActivity {
                 start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         btnLogin.setText(spannableString);
-
         // Register the user
         btnRegister.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
@@ -87,9 +86,6 @@ public class UserRegister extends AppCompatActivity {
             // Verifies if none of the values are null
             if (unformattedPhoneNumber != null && unformattedCpf != null
                     && !email.isEmpty() && !name.isEmpty() && password.length() >= 6) {
-                progressBar.setVisibility(View.GONE);
-                btnRegister.setEnabled(true);
-                btnRegister.setText("Cadastrar");
                 registerUser(name, unformattedCpf, unformattedPhoneNumber, email, password);
             } else if (password.length() < 6) {
                 passwordEditText.setError("A senha deve ter pelo menos 6 caracteres");
@@ -161,17 +157,18 @@ public class UserRegister extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressBar.setVisibility(View.VISIBLE);
-                btnRegister.setText("");
+                btnRegister.setText(" ");
                 try {
                     if (response.isSuccessful() && response.body() != null) {
-                        progressBar.setVisibility(View.GONE);
-                        btnRegister.setText("Cadastrar");
+//                        progressBar.setVisibility(View.GONE);
+//                        btnRegister.setText("Cadastrar");
                         // Salvar o user no firebaseAuth
                         db.register(email, password, UserRegister.this);
 
                     } else if (response.errorBody() != null) {
                         progressBar.setVisibility(View.GONE);
                         btnRegister.setText("Cadastrar");
+                        btnRegister.setEnabled(true);
 
                         // Tratando erros
                         String errorResponse = response.errorBody().string();
@@ -199,6 +196,9 @@ public class UserRegister extends AppCompatActivity {
                         } else if (jsonObject.has("cellphone")) {
                             phoneNumberEditText.setError(jsonObject.getString("cellphone"));
                             phoneNumberEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
+                        } else if (jsonObject.has("email")) {
+                            emailEditText.setError(jsonObject.getString("email"));
+                            emailEditText.setBackgroundResource(R.drawable.rounded_corner_shape_error);
                         }
 
                         // Exibe os erros no log
