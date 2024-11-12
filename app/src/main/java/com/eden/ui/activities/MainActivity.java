@@ -166,17 +166,6 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawers();
         });
 
-        // Logout
-        (findViewById(R.id.button_logout)).setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            currentUser = null;
-            favorites = null;
-            token = null;
-            Intent intent = new Intent(MainActivity.this, SplashScreen.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
-
     }
 
     private static final String[] REQUIRED_PERMISSIONS = {

@@ -1,12 +1,15 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.favorites;
 import static com.eden.utils.AndroidUtil.openActivity;
+import static com.eden.utils.AndroidUtil.token;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -19,6 +22,7 @@ import com.eden.utils.AndroidUtil;
 import com.eden.utils.callbacks.UserCallback;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class UserProfile extends AppCompatActivity {
 

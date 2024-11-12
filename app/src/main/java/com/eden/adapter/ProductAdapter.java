@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.eden.ui.activities.BuyProduct;
@@ -29,6 +28,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Handler handler;
     private Runnable runnable;
     private int currentPosition = 0;
+    private boolean isAutoScrollStarted = false;
 
     private static final int TYPE_PREMIUM = 0;
     private static final int TYPE_NORMAL = 1;
@@ -68,6 +68,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             // Premium Product
 
             RecyclerView recyclerView = holder.itemView.findViewById(R.id.recyclerView_premium_product);
+
             recyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
 
             recyclerView.setAdapter(new ProductPremiumAdapter(premiumProductList));
@@ -79,7 +80,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ViewHolderProduct viewHolderProduct = (ViewHolderProduct) holder;
             if (normalProductList != null) {
                 Log.d("ProductAdapter", "Position: " + position);
-                Product product = normalProductList.get(position - 1); // Ajustar a posição para ignorar o carrossel
+                Product product = normalProductList.get(position - 1);
                 if (product.getTitle() != null) {
                     viewHolderProduct.title.setText(product.getTitle());
                 }
@@ -101,10 +102,13 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return normalProductList.size() + 1; // Adiciona 1 para o carrossel
+        return normalProductList.size() + 1;
     }
 
-    private void startAutoScroll(int itemCount, RecyclerView recyclerView) {
+    public void startAutoScroll(int itemCount, RecyclerView recyclerView) {
+        if (isAutoScrollStarted) return;
+
+        isAutoScrollStarted = true;
         handler = new Handler();
         runnable = new Runnable() {
             @Override
@@ -122,8 +126,9 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void stopAutoScroll() {
         if (handler != null) {
-            handler.removeCallbacks(runnable); // Remove callbacks para evitar vazamentos de memória
+            handler.removeCallbacks(runnable);
         }
+        isAutoScrollStarted = false;
     }
 
     public static class ViewHolderProduct extends RecyclerView.ViewHolder {

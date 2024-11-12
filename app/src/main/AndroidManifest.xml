@@ -24,40 +24,52 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.activities.SuccessActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.ArticlesView"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.PixActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.ChangePassword"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.BoughtProducts"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.PremiumProduct"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.RestrictedArea"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.EditProduct"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.CreditCardInfo"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.BoostedProduct"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.FavoritesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.ArticlesActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".ui.activities.UserProfileEdit"
             android:exported="false"

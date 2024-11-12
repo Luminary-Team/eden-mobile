@@ -91,17 +91,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolderPost
     }
 
     private void setLiked(String postId, ImageView like_post, TextView like_count) {
-        ForumService forumService = RetrofitClient.getClient().create(ForumService.class);
+        ForumService forumService = RetrofitClient.getClientMongo().create(ForumService.class);
         Call<PostResponseMongo> call = forumService.likePost(postId, currentUser.getId());
         call.enqueue(new Callback<PostResponseMongo>() {
             @Override
             public void onResponse(Call<PostResponseMongo> call, Response<PostResponseMongo> response) {
-                if (response.isSuccessful()) {
-                    PostResponseMongo postResponseMongo = response.body();
-                    if (postResponseMongo != null) {
-                        like_post.setImageResource(R.drawable.heart_selected_icon);
-                        like_count.setText(String.valueOf(postResponseMongo.getEngager().size()));
-                    }
+                PostResponseMongo postResponseMongo = response.body();
+                if (postResponseMongo != null && response.isSuccessful()) {
+                    like_post.setImageResource(R.drawable.heart_selected_icon);
+                    like_count.setText(String.valueOf(postResponseMongo.getEngager().size()));
+                } else if (response.code() == 400) {
+                    like_post.setImageResource(R.drawable.heart_icon);
+                    like_count.setText(String.valueOf(postResponseMongo.getEngager().size()));
                 } else {
                     Log.d("COMMENTS", "Response not successful: " + response.message());
                 }

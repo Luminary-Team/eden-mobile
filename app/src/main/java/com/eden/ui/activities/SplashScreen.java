@@ -25,7 +25,6 @@ public class SplashScreen extends AppCompatActivity {
         if(FirebaseUserUtil.isLoggedIn()) {
             // Goes straight to main
             authenticate(SplashScreen.this);
-
         } else {
             // Wait 2 seconds and go to login
             handler.postDelayed(new Runnable() {

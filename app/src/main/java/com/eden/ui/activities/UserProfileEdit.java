@@ -1,8 +1,10 @@
 package com.eden.ui.activities;
 
 import static com.eden.utils.AndroidUtil.currentUser;
+import static com.eden.utils.AndroidUtil.favorites;
 import static com.eden.utils.AndroidUtil.isImageFromCamera;
 import static com.eden.utils.AndroidUtil.openActivity;
+import static com.eden.utils.AndroidUtil.token;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -178,6 +180,17 @@ public class UserProfileEdit extends AppCompatActivity {
 
         (findViewById(R.id.back_btn)).setOnClickListener(v -> {
             finish();
+        });
+
+        // Logout
+        (findViewById(R.id.textView_logout)).setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            currentUser = null;
+            favorites = null;
+            token = null;
+            Intent intent = new Intent(UserProfileEdit.this, SplashScreen.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
 
     }

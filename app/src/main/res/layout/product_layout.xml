@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/product_title"
             android:layout_alignParentBottom="true"
+            android:gravity="bottom"
             android:backgroundTint="@color/edenProductBlue"
             android:maxLines="1"
             android:textColor="@color/edenBlue"
