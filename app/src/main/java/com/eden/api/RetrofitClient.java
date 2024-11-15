@@ -20,12 +20,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
-    private static String baseUrl = "http://107.20.132.70:8080/"; // SQL AWS - Pedro
-    private static String baseUrlMongo = "http://3.94.25.250:8080/"; // MONGODB AWS - Pedro
+    private static String baseUrl = "https://desenvolvimento-ii.onrender.com/"; // SQL render - Luminary
+    private static String baseUrlMongo = "https://eden-api-mongo.onrender.com/"; // MongoDB render - Luminary
 
     private static final List<String> baseUrls = List.of(
-            "https://eden-api-mongo.onrender.com/", // MongoDB render - Luminary
-            "https://desenvolvimento-ii.onrender.com/", // SQL render - Luminary
+            "http://3.94.25.250:8080/", // MONGODB AWS - Pedro
+            "http://107.20.132.70:8080/", // SQL AWS - Pedro
             "https://eden-api-mongo-a2dh.onrender.com/", // MongoDB render - Willamy
             "https://eden-api-w9pm.onrender.com/" // SQL render - Willamy
     );
